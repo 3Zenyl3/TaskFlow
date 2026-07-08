@@ -7,5 +7,6 @@
         public string Text { get; set; } = string.Empty;
         public bool isRead {  get; set; }
         public DateTime Created { get; set; }
+        public User User { get; set; }
     }
 }
