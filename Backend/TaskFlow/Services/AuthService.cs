@@ -23,7 +23,7 @@ namespace TaskFlow.Services
             this.passwordHasher = passwordHasher;
             this.configuration = configuration;
         }
-        public async Task<bool> RegisterUser(string email, string userName, string password, Roles role)
+        public async Task<bool> RegisterUser(string email, string userName, string password)
         {
             email = email.Trim().ToLower();
             var userInBd = context.Users.FirstOrDefaultAsync(x => x.Email == email);
@@ -35,7 +35,6 @@ namespace TaskFlow.Services
                     UserName = userName,
                     Email = email,
                     CreatedAt = DateTime.UtcNow,
-                    Role = role,
                 };
                 var passwordHash = passwordHasher.HashPassword(user, password);
                 user.PasswordHash = passwordHash;

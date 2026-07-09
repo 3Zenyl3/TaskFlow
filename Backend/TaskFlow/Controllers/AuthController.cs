@@ -21,8 +21,11 @@ namespace TaskFlow.Controllers
             var userName = request.UserName;
             var password = request.Password;
             var email = request.Email;
-            var role = request.Role;
-            var result = await authService.RegisterUser(userName, password, email, role);
+            if(email == null)
+            {
+                return BadRequest("Нет email");
+            }
+            var result = await authService.RegisterUser(userName, password, email);
             if (result)
             {
                 return Ok(new { message = "User register" });
