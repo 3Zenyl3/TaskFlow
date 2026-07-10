@@ -10,6 +10,7 @@ namespace TaskFlow.Data
         public DbSet<Entities.Task> Tasks { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<ProjectMember> ProjectMembers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

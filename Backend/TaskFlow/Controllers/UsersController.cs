@@ -5,7 +5,8 @@ using System.Net;
 using System.Security.Claims;
 using TaskFlow.Data;
 using TaskFlow.Entities;
-using TaskFlow.Models;
+using TaskFlow.Models.DTO;
+using TaskFlow.Models.Request;
 
 namespace TaskFlow.Controllers
 {
@@ -29,9 +30,7 @@ namespace TaskFlow.Controllers
             {
                 return Unauthorized();
             }
-            var user = await context.Users
-                .Where(x => x.Id == userId)
-                .FirstOrDefaultAsync();
+            var user = await context.Users.FindAsync(userId);
             if (user == null)
             {
                 return NotFound();
@@ -48,7 +47,7 @@ namespace TaskFlow.Controllers
         }
 
         [HttpPatch("profile")]
-        public async Task<IActionResult> PatchProfile(PatchProfileRequest request)
+        public async Task<IActionResult> UpdateProfile(PatchProfileRequest request)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -63,8 +62,15 @@ namespace TaskFlow.Controllers
             {
                 return NotFound();
             }
-            user.AvatarUrl = request.AvatarUrl;
-            user.UserName = request.UserName;
+            if (request.UserName != null)
+            {
+                user.UserName = request.UserName;
+            }
+
+            if (request.AvatarUrl != null)
+            {
+                user.AvatarUrl = request.AvatarUrl;
+            }
             await context.SaveChangesAsync();
             return Ok(new { message = "Profile updated" });
         }

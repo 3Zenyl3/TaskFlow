@@ -1,4 +1,4 @@
-﻿namespace TaskFlow.Models
+﻿namespace TaskFlow.Models.Request
 {
     public class LoginRequest
     {

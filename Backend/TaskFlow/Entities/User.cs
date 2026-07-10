@@ -9,6 +9,7 @@
         public Roles Role { get; set; }
         public DateTime CreatedAt { get; set; }
         public string AvatarUrl { get; set; } = string.Empty;
+        public ICollection<ProjectMember> Projects { get; set; } = new List<ProjectMember>();
     }
 
     public enum Roles

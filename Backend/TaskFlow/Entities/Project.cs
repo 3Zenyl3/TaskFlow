@@ -9,6 +9,7 @@
         public DateTime CreatedDate { get; set; }
         public StatusProject Status { get; set; }
         public User Owner { get; set; }
+        public ICollection<ProjectMember> Members { get; set; } = new List<ProjectMember>();
     }
 
     public enum StatusProject

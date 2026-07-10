@@ -1,6 +1,6 @@
-﻿using TaskFlow.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Services;
+using TaskFlow.Models.Request;
 
 namespace TaskFlow.Controllers
 {
