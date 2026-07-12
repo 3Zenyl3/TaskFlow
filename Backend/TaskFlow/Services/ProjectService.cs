@@ -41,7 +41,7 @@ namespace TaskFlow.Services
                     Members = pm.Project.Members
                         .Select(m => new UserDto
                         {
-                            Id = m.User.Id,
+                            UserId = m.User.Id,
                             UserName = m.User.UserName,
                             AvatarUrl = m.User.AvatarUrl,
                         })

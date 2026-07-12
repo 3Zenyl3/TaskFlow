@@ -12,6 +12,24 @@ namespace TaskFlow.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ProjectMember> ProjectMembers { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Entities.Task>()
+                .HasOne(t => t.Creator)
+                .WithMany(u => u.CreatedTasks)
+                .HasForeignKey(t => t.CreatorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Entities.Task>()
+                .HasOne(t => t.Executor)
+                .WithMany(u => u.AssignedTasks)
+                .HasForeignKey(t => t.ExecutorId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 

@@ -19,9 +19,9 @@
         public User Creator { get; set; }
 
 
-        public int ExecutorId { get; set; }
+        public int? ExecutorId { get; set; }
 
-        public User Executor { get; set; }
+        public User? Executor { get; set; }
 
 
         public Priority Priority { get; set; }
@@ -30,14 +30,15 @@
 
         public DateTime Deadline { get; set; }
 
-        public DateTime CreateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 
     public enum Priority
     {
         Low,
         Medium,
-        Hight,
+        High,
         Critical
     }
     public enum StatusTask
