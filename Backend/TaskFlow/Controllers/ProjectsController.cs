@@ -4,6 +4,7 @@ using System.Security.AccessControl;
 using System.Security.Claims;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
 using TaskFlow.Services;
@@ -34,27 +35,10 @@ namespace TaskFlow.Controllers
             if (user == null)
                 return Unauthorized();
 
-            if (user.Role == Roles.Admin || user.Role == Roles.Manager)
-            {
-                var project = new Project
-                {
-                    CreatedDate = DateTime.UtcNow,
-                    Description = request.Description,
-                    Name = request.Name,
-                    Owner = user,
-                    OwnerId = user.Id,
-                    Status = StatusProject.Active,
-                };
-                context.Projects.Add(project);
-                await context.SaveChangesAsync();
-                return StatusCode(201, new ProjectCreateDto
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    Description = project.Description,
-                    Status = project.Status
-                });
-            }
+            var createProject = await projectService.CreateProject(user, request);
+
+            if (createProject != null)
+                return StatusCode(201, createProject);
 
             return BadRequest("Роль не позволяет создавать проект");
         }
@@ -70,14 +54,14 @@ namespace TaskFlow.Controllers
             return Ok(projects);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCurrentIdProject(int id)
+        [HttpGet("{projectId}")]
+        public async Task<IActionResult> GetCurrentIdProject(int projectId)
         {
             var (result, userId) = await GetAuthorizedUserId();
             if (result != null)
                 return result;
 
-            var project = await projectService.GetCurrentProject(id, userId);
+            var project = await projectService.GetCurrentProject(projectId, userId);
 
             if (project == null)
                 return NotFound();
@@ -85,45 +69,36 @@ namespace TaskFlow.Controllers
             return Ok(project);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, UpdateProjectRequest request)
+        [HttpPut("{projectId}")]
+        public async Task<IActionResult> UpdateProject(int projectId, UpdateProjectRequest request)
         {
             var (result, userId) = await GetAuthorizedUserId();
             if (result != null)
                 return result;
-            var project = await context.Projects.FindAsync(id);
+            var updateProjectResponse = await projectService.UpdateProject(request, userId, projectId);
+            var status = updateProjectResponse.UpdateProjectResult;
 
-            if (project == null)
+            if (status == ProjectOperationResult.NotFound)
                 return NotFound();
-            if (project.OwnerId != userId)
+            if (status == ProjectOperationResult.Forbidden)
                 return Forbid();
 
-            if (project.OwnerId != userId)
-                return Forbid();
-
-            if (request.Name != null)
-                project.Name = request.Name;
-            if (request.Description != null)
-                project.Description = request.Description;
-            await context.SaveChangesAsync();
+            var project = updateProjectResponse.Project;
             return Ok(project);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProject(int id)
+        [HttpDelete("{projectId}")]
+        public async Task<IActionResult> DeleteProject(int projectId)
         {
             var (result, userId) = await GetAuthorizedUserId();
             if (result != null)
                 return result;
-            var project = await context.Projects.FindAsync(id);
+            var status = await projectService.DeleteProject(projectId, userId);
 
-            if (project == null)
+            if(status == ProjectOperationResult.NotFound)
                 return NotFound();
-            if (project.OwnerId != userId)
+            if(status == ProjectOperationResult.Forbidden)
                 return Forbid();
-
-            context.Projects.Remove(project);
-            await context.SaveChangesAsync();
 
             return Ok(new {message = "Project deleted" });
         }

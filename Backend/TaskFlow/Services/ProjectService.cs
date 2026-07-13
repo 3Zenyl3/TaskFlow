@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Models;
 using TaskFlow.Models.DTO;
+using TaskFlow.Models.Request;
 
 namespace TaskFlow.Services
 {
@@ -48,6 +50,79 @@ namespace TaskFlow.Services
                         .ToList()
                 })
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<ProjectCreateDto> CreateProject(User user, CreateProjectRequest request)
+        {
+            if (user.Role == Roles.Admin || user.Role == Roles.Manager)
+            {
+                var project = new Project
+                {
+                    CreatedDate = DateTime.UtcNow,
+                    Description = request.Description,
+                    Name = request.Name,
+                    Owner = user,
+                    OwnerId = user.Id,
+                    Status = StatusProject.Active,
+                };
+                context.Projects.Add(project);
+                await context.SaveChangesAsync();
+                return new ProjectCreateDto
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    Description = project.Description,
+                    Status = project.Status
+                };
+            }
+            return null;
+        }
+
+        public async Task<UpdateProjectResponse> UpdateProject(UpdateProjectRequest request, int userId, int projectId)
+        {
+            var project = await context.Projects.FindAsync(projectId);
+
+            if (project == null)
+                return new UpdateProjectResponse
+                {
+                    UpdateProjectResult = ProjectOperationResult.NotFound
+                };
+            if (project.OwnerId != userId)
+                return new UpdateProjectResponse
+                {
+                    UpdateProjectResult = ProjectOperationResult.Forbidden
+                };
+
+            if (project.OwnerId != userId)
+                return new UpdateProjectResponse
+                {
+                    UpdateProjectResult = ProjectOperationResult.Forbidden
+                };
+
+            if (request.Name != null)
+                project.Name = request.Name;
+            if (request.Description != null)
+                project.Description = request.Description;
+            await context.SaveChangesAsync();
+            return new UpdateProjectResponse
+            {
+                UpdateProjectResult = ProjectOperationResult.Success,
+                Project = project
+            };
+        }
+
+        public async Task<ProjectOperationResult> DeleteProject(int userId, int projectId)
+        {
+            var project = await context.Projects.FindAsync(projectId);
+
+            if (project == null)
+                return ProjectOperationResult.NotFound;
+            if (project.OwnerId != userId)
+                return ProjectOperationResult.Forbidden;
+
+            context.Projects.Remove(project);
+            await context.SaveChangesAsync();
+            return ProjectOperationResult.Success;
         }
     }
 }
