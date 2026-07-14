@@ -26,7 +26,7 @@ namespace TaskFlow.Services
         public async Task<bool> RegisterUser(string email, string userName, string password)
         {
             email = email.Trim().ToLower();
-            var userInBd = context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            var userInBd = await context.Users.FirstOrDefaultAsync(x => x.Email == email);
             if (userInBd == null)
             {
                 
