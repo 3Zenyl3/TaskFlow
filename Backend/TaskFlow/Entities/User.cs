@@ -6,7 +6,7 @@
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
-        public Roles Role { get; set; }
+        public UserRole UserRole { get; set; } = UserRole.User;
         public DateTime CreatedAt { get; set; }
         public string AvatarUrl { get; set; } = string.Empty;
         public ICollection<ProjectMember> Projects { get; set; } = new List<ProjectMember>();
@@ -22,11 +22,9 @@
 
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
-
-    public enum Roles
+    public enum UserRole
     {
-        Admin,
-        Manager,
-        Executor
+        User,
+        Admin
     }
 }

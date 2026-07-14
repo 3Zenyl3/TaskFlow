@@ -27,4 +27,8 @@
     <ProjectReference Include="..\TaskFlow\TaskFlow.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UserServiceTest\" />
+  </ItemGroup>
+
 </Project>

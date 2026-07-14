@@ -63,7 +63,7 @@ namespace TaskFlow.Services
 
         public async Task<ProjectCreateDto> CreateProject(User user, CreateProjectRequest request)
         {
-            if (user.Role == Roles.Admin || user.Role == Roles.Manager)
+            if (user != null)
             {
                 var project = new Project
                 {
@@ -75,7 +75,16 @@ namespace TaskFlow.Services
                     Status = StatusProject.Active,
                 };
                 context.Projects.Add(project);
+
+                context.ProjectMembers.Add(new ProjectMember
+                {
+                    ProjectId = project.Id,
+                    UserId = user.Id,
+                    ProjectRole = ProjectRole.Owner
+                });
+
                 await context.SaveChangesAsync();
+
                 return new ProjectCreateDto
                 {
                     Id = project.Id,
@@ -102,11 +111,6 @@ namespace TaskFlow.Services
                     UpdateProjectResult = ProjectOperationResult.Forbidden
                 };
 
-            if (project.OwnerId != userId)
-                return new UpdateProjectResponse
-                {
-                    UpdateProjectResult = ProjectOperationResult.Forbidden
-                };
 
             if (request.Name != null)
                 project.Name = request.Name;

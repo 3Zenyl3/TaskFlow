@@ -7,7 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Models;
+using TaskFlow.Models.DTO;
+using TaskFlow.Models.Request;
 using TaskFlow.Services;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskFlow.Test.ProjectServiceTest
 {
@@ -33,7 +37,7 @@ namespace TaskFlow.Test.ProjectServiceTest
         }
 
         [Test]
-        public async System.Threading.Tasks.Task GetAllProjectTest()
+        public async Task GetAllProjectTest()
         {
             var ownerFirst = new User
             {
@@ -73,7 +77,7 @@ namespace TaskFlow.Test.ProjectServiceTest
         }
 
         [Test]
-        public async System.Threading.Tasks.Task GetCurrentProjectTest()
+        public async Task GetCurrentProjectTest()
         {
             var ownerFirst = new User
             {
@@ -133,6 +137,95 @@ namespace TaskFlow.Test.ProjectServiceTest
 
             Assert.That(stranger, Is.Null);
         }
-        
+
+        [Test]
+        public async Task CreateProjectTest()
+        {
+            var user = new User
+            {
+                Id = 1,
+            };
+
+            var createProjectRequest = new CreateProjectRequest
+            {
+                Name = "Test",
+                Description = "TestDesc",
+            };
+
+            var prDTO = await projectService.CreateProject(user, createProjectRequest);
+
+            Assert.That(prDTO.Name, Is.EqualTo("Test"));
+            Assert.That(prDTO.Description, Is.EqualTo("TestDesc"));
+
+            var project = await context.Projects.FindAsync(prDTO.Id);
+            Assert.That(project, Is.Not.Null);
+            Assert.That(project.OwnerId, Is.EqualTo(user.Id));
+
+            var member = await context.ProjectMembers.FirstOrDefaultAsync(pm => pm.ProjectId == prDTO.Id);
+            Assert.That(member, Is.Not.Null);
+            Assert.That(member.UserId, Is.EqualTo(user.Id));
+            Assert.That(member.ProjectRole, Is.EqualTo(ProjectRole.Owner));
+        }
+
+        [Test]
+        public async Task UpdateProject_Success()
+        {
+            var owner = new User
+            {
+                Id = 1
+            };
+
+            var project = new Project
+            {
+                Id = 1,
+                Name = "OldName",
+                Description = "OldDescription",
+                OwnerId = owner.Id,
+                Owner = owner,
+                Status = StatusProject.Active
+            };
+
+            context.Projects.Add(project);
+            await context.SaveChangesAsync();
+
+            var request = new UpdateProjectRequest
+            {
+                Name = "NewName",
+                Description = "NewDescription"
+            };
+
+            var result = await projectService.UpdateProject(request, owner.Id, project.Id);
+
+            Assert.That(result.UpdateProjectResult, Is.EqualTo(ProjectOperationResult.Success));
+
+            var updatedProject = await context.Projects.FindAsync(project.Id);
+
+            Assert.That(updatedProject, Is.Not.Null);
+            Assert.That(updatedProject.Name, Is.EqualTo("NewName"));
+            Assert.That(updatedProject.Description, Is.EqualTo("NewDescription"));
+        }
+
+        [Test]
+        public async Task DeleteProjectTest()
+        {
+            var owner = new User
+            {
+                Id = 1
+            };
+
+            var project = new Project
+            {
+                Id = 1,
+                Owner = owner,
+                OwnerId = owner.Id,
+            };
+            context.Projects.Add(project);
+            await context.SaveChangesAsync();
+
+            var deleteRes = await projectService.DeleteProject(owner.Id, project.Id);
+
+            Assert.That(await context.Projects.FirstOrDefaultAsync(p => p.Id == project.Id), Is.Null);
+            Assert.That(deleteRes, Is.EqualTo(ProjectOperationResult.Success));
+        }
     }
 }
