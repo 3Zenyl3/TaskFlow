@@ -49,7 +49,7 @@ namespace TaskFlow.Controllers
             var (result, userId) = await GetAuthorizedUserId();
             if (result != null)
                 return result;
-            var projects = await projectService.GetAllProject(userId);
+            var projects = await projectService.GetAllProjectUser(userId);
 
             return Ok(projects);
         }

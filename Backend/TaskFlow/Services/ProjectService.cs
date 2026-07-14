@@ -16,38 +16,47 @@ namespace TaskFlow.Services
             this.context = context;
         }
 
-        public async Task<List<ProjectListDto>> GetAllProject(int userId)
+        public async Task<List<ProjectListDto>> GetAllProjectUser(int userId)
         {
-            return await context.ProjectMembers
-                .Where(pm => pm.UserId == userId)
-                .Select(pm => pm.Project)
+            return await context.Projects
+                .Where(p =>
+                    p.OwnerId == userId ||
+                    p.Members.Any(m => m.UserId == userId)
+                )
                 .Select(pm => new ProjectListDto
                 {
                     Id = pm.Id,
                     Name = pm.Name,
-                    Status = pm.Status
+                    Status = pm.Status,
+                    OwnerId = pm.OwnerId
                 })
                 .ToListAsync();
         }
 
         public async Task<ProjectDetailsDto?> GetCurrentProject(int projectId, int userId)
         {
-            return await context.ProjectMembers
-                .Where(pm => pm.ProjectId == projectId && pm.UserId == userId)
-                .Select(pm => new ProjectDetailsDto
+            return await context.Projects
+                .Where(p => p.Id == projectId && (p.Members.Any(m => m.UserId == userId) || p.OwnerId == userId))
+                .Select(p => new ProjectDetailsDto
                 {
-                    Id = pm.Project.Id,
-                    Name = pm.Project.Name,
-                    Status = pm.Project.Status,
-                    Description = pm.Project.Description,
-                    Members = pm.Project.Members
+                    Id = p.Id,
+                    Name = p.Name,
+                    Status = p.Status,
+                    Description = p.Description,
+                    Members = p.Members
                         .Select(m => new UserDto
                         {
                             UserId = m.User.Id,
                             UserName = m.User.UserName,
                             AvatarUrl = m.User.AvatarUrl,
                         })
-                        .ToList()
+                        .ToList(),
+                    Owner = new UserDto
+                    {
+                        UserId = p.Owner.Id,
+                        UserName = p.Owner.UserName,
+                        AvatarUrl = p.Owner.AvatarUrl
+                    }
                 })
                 .FirstOrDefaultAsync();
         }
