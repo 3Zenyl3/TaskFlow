@@ -8,6 +8,7 @@ using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
 using TaskFlow.Services;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Controllers
 {
@@ -16,9 +17,9 @@ namespace TaskFlow.Controllers
     public class ProjectsController : ControllerBase
     {
         private ApplicationDbContext context;
-        private ProjectService projectService;
+        private IProjectService projectService;
 
-        public ProjectsController(ApplicationDbContext context, ProjectService projectService)
+        public ProjectsController(ApplicationDbContext context, IProjectService projectService)
         {
             this.context = context;
             this.projectService = projectService;

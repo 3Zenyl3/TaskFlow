@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaskFlow.Services;
 using TaskFlow.Models.Request;
+using TaskFlow.Services;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Controllers
 {
@@ -8,9 +9,9 @@ namespace TaskFlow.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private AuthService authService;
+        private IAuthService authService;
 
-        public AuthController(AuthService authService)
+        public AuthController(IAuthService authService)
         {
             this.authService = authService;
         }
