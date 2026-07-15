@@ -8,10 +8,11 @@ using System.Security.Claims;
 using System.Text;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private ApplicationDbContext context;
         private IPasswordHasher<User> passwordHasher;

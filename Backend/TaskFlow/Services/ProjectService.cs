@@ -4,10 +4,11 @@ using TaskFlow.Entities;
 using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Services
 {
-    public class ProjectService
+    public class ProjectService : IProjectService
     {
         private ApplicationDbContext context;
 

@@ -112,11 +112,6 @@ namespace TaskFlow.Controllers
                 return (Unauthorized(), 0);
             }
 
-            var user = await context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                return (Unauthorized(), 0);
-            }
             return (null, userId);
         }
     }

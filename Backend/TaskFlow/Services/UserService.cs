@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private ApplicationDbContext context;
 
