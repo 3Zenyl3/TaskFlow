@@ -104,7 +104,10 @@ namespace TaskFlow.Services
             {
                 Title = request.Title,
                 Description = request.Description,
-                Deadline = request.DeadLine,
+                Deadline = DateTime.SpecifyKind(
+                    request.DeadLine,
+                    DateTimeKind.Utc
+                ),
                 CreatorId = userId,
                 ExecutorId = request.ExecutorId,
                 CreatedAt = DateTime.UtcNow,

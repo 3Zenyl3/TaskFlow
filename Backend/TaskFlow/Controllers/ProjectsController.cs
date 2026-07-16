@@ -94,7 +94,7 @@ namespace TaskFlow.Controllers
             var (result, userId) = await GetAuthorizedUserId();
             if (result != null)
                 return result;
-            var status = await projectService.DeleteProject(projectId, userId);
+            var status = await projectService.DeleteProject(userId, projectId);
 
             if(status == ProjectOperationResult.NotFound)
                 return NotFound();

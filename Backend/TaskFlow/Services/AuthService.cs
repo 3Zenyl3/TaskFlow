@@ -26,7 +26,7 @@ namespace TaskFlow.Services
         }
         public async Task<bool> RegisterUser(string email, string userName, string password)
         {
-            email = email.Trim().ToLower();
+            email = email.ToLower().Trim();
             var userInBd = await context.Users.FirstOrDefaultAsync(x => x.Email == email);
             if (userInBd == null)
             {
@@ -48,6 +48,7 @@ namespace TaskFlow.Services
 
         public async Task<User> Login(string email, string password)
         {
+            email = email.ToLower().Trim();
             var userInBd = await context.Users.FirstOrDefaultAsync(x =>x.Email == email);
             if (userInBd == null)
             {
@@ -79,7 +80,7 @@ namespace TaskFlow.Services
                 expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: creds
                 );
-            return token.ToString();
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

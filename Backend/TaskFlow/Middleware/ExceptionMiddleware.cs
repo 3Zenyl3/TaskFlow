@@ -20,7 +20,15 @@ namespace TaskFlow.Middleware
             }
             catch (Exception ex)
             {
-                await HandleException(context, ex);
+                Console.WriteLine(ex.InnerException?.Message);
+                Console.WriteLine(ex.Message);
+
+                context.Response.StatusCode = 500;
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    error = ex.InnerException?.Message ?? ex.Message
+                });
             }
         }
 

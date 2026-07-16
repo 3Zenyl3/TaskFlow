@@ -76,6 +76,7 @@ namespace TaskFlow.Services
                     Status = StatusProject.Active,
                 };
                 context.Projects.Add(project);
+                await context.SaveChangesAsync();
 
                 context.ProjectMembers.Add(new ProjectMember
                 {
