@@ -104,6 +104,7 @@ namespace TaskFlow.Controllers
             return Ok(new {message = "Project deleted" });
         }
 
+
         private async Task<(IActionResult? Result, int UserId)> GetAuthorizedUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);

@@ -15,11 +15,13 @@ namespace TaskFlow.Controllers
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
+        private ApplicationDbContext context;
         private readonly ITaskService taskService;
 
-        public TasksController(ITaskService taskService)
+        public TasksController(ITaskService taskService, ApplicationDbContext context)
         {
             this.taskService = taskService;
+            this.context = context;
         }
 
         [HttpGet("my")]
@@ -106,6 +108,48 @@ namespace TaskFlow.Controllers
             await taskService.DeleteTask(taskId, userId);
 
             return Ok(new { message = "Task deleted" });
+        }
+
+        [HttpGet("{taskId}/comments")]
+        public async Task<IActionResult> GetCommentById(int taskId)
+        {
+            var comments = await context.Comments
+                .Where(c => c.TaskId == taskId)
+                .Select(c => new CommentDTO
+                {
+                    Id = c.Id,
+                    Author = c.Author,
+                    Text = c.Text,
+                    CreateAt = c.CreatedAt
+                })
+                .ToListAsync();
+            return Ok(comments);
+        }
+        [HttpPost("{taskId}/comments")]
+        public async Task<IActionResult> CreateComment(CreateCommentRequest request, int taskId)
+        {
+            var (result, userId) = await GetAuthorizedUserId();
+            if (result != null)
+            {
+                return result;
+            }
+            var taskExists = await context.Tasks.AnyAsync(t => t.Id == taskId);
+
+            if (!taskExists)
+            {
+                return NotFound("Task not found");
+            }
+
+            var comment = new Comment
+            {
+                CreatedAt = DateTime.UtcNow,
+                AuthorId = userId,
+                TaskId = taskId,
+                Text = request.Text
+            };
+            context.Comments.Add(comment);
+            await context.SaveChangesAsync();
+            return Ok(new {id = comment.Id, text = request.Text});
         }
 
         private async Task<(IActionResult? Result, int UserId)> GetAuthorizedUserId()
