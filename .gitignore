@@ -1,0 +1,123 @@
+# ============ .NET / C# ============
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+*.dll
+*.exe
+*.pdb
+*.log
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.ipdb
+*.idb
+*.sdf
+*.opendb
+*.VC.db
+
+# ============ Visual Studio ============
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+*.DotSettings.user
+*.nupkg
+*.snk
+*.pfx
+*.pub
+
+# ============ NuGet ============
+packages/
+*.nupkg
+.nuget/
+.nuget/packages/
+
+# ============ Тесты ============
+[Tt]est[Rr]esults/
+*.coverage
+*.coverlet.xml
+*.opencover.xml
+*.trx
+[Ll]og/
+*.log
+
+# ============ ASP.NET Core ============
+# Локальные настройки
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# User Secrets
+secrets.json
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Секретные файлы
+*.secret
+*.key
+*.pem
+*.crt
+*.cer
+
+# Сертификаты ASP.NET
+*.pfx
+*.p12
+
+# Локальные данные приложения
+app_data/
+wwwroot/uploads/
+uploads/
+
+# ============ Entity Framework ============
+# Локальные базы данных
+*.db
+*.sqlite
+*.sqlite3
+
+# EF временные файлы
+efbundle/
+*.dacpac
+
+# ============ Docker ============
+# Если будут локальные compose override файлы
+docker-compose.override.yml
+
+# ============ Node / Frontend (если добавишь React) ============
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+coverage/
+
+# ============ Система и ОС ============
+[Dd]esktop.ini
+[Tt]humbs.db
+ehthumbs.db
+.DS_Store
+*.swp
+*.swo
+*~
+
+# ============ IDE ============
+.idea/
+.vscode/
+*.code-workspace
+
+# ============ Backup файлы ============
+*.bak
+*.backup
+*.tmp
+*.temp
