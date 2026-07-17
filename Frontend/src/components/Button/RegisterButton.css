@@ -1,0 +1,22 @@
+.RegisterButton{
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #fff;
+  font-size: 14px;
+  background-color: #005ef7;
+  cursor: pointer;
+}
+
+.RegisterButton:active{
+  background-color: #0049be;
+  transform: scale(0.98);
+}
+.RegisterButton:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.RegisterButton:hover {
+  background-color: #006cff;
+}
