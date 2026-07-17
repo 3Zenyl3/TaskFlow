@@ -26,6 +26,10 @@ namespace TaskFlow.Controllers
             {
                 return BadRequest("Нет email");
             }
+            if(userName == null)
+            {
+                return BadRequest("Нет имени пользователя");
+            }
             var result = await authService.RegisterUser(email, userName, password);
             if (result)
             {
