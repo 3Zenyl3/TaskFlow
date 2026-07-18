@@ -1,4 +1,4 @@
-name: Deploy Vite to GitHub Pages
+name: Deploy Frontend to GitHub Pages
 
 on:
   push:
@@ -19,25 +19,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: Frontend/package-lock.json
 
       - name: Install dependencies
+        working-directory: Frontend
         run: npm ci
 
       - name: Build
+        working-directory: Frontend
         run: npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: Frontend/dist
 
   deploy:
     needs: build
@@ -52,6 +54,5 @@ jobs:
       id-token: write
 
     steps:
-      - name: Deploy
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
