@@ -1,0 +1,73 @@
+.loginWindow{
+  display: flex;
+}
+.rightSide{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+  height: 100vh;
+  background-color: #f5f8fb;
+}
+.registerWindow{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 90%;
+  max-width: 840px;
+  height: 90%;
+  max-height: 940px;
+  border-radius: 16px;
+  padding: 48px;
+  background-color: #fefdfd;
+}
+.regTitle{
+  font-size: clamp(17px, 3vw, 36px);
+}
+.regDescription{
+  color: #989fab;
+}
+.regMenu{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 16px;
+  width: 100%;
+  max-width: 730px;
+  height: 100%;
+  max-height: 470px;
+  margin-top: 16px;
+}
+.regMunuTitle{
+  font-size: clamp(13px, 2vw, 16px);
+}
+.errMessage{
+  text-align: center;
+}
+.toRegister{
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.toRegister p{
+  margin: 0;
+  text-align: center;
+}
+.toRegister button{
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 5px;
+  color: #005ef7;
+  font-size: 16px;
+  background-color: #f5f8fb;
+}
+.toRegister button:hover{
+  color: #3982f8;
+}

@@ -1,10 +1,10 @@
 import "./Register.css"
-import logo from "../../assets/ГалочкаДляTaskFlow.svg"
-import tasksPeople from "../../assets/КартинкаTaskFlow.svg"
 import Input from "../../../src/components/Input/Input"
 import RegisterButton from "../../components/Button/RegisterButton"
 import React, { useState } from "react";
 import { useRegister } from "../../hooks/useRegister"
+import { useNavigate } from "react-router-dom"
+import AuthLeftSide from "../../components/AuthLayout/AuthLeftSide"
 
 function Register() {
   const {
@@ -20,6 +20,7 @@ function Register() {
   } = useRegister();
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleUserNameChange(value: string) {
     const regex = /^[a-zA-Zа-яА-Я0-9_-]*$/;
@@ -40,6 +41,7 @@ function Register() {
         setEmail("")
         setPassword("")
         setConfirmPassword("")
+        navigate("/login")
       }
       else {
         setMessage(data.message || "Ошибка регистрации");
@@ -60,30 +62,10 @@ function Register() {
     }
   }
 
+
   return (
     <div className="register">
-      <div className="leftSide">
-        <div className="logo">
-          <img src={logo} alt="Галочка" className="check_mark" />
-          <h1 className="titleFirst">Task</h1>
-          <h1 className="titleSecond">Flow</h1>
-        </div>
-
-        <div className="slogan">
-          <h2 className="sloganTitle">
-            Командная работа
-            <br />
-            становится проще
-          </h2>
-          <p className="sloganDescription">
-            TaskFlow помогает командам планировать,
-            отслеживать и выполнять задачи
-            <br />
-            в одном месте.
-          </p>
-        </div>
-        <img src={tasksPeople} alt="" className="taskPeopleImage" />
-      </div>
+      <AuthLeftSide></AuthLeftSide>
       <form onSubmit={handleRegister} className="rightSide">
         <div className="registerWindow">
           <h2 className="regTitle">
@@ -140,7 +122,7 @@ function Register() {
         </div>
         <div className="toLogin">
           <p>Уже есть аккаунт?</p>
-          <button type="button">Войти</button>
+          <button type="button" onClick={() => navigate("/login")}>Войти</button>
         </div>
       </form>
     </div>
