@@ -7,7 +7,7 @@ import { HiOutlineChevronRight } from "react-icons/hi";
 type CalendarDay = {
   date: Date;
   isCurrentMonth: boolean;
-  tasks: Task[];
+  //tasks: Task[];
 };
 
 function getDaysInMonth(year: number, month: number) {
@@ -26,11 +26,11 @@ function getDaysInMonth(year: number, month: number) {
     days.push({
       date,
       isCurrentMonth: false,
-      tasks: []
+      //tasks: []
     });
   }
   for (let i = 1; i <= countMonthDay; i++) {
-    days.push({ date: new Date(year, month, i), isCurrentMonth: true, tasks: [] });
+    days.push({ date: new Date(year, month, i), isCurrentMonth: true });
   }
   let remainingDays;
   if (days.length > 35)
@@ -41,7 +41,7 @@ function getDaysInMonth(year: number, month: number) {
     days.push({
       date: new Date(year, month + 1, i),
       isCurrentMonth: false,
-      tasks: []
+      //tasks: []
     });
   }
   return days;
