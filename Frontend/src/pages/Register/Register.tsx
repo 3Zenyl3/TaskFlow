@@ -1,6 +1,7 @@
 import "./Register.css"
+import "../../../styles/Auth.css"
 import Input from "../../../src/components/Input/Input"
-import RegisterButton from "../../components/Button/RegisterButton"
+import RegisterButton from "../../components/Button/Button"
 import React, { useState } from "react";
 import { useRegister } from "../../hooks/useRegister"
 import { useNavigate } from "react-router-dom"

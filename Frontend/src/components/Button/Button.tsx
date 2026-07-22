@@ -1,17 +1,17 @@
-import "./RegisterButton.css"
+import "./Button.css"
 
-type RegisterButtonProps = {
+type Button = {
   text: string;
   type?: "button" | "submit";
   onClick?: () => void;
   disabled?: boolean;
 }
-function RegisterButton({
+function Button({
   text,
   type = "button",
   onClick,
   disabled = false
-}: RegisterButtonProps){
+}: Button){
   return(
     <button
       type={type}
@@ -24,4 +24,4 @@ function RegisterButton({
   );
 }
 
-export default RegisterButton;
+export default Button;

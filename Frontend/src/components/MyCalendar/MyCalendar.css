@@ -1,0 +1,86 @@
+.myCalendar{
+  width: 100%;
+}
+.calendarGrid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+.day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  font-size: 14px;
+}
+.daysName{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.calendarHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
+.calendarTitle{
+  font-size: 18px;
+}
+.navMonth{
+  display: flex;
+  align-items: center;
+  color: #949ca8;
+}
+.navMonth p {
+  width: 120px;
+  text-align: center;
+  margin: 0;
+}
+.navMonth button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #949ca8;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.navMonth button:hover {
+  background-color: #eef4ff;
+  color: #2283ef;
+}
+.today{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2283ef;
+  color: white;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  font-size: 14px;
+}
+.prevMonthDay{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+  font-size: 14px;
+  color: #dadde2;
+}
+.day:hover{
+  background-color: #f3f5f7;
+  cursor: pointer;
+}

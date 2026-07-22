@@ -1,0 +1,56 @@
+.titleDashboard{
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 36px;
+}
+.helloTitle{
+  font-size: 30px;
+}
+.helloDescr{
+  color: #989ea6;
+}
+.headerText{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.notificationButton {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.notificationButton:hover {
+    background: #eef4fb;
+}
+.bell{
+  width: 24px;
+  height: 24px;
+  color: #4b5563;
+}
+.notificationBadge{
+  position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    color: white;
+    font-weight: 600;
+    font-size: 11px;
+    background: #ef4444;
+}
+.headerActions{
+  justify-content: end;
+}

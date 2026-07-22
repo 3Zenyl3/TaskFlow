@@ -1,0 +1,55 @@
+.projectTitle{
+  font-size: 16px;
+}
+.project{
+  display: flex;
+  border-bottom: 1px solid #f6f9fe;
+  padding: 20px;
+}
+.projectTitleDiv{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.projectDescr{
+  width: 25vw;
+  color: #949ca8;
+  font-size: 13px;
+  overflow: hidden;
+  color: #9ea0ab;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.progressBar {
+  width: 100%;
+  height: 10px;
+  margin-top: 15px;
+  background-color: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress {
+  height: 100%;
+  background-color: #287dfc;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+.progressBarDescr{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+.progressBarDescr span{
+  font-weight: bold;
+  font-size: 16px;
+}
+.progressBarDescr p{
+  width: 5vw;
+  white-space: nowrap;
+  font-size: 13px;
+  overflow: hidden;
+  color: #9ea0ab;
+  text-overflow: ellipsis;
+}

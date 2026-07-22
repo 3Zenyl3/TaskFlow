@@ -1,0 +1,31 @@
+.dashboard{
+  display: flex;
+}
+.dashboardRightSide{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+.firstLineRightSide,
+.secondLineRightSide{
+  display: flex;
+  padding: 0 34px;
+  gap: 16px;
+}
+.secondLineRightSide{
+  margin-top: 16px;
+}
+.calendar{
+  width: 18.2vw;
+  height: 40vh;
+  background-color: #fefefe;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.divCalendar{
+  padding: 20px;
+  text-transform: capitalize;
+}
+

@@ -1,0 +1,29 @@
+.peopleActivity{
+  display: flex;
+  align-items: center;
+}
+.peopleAvatar{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin: 0 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.peopleActivityName{
+  font-size: 14px;
+}
+.peopleActivityDescr {
+  color: #989ea6;
+  font-size: 12px;
+  width: 11vw;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+.peopleActivityTime{
+  color: #989ea6;
+  font-size: 12px;
+}

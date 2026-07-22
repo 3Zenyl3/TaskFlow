@@ -1,0 +1,65 @@
+.myTasks{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 45vw;
+  height: 42vh;
+  border-radius: 12px;
+  background-color: #fefefe;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.myTasksHeader{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  font-size: 18px;
+}
+.myTasksTitle{
+  font-size: 18px;
+}
+.allTasks{
+  color: #2e7dfb;
+  text-decoration: none;
+  font-size: 15px;
+}
+.navMyTasks{
+  display: flex;
+  gap: 50px;
+  padding: 10px 20px;
+}
+.buttonMyTasks{
+  position: relative;
+  height: 20px;
+  font-size: 15px;
+  border: #fefefe;
+  background-color: #fefefe;
+}
+.buttonMyTasks.active {
+  color: #2e7dfb;
+}
+.buttonMyTasks.active::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: #2e7dfb;
+}
+.tasksList{
+  overflow-y: auto;
+}
+.tasksList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tasksList::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.tasksList::-webkit-scrollbar-track {
+  background: transparent;
+}

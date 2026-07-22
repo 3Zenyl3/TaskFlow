@@ -1,0 +1,28 @@
+.allTask{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 17vw;
+  height: 12.5vh;
+  min-height: 140px;
+  border-radius: 12px;
+  background-color: var(--card-backgroundColor);
+}
+.allTaskTitle{
+  color: var(--card-color);
+  padding: 20px 20px 0 20px;
+  font-size: clamp(14px, 1vw, 16px);
+}
+.countTasks{
+  color: var(--card-color);
+  font-weight: bold;
+  font-size: clamp(24px, 2.5vw, 44px);
+  padding: 10px 20px;
+  justify-content: end;
+}
+.emojiStat {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 28px;
+}

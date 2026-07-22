@@ -5,7 +5,7 @@ function AuthLeftSide(){
   return(
     <div className="leftSide">
         <div className="logo">
-          <img src={logo} alt="Галочка" className="check_mark" />
+          <img src={logo} alt="Галочка" className="check_mark" draggable="false"/>
           <h1 className="titleFirst">Task</h1>
           <h1 className="titleSecond">Flow</h1>
         </div>

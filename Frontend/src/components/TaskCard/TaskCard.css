@@ -1,0 +1,87 @@
+.card{
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #f8f9f9;
+  border-bottom: 1px solid #f8f9f9;
+  padding: 20px;
+}
+.cardTitle{
+  font-size: 16px;
+}
+.cardDescr{
+  font-size: 13px;
+  width: 22vw;
+  overflow: hidden;
+  color: #9ea0ab;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.taskInfo{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.priority {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  height: 22px;
+
+  border-radius: 6px;
+  padding: 0 10px;
+
+  font-weight: bold;
+}
+.priorityDiv{
+  display: flex;
+  width: 100px;
+  justify-content: center;
+}
+.priority.low {
+  color: #32ae77;
+  background-color: #f0f9f5;
+}
+
+.priority.medium {
+  color: #fe9b18;
+  background-color: #feefde;
+}
+
+.priority.high {
+  color: #f75f61;
+  background-color: #feeaec;
+}
+.priority.critical {
+  color: #991b1b;
+  background-color: #fecaca;
+}
+
+.status {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  height: 22px;
+
+  border-radius: 6px;
+  padding: 0 10px;
+
+  font-weight: bold;
+}
+.status.work{
+  background-color: #eef4ff;
+  color: #4f8efb;
+}
+.status.todo{
+  background-color: #f3f5f7;
+  color: #5b6470;
+}
+.status.review {
+  background-color: #f3e8ff;
+  color: #9333ea;
+}
+.status.done {
+  background-color: #e6fffb;
+  color: rgb(0, 86, 86);
+}
