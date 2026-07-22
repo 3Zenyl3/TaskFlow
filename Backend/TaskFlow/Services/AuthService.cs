@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Exceptions;
 using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Services
@@ -52,11 +53,11 @@ namespace TaskFlow.Services
             var userInBd = await context.Users.FirstOrDefaultAsync(x =>x.Email == email);
             if (userInBd == null)
             {
-                throw new AuthenticationException("Пользователя не существует");
+                throw new UnauthorizedException("Пользователя не существует");
             }
             if(passwordHasher.VerifyHashedPassword(userInBd, userInBd.PasswordHash, password) == PasswordVerificationResult.Failed)
             {
-                throw new AuthenticationException("Пароль не верный");
+                throw new UnauthorizedException("Пароль не верный");
             }
             return userInBd;
         }
