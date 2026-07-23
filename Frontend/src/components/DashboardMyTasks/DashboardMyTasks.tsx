@@ -1,44 +1,37 @@
 import "./DashboardMyTasks.css"
 import { useState } from "react";
 import TaskCard from "../TaskCard/TaskCard";
+import type { Task } from "../../api/tasks";
 
-function DashboardMyTask() {
-  const [active, setActive] = useState("Today")
-  const tasks = [
-    {
-      id: 1,
-      title: "Сделать дизайн",
-      description: "Нужно подготовить макет страницы",
-      deadline: "19.08.26",
-      status: "В работе",
-      priority: "Высокий"
-    },
-    {
-      id: 2,
-      title: "Написать API",
-      description: "Нужно подготовить макет страницы",
-      deadline: "19.08.26",
-      status: "Нужно сделать",
-      priority: "Средний"
-    },
-    {
-      id: 3,
-      title: "Встреча",
-      description: "Нужно подготовить макет страницы",
-      deadline: "19.08.26",
-      status: "Выполнена",
-      priority: "Низкий"
-    },
-    {
-      id: 4,
-      title: "Встреча",
-      description: "Нужно подготовить макет страницы",
-      deadline: "19.08.26",
-      status: "Ревью",
-      priority: "Критический"
+type TaskFilter = "Today" | "Tomorrow" | "Week";
+
+function DashboardMyTask({ tasks, loading }: { tasks: Task[], loading: boolean }){
+  const [active, setActive] = useState<TaskFilter>("Today")
+
+  const filterTasks = tasks.filter(task => {
+    const deadLine = new Date(task.deadline);
+    const today = new Date();
+
+    if(active === "Today"){
+      return deadLine.toDateString() === today.toDateString();
     }
-  ];
+    if(active === "Tomorrow"){
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
 
+      return deadLine.toDateString() === tomorrow.toDateString();
+    }
+    else{
+      const endOfWeek = new Date(today);
+
+      const day = today.getDay();
+      const daysUntilSunday = day === 0 ? 0 : 7 - day;
+      endOfWeek.setDate(today.getDate() + daysUntilSunday)
+      endOfWeek.setHours(23, 59, 59, 999);
+
+      return deadLine >= today && deadLine <= endOfWeek;
+    }
+  })
 
   return (
     <div className="myTasks">
@@ -67,7 +60,9 @@ function DashboardMyTask() {
         </button>
       </nav>
       <div className="tasksList">
-        {tasks.map(task => (
+        {loading && <p>Загрузка...</p>}
+
+        {!loading && filterTasks.map(task => (
           <TaskCard
             key={task.id}
             title={task.title}

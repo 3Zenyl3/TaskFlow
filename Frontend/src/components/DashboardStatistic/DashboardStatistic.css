@@ -32,6 +32,9 @@
   border-radius: 12px;
   white-space: nowrap;
 }
+.dropButton p{
+  width: 110px;
+}
 .dropdownContent{
   display: none;
   position: absolute;

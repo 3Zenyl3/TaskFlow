@@ -5,21 +5,23 @@ import React, { useState } from "react";
 import LoginButton from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
+import "./Login.css";
 
 function Login() {
-  const {email, setEmail, password, setPassword, login} = useLogin();
+  const { email, setEmail, password, setPassword, login } = useLogin();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    
+
     try {
       setLoading(true)
       const response = await login()
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("token", data.token);
         setMessage("Вход выполнен");
         setEmail("");
         setPassword("");
