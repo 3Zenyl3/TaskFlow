@@ -11,6 +11,7 @@ namespace TaskFlow.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ProjectMember> ProjectMembers { get; set; }
+        public DbSet<Activity> Activities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,26 @@ namespace TaskFlow.Data
                 .WithMany(u => u.AssignedTasks)
                 .HasForeignKey(t => t.ExecutorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.Task)
+                .WithMany()
+                .HasForeignKey(a => a.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.Project)
+                .WithMany()
+                .HasForeignKey(a => a.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

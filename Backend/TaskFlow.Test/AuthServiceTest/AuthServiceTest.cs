@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Exceptions;
 using TaskFlow.Services;
 using Task = System.Threading.Tasks.Task;
 
@@ -60,9 +61,9 @@ namespace TaskFlow.Test.AuthServiceTest
         }
 
         [Test]
-        public async Task Login_UserNotFound_ThrowsAuthenticationException()
+        public async Task Login_UserNotFound_ThrowsUnauthorizedException()
         {
-            var ex = Assert.ThrowsAsync<AuthenticationException>(async () =>
+            var ex = Assert.ThrowsAsync<UnauthorizedException>(async () =>
             {
                 await authService.Login("test@mail.com", "password");
             });
@@ -87,7 +88,7 @@ namespace TaskFlow.Test.AuthServiceTest
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            var ex = Assert.ThrowsAsync<AuthenticationException>(async () =>
+            var ex = Assert.ThrowsAsync<UnauthorizedException>(async () =>
             {
                 await authService.Login(user.Email, "wrongPassword");
             });
