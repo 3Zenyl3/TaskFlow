@@ -40,7 +40,7 @@ namespace TaskFlow.Controllers
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                Role = user.UserRole.ToString(),
+                Role = user.UserRole,
                 CreatedAt = user.CreatedAt,
                 AvatarUrl = user.AvatarUrl
             });

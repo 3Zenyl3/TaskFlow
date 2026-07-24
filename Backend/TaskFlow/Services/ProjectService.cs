@@ -24,12 +24,19 @@ namespace TaskFlow.Services
                     p.OwnerId == userId ||
                     p.Members.Any(m => m.UserId == userId)
                 )
-                .Select(pm => new ProjectListDto
+                .Select(p => new ProjectListDto
                 {
-                    Id = pm.Id,
-                    Name = pm.Name,
-                    Status = pm.Status,
-                    OwnerId = pm.OwnerId
+                    Id = p.Id,
+                    Name = p.Name,
+                    Status = p.Status,
+                    OwnerId = p.OwnerId,
+                    TaskCount = p.Tasks.Count(),
+                    CompletedTaskCount = p.Tasks
+                        .Count(t => t.Status == StatusTask.Done),
+                    ProgressPercent = p.Tasks.Count() == 0
+                        ? 0
+                        : (int)(p.Tasks.Count(t => t.Status == StatusTask.Done) * 100.0
+                            / p.Tasks.Count())
                 })
                 .ToListAsync();
         }

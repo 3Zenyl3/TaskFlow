@@ -8,5 +8,9 @@ namespace TaskFlow.Models.DTO
         public string Name { get; set; }
         public StatusProject Status { get; set; }
         public int OwnerId { get; set; }
+
+        public int TaskCount { get; set; }
+        public int CompletedTaskCount { get; set; }
+        public int ProgressPercent { get; set; }
     }
 }

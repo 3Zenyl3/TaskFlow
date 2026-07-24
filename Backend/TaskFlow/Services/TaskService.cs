@@ -26,7 +26,9 @@ namespace TaskFlow.Services
                 .Select(t => new TaskDto
                 {
                     Id = t.Id,
+                    ProjectId = t.ProjectId,
                     Title = t.Title,
+                    Description = t.Description,
                     Deadline = t.Deadline,
                     Status = t.Status,
                     ExecutorName = t.Executor != null ? t.Executor.UserName : null,
