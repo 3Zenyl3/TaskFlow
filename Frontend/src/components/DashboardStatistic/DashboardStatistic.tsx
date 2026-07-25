@@ -70,7 +70,11 @@ function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolea
   }).length.toString();
   const overdueTaskCount = filteredTasks.filter(task => {
     const deadline = new Date(task.deadline);
-    return task.status != "Done" && deadline < new Date();
+    const today = new Date();
+
+    deadline.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    return task.status !== "Done" && deadline < today;
   }).length.toString();
 
 

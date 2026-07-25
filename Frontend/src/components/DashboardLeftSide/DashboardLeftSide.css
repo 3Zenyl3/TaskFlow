@@ -1,10 +1,11 @@
 .dashboardLeftSide{
   display: flex;
   flex-direction: column;
-  width: 14.7vw;
+  width: 13.2vw;
   height: 100vh;
   padding-top: 40px;
   background-color: #101c27;
+  flex-shrink: 0;
 }
 .firstHeadline{
   color: #2283ef;

@@ -9,29 +9,65 @@ interface TaskCardProps {
 }
 
 function TaskCard({ title, description, deadline, priority, status }: TaskCardProps) {
-  function getPriorityClass(priority: string){
-    switch(priority){
-      case "Низкий":
+  function getPriorityClass(priority: string) {
+    switch (priority) {
+      case "Low":
         return "priority low"
-      case "Средний":
+      case "Medium":
         return "priority medium"
-      case "Высокий":
+      case "High":
         return "priority high"
-      case "Критический":
+      case "Critical":
         return "priority critical"
     }
   }
-  function getStatusClass(status: string){
-    switch(status){
-      case "В работе":
+  function getStatusClass(status: string) {
+    switch (status) {
+      case "InProgress":
         return "status work"
-      case "Нужно сделать":
+      case "Todo":
         return "status todo"
-      case "Ревью":
+      case "Review":
         return "status review"
-      case "Выполнена":
+      case "Done":
         return "status done"
     }
+  }
+  function getPriorityName(priority: string) {
+    switch (priority) {
+      case "Low": return "Низкий";
+      case "Medium": return "Средний";
+      case "High": return "Высокий";
+      case "Critical": return "Критический";
+    }
+  }
+  function getStatusName(status: string) {
+    switch (status) {
+      case "InProgress": return "В работе";
+      case "Todo": return "Нужно сделать";
+      case "Review": return "Ревью";
+      case "Done": return "Выполнен";
+    }
+  }
+  function formatDeadline(deadline: string) {
+    const date = new Date(deadline);
+    const today = new Date();
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      return "Сегодня";
+    }
+
+    if (date.toDateString() === tomorrow.toDateString()) {
+      return "Завтра";
+    }
+
+    return date.toLocaleDateString("ru-RU", {
+      day: "numeric",
+      month: "short"
+    });
   }
 
   return (
@@ -42,10 +78,14 @@ function TaskCard({ title, description, deadline, priority, status }: TaskCardPr
       </div>
       <div className="taskInfo">
         <div className="priorityDiv">
-          <span className={getPriorityClass(priority)}>{priority}</span>
+          <span className={getPriorityClass(priority)}>
+            {getPriorityName(priority)}
+          </span>
         </div>
-        <span className={getStatusClass(status)}>{status}</span>
-        <span className="taskDeadline">{deadline}</span>
+        <span className={getStatusClass(status)}>{getStatusName(status)}</span>
+        <span className="taskDeadline">
+          {formatDeadline(deadline)}
+        </span>
       </div>
     </div>
   );

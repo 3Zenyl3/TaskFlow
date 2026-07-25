@@ -2,12 +2,13 @@ import { useState } from "react";
 import "./MyCalendar.css"
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { HiOutlineChevronRight } from "react-icons/hi";
+import type { Task } from "../../api/tasks";
 
 
 type CalendarDay = {
   date: Date;
   isCurrentMonth: boolean;
-  //tasks: Task[];
+  tasks: Task[];
 };
 
 function getDaysInMonth(year: number, month: number) {
@@ -26,11 +27,11 @@ function getDaysInMonth(year: number, month: number) {
     days.push({
       date,
       isCurrentMonth: false,
-      //tasks: []
+      tasks: []
     });
   }
   for (let i = 1; i <= countMonthDay; i++) {
-    days.push({ date: new Date(year, month, i), isCurrentMonth: true });
+    days.push({ date: new Date(year, month, i), isCurrentMonth: true, tasks: [] });
   }
   let remainingDays;
   if (days.length > 35)
@@ -41,7 +42,7 @@ function getDaysInMonth(year: number, month: number) {
     days.push({
       date: new Date(year, month + 1, i),
       isCurrentMonth: false,
-      //tasks: []
+      tasks: []
     });
   }
   return days;
@@ -68,7 +69,15 @@ function getDifferentMonth(isNextMonth: boolean, currentDate: Date) {
   return newMonth;
 }
 
-function MyCalendar() {
+function getTasksByDate(tasks: Task[], date: Date): number {
+  return tasks.filter(task =>
+    new Date(task.deadline).getDate() === date.getDate() &&
+    new Date(task.deadline).getMonth() === date.getMonth() &&
+    new Date(task.deadline).getFullYear() === date.getFullYear()
+  ).length;
+}
+
+function MyCalendar({ tasks }: { tasks: Task[] }) {
   const months = [
     "Январь",
     "Февраль",
@@ -89,6 +98,7 @@ function MyCalendar() {
   const month = calendarDate.getMonth();
 
   const days = getDaysInMonth(year, month)
+  
   return (
     <div className="myCalendar">
       <header className="calendarHeader">
@@ -112,11 +122,32 @@ function MyCalendar() {
       </div>
 
       <div className="calendarGrid">
-        {days.map((day, index) => (
-          <div className={isCurrentDate(day, today) ? "today" : day.isCurrentMonth === false ? "prevMonthDay" : "day"} key={index}>
-            {day?.date.getDate()}
-          </div>
-        ))}
+        {days.map((day, index) => {
+          const taskCount = getTasksByDate(tasks, day.date);
+
+          return (
+            <div key={index}>
+              <div className={isCurrentDate(day, today)
+                ? "today"
+                : day.isCurrentMonth === false
+                  ? "prevMonthDay"
+                  : "day"
+              }>
+                {day.date.getDate()}
+              </div>
+
+              <div className="tasks">
+                {taskCount > 0 ? (
+                  Array.from({ length: Math.min(taskCount, 3) }, (_, i) => (
+                    <span key={i} className="task blue"></span>
+                  ))
+                ) : (
+                  <span className="task gray"></span>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -39,6 +39,7 @@
   display: none;
   position: absolute;
   left: 0;
+  border-radius: 12px;
   min-width: 160px;
   background: #fefefe;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);

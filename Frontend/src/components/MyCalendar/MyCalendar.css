@@ -84,3 +84,28 @@
   background-color: #f3f5f7;
   cursor: pointer;
 }
+.calendarGrid > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tasks {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.task {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.task.blue {
+  background-color: #2283ef;
+}
+
+.task.gray {
+  background-color: #dadde2;
+}

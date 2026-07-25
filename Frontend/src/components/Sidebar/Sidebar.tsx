@@ -2,13 +2,13 @@ import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 import { HiOutlineHome, HiOutlineFolder, HiOutlineClipboardList, HiOutlineCalendar } from "react-icons/hi";
 
-function Sidebar(){
+function Sidebar() {
   return (
     <div className="sidebar">
-      <NavLink to="/dashboard"><HiOutlineHome className="menuIcon" /> Главная</NavLink>
-      <NavLink to="/projects"><HiOutlineFolder className="menuIcon"/> Проекты</NavLink>
-      <NavLink to="/tasks"><HiOutlineClipboardList className="menuIcon"/> Мои задачи</NavLink>
-      <NavLink to="/calendar"><HiOutlineCalendar className="menuIcon"/> Календарь</NavLink>
+      <NavLink to="/dashboard" end><HiOutlineHome className="menuIcon" /> Главная</NavLink>
+      <NavLink to="/dashboard/projects"><HiOutlineFolder className="menuIcon" /> Проекты</NavLink>
+      <NavLink to="/dashboard/tasks"><HiOutlineClipboardList className="menuIcon" /> Мои задачи</NavLink>
+      <NavLink to="/dashboard/calendar"><HiOutlineCalendar className="menuIcon" /> Календарь</NavLink>
     </div>
   );
 }

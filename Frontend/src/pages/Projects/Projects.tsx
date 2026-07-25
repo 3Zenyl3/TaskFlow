@@ -1,6 +1,12 @@
+import "./Projects.css"
+import DashboardLeftSide from "../../components/DashboardLeftSide/DashboardLeftSide";
+
+
 function Projects(){
   return(
-    <h1>Projects</h1>
+    <div className="projects">
+      <DashboardLeftSide />
+    </div>
   );
 }
 export default Projects;
