@@ -9,8 +9,15 @@ export function useDashboardTasks(){
   useEffect(() => {
     async function loadTasks(){
       try{
-        const data = await GetMyTask();
-        setTasks(data);
+        const tasksFromLocalstorage = localStorage.getItem('tasks');
+        if(tasksFromLocalstorage){
+          setTasks(JSON.parse(tasksFromLocalstorage));
+        }
+        else{
+          const data = await GetMyTask();
+          setTasks(data);
+          localStorage.setItem('tasks', JSON.stringify(data));
+        }      
       }
       catch(err){
         console.error(err);

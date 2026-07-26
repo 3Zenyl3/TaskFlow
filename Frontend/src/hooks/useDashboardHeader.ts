@@ -2,6 +2,7 @@ import { GetProfile } from "../api/profile";
 import { GetNotification } from "../api/notifications"; 
 import { useEffect } from "react";
 import { useState } from "react";
+import type { Notification } from "../api/notifications";
 
 export function useDashboardHeader() {
   const [userName, setUserName] = useState("");
@@ -10,7 +11,20 @@ export function useDashboardHeader() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [profile, notifications] = await Promise.all([
+        const savedProfile = localStorage.getItem("profile");
+        const savedNotifications = localStorage.getItem("notifications");
+
+        if (savedProfile && savedNotifications) {
+          const profile = JSON.parse(savedProfile);
+          const notifications: Notification[] = JSON.parse(savedNotifications);
+
+          setUserName(profile.userName);
+          setNotificationCount(
+                    notifications.filter(n => !n.isRead).length
+                );
+        }
+        else{
+          const [profile, notifications] = await Promise.all([
           GetProfile(), GetNotification()
         ]);
         
@@ -18,6 +32,9 @@ export function useDashboardHeader() {
         setNotificationCount(
                     notifications.filter(n => !n.isRead).length
                 );
+        localStorage.setItem("profile", JSON.stringify(profile));
+        localStorage.setItem("notifications", JSON.stringify(notifications));
+        }
       }
       catch (error) {
         console.error(error);

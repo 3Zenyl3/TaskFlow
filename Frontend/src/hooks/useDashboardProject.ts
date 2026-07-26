@@ -9,8 +9,15 @@ export function useDashboardProject() {
   useEffect(() => {
     async function loadingProject() {
       try {
-        const projects = await GetProjects();
-        setProjects(projects);
+        const cachedProjects = localStorage.getItem('projects');
+        if (cachedProjects) {
+          setProjects(JSON.parse(cachedProjects));
+        }
+        else {
+          const projects = await GetProjects();
+          setProjects(projects);
+          localStorage.setItem('projects', JSON.stringify(projects));
+        }
       }
       catch (err) {
         console.error(err);
