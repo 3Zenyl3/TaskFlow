@@ -1,5 +1,5 @@
 import "./DashboardMyProject.css"
-import ProjectComponent from "../Project/Project";
+import ProjectComponent from "../Project/ProjectDashboard";
 import type { Project } from "../../api/projects";
 
 function DashboardMyProject({ projects, loading }: { projects: Project[], loading: boolean }) {

@@ -1,4 +1,4 @@
-import "./Project.css"
+import "./ProjectDashboard.css"
 
 interface projectProps {
   title: string;
@@ -7,7 +7,7 @@ interface projectProps {
   countTask: string;
 }
 
-function Project({ title, description, percentProject, countTask }: projectProps) {
+function ProjectDashboard({ title, description, percentProject, countTask }: projectProps) {
   return (
     <div className="project">
       <div className="projectTitleDiv">
@@ -28,4 +28,4 @@ function Project({ title, description, percentProject, countTask }: projectProps
   );
 }
 
-export default Project;
+export default ProjectDashboard;

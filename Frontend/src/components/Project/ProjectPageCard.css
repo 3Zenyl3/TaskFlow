@@ -1,0 +1,160 @@
+.projectTitle{
+  font-size: 16px;
+}
+.project{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid #f6f9fe;
+  padding: 20px;
+  border: none;
+}
+.projectTitleDiv{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.projectDescr{
+  width: 25vw;
+  color: #949ca8;
+  font-size: 13px;
+  overflow: hidden;
+  color: #9ea0ab;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.peopleAndCntTask{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.peopleInProject{
+  display: flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.avatar{
+  display: flex;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+.avatar.avatarMore{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  background-color: #f5f6f8;
+  color: #677183;
+}
+.taskCount {
+  font-size: 15px;
+  color: #9ea0ab;
+}
+.projectProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 220px;
+}
+.percentProject {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: #eef2f7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress {
+  height: 100%;
+  background-color: #2563ff;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+.progressDescr {
+  font-size: 15px;
+  font-weight: 500;
+  color: #6b7280;
+  line-height: 1;
+}
+.progressDescr p {
+  margin: 0;
+}
+.threePoint{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+.projectMenuBtn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #5b6470;
+}
+.projectMenuBtn:hover {
+  background: #f3f5f7;
+}
+.projectMenu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 240px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  padding: 10px 0;
+  z-index: 100;
+}
+.projectMenu::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 8px rgba(0,0,0,.03);
+}
+.projectMenu button {
+  width: 100%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  cursor: pointer;
+}
+.projectMenu button:hover {
+  background: #f7f9fc;
+}
+.projectMenuDivider {
+  height: 1px;
+  background: #eceff4;
+  margin: 8px 16px;
+}
+.projectMenu .danger {
+  color: #ef4444;
+}

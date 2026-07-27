@@ -1,0 +1,58 @@
+.projectsRightSide{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f9f9fb;
+  padding: 30px 36px;
+  gap: 30px;
+}
+.rightSideTitle{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  
+}
+.newProjectButt{
+  display: flex;
+  background-color: #2283ef;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 18px;
+  gap: 10px;
+  cursor: pointer;
+}
+.plusIcon{
+  margin-top: 1px;
+}
+.newProjectButt:hover{
+  background-color: #3089ef;
+}
+.newProjectButt:active{
+  background-color: #2b74c8;
+}
+.listProjects{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 80vw;
+  height: 86vh;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  overflow-y: auto;
+}
+.listProjects::-webkit-scrollbar {
+  width: 6px;
+}
+
+.listProjects::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.listProjects::-webkit-scrollbar-track {
+  background: transparent;
+}
