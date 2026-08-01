@@ -61,7 +61,7 @@ export function ProjectPageCard() {
         </div>
         <p className="taskCount">24 задачи</p>
       </div>
-      <div className="projectProgress">
+      <div className="projectProgressPage">
         <span className="percentProject">67%</span>
         <div className="progressBar">
           <div

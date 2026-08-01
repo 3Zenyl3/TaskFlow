@@ -1,0 +1,51 @@
+.tasksInProject{
+  width: 100%;
+  background-color: white;
+  height: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  border-radius: 12px;
+}
+.tasksInProjectHeader{
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  gap: 10px;
+}
+.tasksInProjectTitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+}
+.titleIntasksInProject{
+  font-size: 20px;
+}
+.newTaskButton{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  font-size: 16px;
+  background-color: #2283ef;
+  color: white;
+  padding: 10px 10px;
+  border-radius: 6px;
+}
+.newTaskButton:hover{
+  background-color: #3089ef;
+}
+.newTaskButton:active{
+  background-color: #2b74c8;
+}
+.tasksInProjectSearch{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.searchTask{
+  width: 25%;
+}
+.searchTask input {
+  height: 20px;
+  border-radius: 6px;
+}

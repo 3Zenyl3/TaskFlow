@@ -57,7 +57,7 @@
   font-size: 15px;
   color: #9ea0ab;
 }
-.projectProgress {
+.projectProgressPage {
   display: flex;
   flex-direction: column;
   gap: 8px;

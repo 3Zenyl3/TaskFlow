@@ -1,0 +1,94 @@
+.projectPage{
+  display: flex;
+}
+.projectPageRightSide{
+  display: flex;
+  width: 100vw;
+  background-color: #fafcfe;
+  flex-direction: row;
+}
+.leftPageRightSide{
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+}
+.projectPageTop{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 15px 30px;
+}
+a{
+  text-decoration: none;
+}
+.backToProjects{
+  color: #b7c5e6;
+  font-weight: lighter;
+  font-size: 16px;
+}
+.currentProjectName{
+  color: #6f737e;
+  font-weight: lighter;
+  font-size: 16px;
+}
+.projectPageTitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  padding: 5px 30px;
+}
+.projectPageTitleContent{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.projectTitle{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.Title{
+  font-size: 30px;
+}
+.projectStatus{
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-radius: 5px;
+  padding: 5px;
+  color: #699c7a;
+  font-size: 14px;
+  background-color: #e9f5ed;
+}
+.buttonProjectTitle{
+  border: 2px solid #f5f8fa;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: white;
+}
+.projectPageDescr{
+  color: #7c8391;
+}
+.projectPageRight{
+  display: flex;
+  justify-content: end;
+  width: 25%;
+  height: 100vh;
+  background-color: #699c7a;
+}
+.statsHeader{
+  width: 100%;
+  padding: 0 30px;
+  border-bottom: 2px solid #f5f7fa;
+}
+.buttonProjectTitle{
+  display: flex;
+  gap: 10px
+}
+.tasksCardInProjectPage{
+  padding: 20px 30px;
+  height: 100%;
+}

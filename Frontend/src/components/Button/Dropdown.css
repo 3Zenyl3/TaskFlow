@@ -1,0 +1,47 @@
+.statusButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px, solid #ebeef3;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: white;
+  cursor: pointer;
+  height: 100%;
+}
+.statusButton:hover {
+  border-color: #438ff9;
+}
+.currStatus{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+.statusWrapper {
+  position: relative;
+  display: inline-block;
+  
+}
+.statusDropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  z-index: 1000;
+  min-width: 180px;
+  margin: 0;
+  border: 1px solid #dfe1e5;
+  border-radius: 6px;
+  padding: 0;
+  list-style: none;
+  background: white;
+}
+.statusDropdown li {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.statusDropdown li:hover {
+  background-color: #f5f8fa;
+}
