@@ -1,0 +1,24 @@
+.projectActivity{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 26vh;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+.projectActivityTitle{
+  font-size: 18px;
+}
+.seeAllActivity{
+  font-size: 14px;
+  background-color: white;
+  border: none;
+  color: #4768fa;
+}
+.projectActivityHeader{
+  display: flex;
+  justify-content: space-between;
+}

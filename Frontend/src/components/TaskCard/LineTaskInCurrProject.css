@@ -1,0 +1,99 @@
+.lineTaskInCurrProject-cardLine {
+  display: grid;
+  grid-template-columns:
+    5vw 
+    19vw 
+    9vw  
+    9vw  
+    9vw 
+    9vw; 
+  align-items: center;
+  column-gap: 20px;
+  padding: 15px 10px;
+  border-top: 1px solid #f8f9f9;
+  border-bottom: 1px solid #f8f9f9;
+}
+
+.cardTitle {
+  font-size: 16px;
+}
+
+.cardDescr {
+  font-size: 13px;
+  width: 22vw;
+  overflow: hidden;
+  color: #9ea0ab;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lineTaskInCurrProject-taskInfo {
+  display: contents;
+}
+
+.lineTaskInCurrProject-priorityDiv {
+  width: auto;
+  display: flex;
+  justify-content: flex-start; /* или center */
+}
+
+.lineTaskInCurrProject-priority {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 22px;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.lineTaskInCurrProject-priority.low {
+  color: #32ae77;
+  background-color: #f0f9f5;
+}
+
+.lineTaskInCurrProject-priority.medium {
+  color: #fe9b18;
+  background-color: #feefde;
+}
+
+.lineTaskInCurrProject-priority.high {
+  color: #f75f61;
+  background-color: #feeaec;
+}
+
+.lineTaskInCurrProject-priority.critical {
+  color: #991b1b;
+  background-color: #fecaca;
+}
+
+.lineTaskInCurrProject-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 22px;
+  width: fit-content;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.lineTaskInCurrProject-status.work {
+  background-color: #eef4ff;
+  color: #4f8efb;
+}
+
+.lineTaskInCurrProject-status.todo {
+  background-color: #f3f5f7;
+  color: #5b6470;
+}
+
+.lineTaskInCurrProject-status.review {
+  background-color: #f3e8ff;
+  color: #9333ea;
+}
+
+.lineTaskInCurrProject-status.done {
+  background-color: #e6fffb;
+  color: rgb(0, 86, 86);
+}

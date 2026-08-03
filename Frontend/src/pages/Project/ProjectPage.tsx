@@ -1,12 +1,15 @@
 import "./ProjectPage.css"
 import { NavLink } from "react-router-dom";
-import DashboardLeftSide from "../../components/DashboardLeftSide/DashboardLeftSide";
+import DashboardLeftSide from "../../components/Dashboard/DashboardLeftSide/DashboardLeftSide";
 import { ProjectStatistic } from "../../components/ProjectStatistic/ProjectStatistic";
 import { HiOutlinePencil } from "react-icons/hi";
 import TasksCardInProjectPage from "../../components/TaskCard/TasksCardInProjectPage";
+import { ProjectInfoDescription } from "../../components/ProjectInfoDescription/ProjectInfoDescription";
+import { ProjectCommand } from "../../components/ProjectCommand/ProjectCommand";
+import { ProjectActivity } from "../../components/Project/ProjectActivity/ProjectActivity";
+import { ProjectFile } from "../../components/Project/ProjectFiles/ProjectFile";
 
 export function ProjectPage() {
-
   return (
     <div className="projectPage">
       <DashboardLeftSide />
@@ -35,7 +38,10 @@ export function ProjectPage() {
           </div>
         </div>
         <div className="projectPageRight">
-
+          <ProjectInfoDescription />
+          <ProjectCommand />
+          <ProjectActivity />
+          <ProjectFile />
         </div>
       </div>
     </div>

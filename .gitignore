@@ -121,3 +121,6 @@ ehthumbs.db
 *.backup
 *.tmp
 *.temp
+
+
+.continue/

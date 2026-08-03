@@ -1,12 +1,17 @@
 import "./Projects.css"
-import DashboardLeftSide from "../../components/DashboardLeftSide/DashboardLeftSide";
+import DashboardLeftSide from "../../components/Dashboard/DashboardLeftSide/DashboardLeftSide";
 import ProjectsRightSide from "../../components/ProjectsRightSide/ProjectsRightSide";
+import { useDashboardProject } from "../../hooks/useDashboardProject";
 
-function Projects(){
-  return(
+function Projects() {
+  const {projects, loading} = useDashboardProject();
+  return (
     <div className="projects">
       <DashboardLeftSide />
-      <ProjectsRightSide />
+      <ProjectsRightSide 
+        loading = {loading}
+        projects={projects}
+      />
     </div>
   );
 }

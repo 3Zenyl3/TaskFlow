@@ -49,3 +49,37 @@
   height: 20px;
   border-radius: 6px;
 }
+.tasksInProjectPage{
+  padding: 0 10px;
+}
+.tasksCardsHeader {
+  display: grid;
+  grid-template-columns:
+    5vw 
+    19vw 
+    9vw  
+    9vw  
+    9vw 
+    9vw; 
+  align-items: center;
+  column-gap: 20px;
+  padding: 10px;
+  border-top: 1px solid #f8f9f9;
+  border-bottom: 1px solid #f8f9f9;
+  border-radius: 6px;
+  background-color: #f8f8fb;
+  font-size: 12px;
+  color: #858b9c;
+}
+.executorInTasksHeader,
+.priorityInTasksHeader,
+.statusInTasksHeader,
+.deadlineInTasksHeader{
+  width: 9vw;
+}
+.idInTasksHeader{
+  width: 5vw;
+}
+.taskNameInTasksHeader{
+  width: 17vw;
+}

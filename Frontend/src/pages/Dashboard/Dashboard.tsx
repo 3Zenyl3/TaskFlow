@@ -1,11 +1,11 @@
 import "./Dashboard.css"
 import MyCalendar from "../../components/MyCalendar/MyCalendar";
-import DashboardLeftSide from "../../components/DashboardLeftSide/DashboardLeftSide";
-import TitleDashboard from "../../components/DashboardTitle/TitleDashboard";
-import DashboardMyTask from "../../components/DashboardMyTasks/DashboardMyTasks";
-import DashboardStatistic from "../../components/DashboardStatistic/DashboardStatistic";
-import DashboardMyProject from "../../components/DashboardMyProject/DashboardMyProject";
-import DashboardTeamActivity from "../../components/DashboardTeamActivity/DashboardTeamActivity";
+import DashboardLeftSide from "../../components/Dashboard/DashboardLeftSide/DashboardLeftSide";
+import TitleDashboard from "../../components/Dashboard/DashboardTitle/TitleDashboard";
+import DashboardMyTask from "../../components/Dashboard/DashboardMyTasks/DashboardMyTasks";
+import DashboardStatistic from "../../components/Dashboard/DashboardStatistic/DashboardStatistic";
+import DashboardMyProject from "../../components/Dashboard/DashboardMyProject/DashboardMyProject";
+import DashboardTeamActivity from "../../components/Dashboard/DashboardTeamActivity/DashboardTeamActivity";
 import { useDashboardTasks } from "../../hooks/useDashboardTasks";
 import { useDashboardProject } from "../../hooks/useDashboardProject";
 import { useDashboardActivity } from "../../hooks/useDashboardActivity";

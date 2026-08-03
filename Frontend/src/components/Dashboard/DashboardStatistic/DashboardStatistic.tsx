@@ -2,16 +2,16 @@ import "./DashboardStatistic.css"
 import {
   HiOutlineClock, HiOutlineClipboardCheck, HiOutlineClipboardList, HiOutlineExclamation,
 } from "react-icons/hi";
-import StatisticCard from "../../components/StatisticCard/StatisticCard";
-import type { Task } from "../../api/tasks";
+import StatisticCard from "../../StatisticCard/StatisticCard";
+import type { Task } from "../../../api/tasks";
 import { useState } from "react";
 
 type StatisticFilter = "CurrentWeek" | "CurrentMonth" | "PrevWeek" | "PrevMonth";
 
 function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolean }) {
   const [filter, setFilter] = useState<StatisticFilter>("CurrentWeek");
-  
-  const currentFilter = (): string=> {
+
+  const currentFilter = (): string => {
     switch (filter) {
       case "CurrentMonth":
         return "Текущий месяц";
@@ -21,7 +21,8 @@ function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolea
         return "Прошлая неделя";
       case "PrevMonth":
         return "Прошлый месяц";
-  }}
+    }
+  }
 
   const strFilter = currentFilter();
 

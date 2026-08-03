@@ -1,27 +1,27 @@
 import "./DashboardMyTasks.css"
 import { useState } from "react";
-import TaskCard from "../TaskCard/TaskCard";
-import type { Task } from "../../api/tasks";
+import TaskCard from "../../TaskCard/TaskCard";
+import type { Task } from "../../../api/tasks";
 
 type TaskFilter = "Today" | "Tomorrow" | "Week";
 
-function DashboardMyTask({ tasks, loading }: { tasks: Task[], loading: boolean }){
+function DashboardMyTask({ tasks, loading }: { tasks: Task[], loading: boolean }) {
   const [active, setActive] = useState<TaskFilter>("Today")
 
   const filterTasks = tasks.filter(task => {
     const deadLine = new Date(task.deadline);
     const today = new Date();
 
-    if(active === "Today"){
+    if (active === "Today") {
       return deadLine.toDateString() === today.toDateString();
     }
-    if(active === "Tomorrow"){
+    if (active === "Tomorrow") {
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
 
       return deadLine.toDateString() === tomorrow.toDateString();
     }
-    else{
+    else {
       const endOfWeek = new Date(today);
 
       const day = today.getDay();

@@ -1,4 +1,5 @@
 import "./TaskCardInProjectPageStatistic.css"
+import {getPriorityName, getStatusName} from "./../../../utils/taskUtils"
 
 interface TaskCardInProjectPageProps {
   title: string;
@@ -22,23 +23,6 @@ function TaskCardInProjectPage({ title, priority, status }: TaskCardInProjectPag
       case "Todo": return "status todo";
       case "Review": return "status review";
       case "Done": return "status done";
-    }
-  }
-
-  function getPriorityName(priority: string) {
-    switch (priority) {
-      case "Low": return "Низкий";
-      case "Medium": return "Средний";
-      case "High": return "Высокий";
-      case "Critical": return "Критический";
-    }
-  }
-  function getStatusName(status: string) {
-    switch (status) {
-      case "InProgress": return "В работе";
-      case "Todo": return "Нужно сделать";
-      case "Review": return "Ревью";
-      case "Done": return "Выполнен";
     }
   }
 

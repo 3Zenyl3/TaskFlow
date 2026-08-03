@@ -1,9 +1,9 @@
 import "./TitleDashboard.css"
 import { HiOutlineBell } from "react-icons/hi";
-import { useDashboardHeader } from "../../hooks/useDashboardHeader";
+import { useDashboardHeader } from "../../../hooks/useDashboardHeader";
 
 function TitleDashboard() {
-  const {userName, notificationCount} = useDashboardHeader();
+  const { userName, notificationCount } = useDashboardHeader();
   return (
     <header className="titleDashboard">
       <div className="headerText">
@@ -16,10 +16,10 @@ function TitleDashboard() {
         <button className="notificationButton">
           <HiOutlineBell className="bell" />
           {notificationCount > 0 && (
-                        <span className="notificationBadge">
-                            {notificationCount}
-                        </span>
-                    )}
+            <span className="notificationBadge">
+              {notificationCount}
+            </span>
+          )}
         </button>
       </div>
     </header>

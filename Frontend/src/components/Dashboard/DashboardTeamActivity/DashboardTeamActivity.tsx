@@ -1,8 +1,8 @@
 import "./DashboardTeamActivity.css"
-import PeopleActivity from "../PeopeleActivity/PeopeleActivity";
-import type { Activity } from "../../api/teamActivity";
+import PeopleActivity from "../../PeopeleActivity/PeopeleActivity";
+import type { Activity } from "../../../api/teamActivity";
 
-function DashboardTeamActivity({activities, loading}: {activities: Activity[], loading: boolean}) {
+function DashboardTeamActivity({ activities, loading }: { activities: Activity[], loading: boolean }) {
   return (
     <div className="teamActivity">
       <div className="titleTeamActivity">

@@ -7,13 +7,15 @@ interface PeopleActivityProps {
   time: string;
 }
 
-function PeopleActivity({src, name, description, time}: PeopleActivityProps) {
+function PeopleActivity({ src, name, description, time }: PeopleActivityProps) {
   return (
     <div className="peopleActivity">
-      <img src={src} alt="" className="peopleAvatar" />
       <div className="peopleInfo">
-        <h3 className="peopleActivityName">{name}</h3>
-        <p className="peopleActivityDescr">{description}</p>
+        <img src={src} alt="" className="peopleAvatar" />
+        <div className="peopleText">
+          <h3 className="peopleActivityName">{name}</h3>
+          <p className="peopleActivityDescr">{description}</p>
+        </div>
       </div>
       <span className="peopleActivityTime">{time}</span>
     </div>

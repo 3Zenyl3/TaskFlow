@@ -1,15 +1,16 @@
-import "./TaskCard.css"
+import "./LineTaskInCurrProject.css"
 import {getPriorityName, getStatusName} from "./../../../utils/taskUtils"
-
 interface TaskCardProps {
+  id: string;
   title: string;
-  description: string;
   deadline: string;
   priority: string;
   status: string;
+  executor: string;
 }
 
-function TaskCard({ title, description, deadline, priority, status }: TaskCardProps) {
+
+function LineTaskInCurrProject({ id, title, deadline, priority, status, executor }: TaskCardProps) {
   function getPriorityClass(priority: string) {
     switch (priority) {
       case "Low":
@@ -56,18 +57,23 @@ function TaskCard({ title, description, deadline, priority, status }: TaskCardPr
   }
 
   return (
-    <div className="card">
-      <div className="cardContent">
-        <h3 className="cardTitle">{title}</h3>
-        <p className="cardDescr">{description}</p>
+    <div className="lineTaskInCurrProject-cardLine">
+      <div className="idInTasksCard">
+        <p>{id}</p>
       </div>
-      <div className="taskInfo">
-        <div className="priorityDiv">
-          <span className={getPriorityClass(priority)}>
+      <div className="lineTaskInCurrProject-cardContent">
+        <h3 className="cardTitle">{title}</h3>
+      </div>
+      <span className="lineTaskInCurrProject-executorDiv">
+        <span className="executorValue">{executor}</span>
+      </span>
+      <div className="lineTaskInCurrProject-taskInfo">
+        <div className="lineTaskInCurrProject-priorityDiv">
+          <span className={`lineTaskInCurrProject-priority ${getPriorityClass(priority)}`}>
             {getPriorityName(priority)}
           </span>
         </div>
-        <span className={getStatusClass(status)}>{getStatusName(status)}</span>
+        <span className={`lineTaskInCurrProject-status ${getStatusClass(status)}`}>{getStatusName(status)}</span>
         <span className="taskDeadline">
           {formatDeadline(deadline)}
         </span>
@@ -75,4 +81,4 @@ function TaskCard({ title, description, deadline, priority, status }: TaskCardPr
     </div>
   );
 }
-export default TaskCard;
+export default LineTaskInCurrProject;

@@ -2,22 +2,19 @@ import "./ProjectPageCard.css"
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
-
-const people = [
-  { id: 1, avatar: "https://i.pravatar.cc/100?img=1" },
-  { id: 2, avatar: "https://i.pravatar.cc/100?img=2" },
-  { id: 3, avatar: "https://i.pravatar.cc/100?img=3" },
-  { id: 4, avatar: "https://i.pravatar.cc/100?img=4" },
-  { id: 5, avatar: "https://i.pravatar.cc/100?img=5" },
-];
+import type { Project } from "../../api/projects";
+import type { UserDto } from "../../api/projects";
 
 
-export function ProjectPageCard() {
+
+export function ProjectPageCard({project}: {project: Project}) {
+  const people: UserDto[]  = project.members;
+
   const visiblePeople = people.slice(0, 3);
   const remaining = people.length - visiblePeople.length;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -39,15 +36,15 @@ export function ProjectPageCard() {
   return (
     <div className="project">
       <div className="projectTitleDiv">
-        <h3 className="projectTitle">Internet shop</h3>
-        <p className="projectDescr">Разработка интернет магазина</p>
+        <h3 className="projectTitle">{project.name}</h3>
+        <p className="projectDescr">{project.description}</p>
       </div>
       <div className="peopleAndCntTask">
         <div className="peopleInProject">
-          {visiblePeople.map(person => (
+          {visiblePeople.map(userDTO => (
             <img
-              key={person.id}
-              src={person.avatar}
+              key={userDTO.userId}
+              src={userDTO.avatarUrl}
               alt=""
               className="avatar"
             />
@@ -59,14 +56,14 @@ export function ProjectPageCard() {
             </div>
           )}
         </div>
-        <p className="taskCount">24 задачи</p>
+        <p className="taskCountInProject">{project.taskCount} задачи</p>
       </div>
       <div className="projectProgressPage">
-        <span className="percentProject">67%</span>
+        <span className="percentProject">{ project.completedTaskCount / project.taskCount * 100}%</span>
         <div className="progressBar">
           <div
             className="progress"
-            style={{ width: "67%" }}
+            style={{ width: "{project.completedTaskCount / project.taskCount * 100}" }}
           ></div>
         </div>
         <div className="progressDescr">

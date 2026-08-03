@@ -74,10 +74,12 @@ a{
 }
 .projectPageRight{
   display: flex;
-  justify-content: end;
+  flex-direction: column;
   width: 25%;
+  gap: 25px;
   height: 100vh;
-  background-color: #699c7a;
+  padding: 40px 0 20px 0;
+  margin-right: 20px;
 }
 .statsHeader{
   width: 100%;

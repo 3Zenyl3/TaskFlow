@@ -1,6 +1,6 @@
 import "./DashboardLeftSide.css"
-import Sidebar from "../Sidebar/Sidebar";
-import checkHeadLine from "../../assets/ГалочкаДляTaskFlow.svg"
+import Sidebar from "../../Sidebar/Sidebar";
+import checkHeadLine from "../../../assets/ГалочкаДляTaskFlow.svg"
 
 function DashboardLeftSide() {
   return (
