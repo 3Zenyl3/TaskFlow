@@ -11,6 +11,10 @@ namespace TaskFlow.Models.DTO
         public UserDto Owner { get; set; }
 
         public List<UserDto> Members { get; set; } = new();
+        public int TaskCount { get; set; }
+        public int CompletedTaskCount { get; set; }
+        public int TaskInProgressCount { get; set; }
+        public int ProgressPercent { get; set; }
     }
 
     public class UserDto

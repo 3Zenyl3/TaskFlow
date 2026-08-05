@@ -37,7 +37,6 @@ export function ProjectPageCard({project}: {project: Project}) {
     <div className="project">
       <div className="projectTitleDiv">
         <h3 className="projectTitle">{project.name}</h3>
-        <p className="projectDescr">{project.description}</p>
       </div>
       <div className="peopleAndCntTask">
         <div className="peopleInProject">
@@ -59,11 +58,11 @@ export function ProjectPageCard({project}: {project: Project}) {
         <p className="taskCountInProject">{project.taskCount} задачи</p>
       </div>
       <div className="projectProgressPage">
-        <span className="percentProject">{ project.completedTaskCount / project.taskCount * 100}%</span>
+        <span className="percentProject">{ project.progressPercent}%</span>
         <div className="progressBar">
           <div
             className="progress"
-            style={{ width: "{project.completedTaskCount / project.taskCount * 100}" }}
+            style={{ width: `${project.progressPercent}%` }}
           ></div>
         </div>
         <div className="progressDescr">

@@ -2,6 +2,7 @@ import "./ProjectsRightSide.css"
 import { HiOutlinePlus } from "react-icons/hi";
 import { ProjectPageCard } from "../Project/ProjectPageCard";
 import type { Project } from "../../api/projects";
+import { NavLink } from "react-router-dom";
 
 function ProjectsRightSide({projects, loading}: {projects: Project[], loading: boolean}) {
   return (

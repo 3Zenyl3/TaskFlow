@@ -28,15 +28,21 @@ namespace TaskFlow.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Status = p.Status,
-                    OwnerId = p.OwnerId,
                     TaskCount = p.Tasks.Count(),
                     CompletedTaskCount = p.Tasks
                         .Count(t => t.Status == StatusTask.Done),
                     ProgressPercent = p.Tasks.Count() == 0
                         ? 0
                         : (int)(p.Tasks.Count(t => t.Status == StatusTask.Done) * 100.0
-                            / p.Tasks.Count())
+                            / p.Tasks.Count()),
+                    Members = p.Members
+                        .Select(m => new UserDto
+                        {
+                            UserId = m.User.Id,
+                            UserName = m.User.UserName,
+                            AvatarUrl = m.User.AvatarUrl,
+                        })
+                        .ToList(),
                 })
                 .ToListAsync();
         }
