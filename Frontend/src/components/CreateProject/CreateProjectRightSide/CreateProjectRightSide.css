@@ -1,0 +1,40 @@
+.createProjectRightSide{
+  display: flex;
+  width: 100vw;
+  background-color: #fafcfe;
+  flex-direction: column;
+}
+.createProjectHeader{
+  display: flex;
+  width: 100%;
+  padding: 15px 30px;
+  gap: 10px;
+  flex-direction: column;
+}
+.projectHeaderLeftContent{
+  display: flex;
+  gap: 10px;
+}
+.createProjectTitleH1{
+  font-size: 32px;
+}
+.createProjectHeaderLeft{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.cancelButton{
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: 2px solid #f4f5f9;
+  background-color: white;
+}
+.projectHeaderTitlesContainer{
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.createProjectDescription{
+  color: #89909d;
+}

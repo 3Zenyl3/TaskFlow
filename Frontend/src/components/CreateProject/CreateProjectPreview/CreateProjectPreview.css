@@ -1,0 +1,99 @@
+.createProjectPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  width: 30vw;
+  height: 55%;
+
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+  padding: 20px;
+}
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.projectCard {
+  display: flex;
+  gap: 20px;
+  padding: 18px;
+
+  border: 1px solid #ececec;
+  border-radius: 14px;
+}
+.projectIcon {
+  width: 72px;
+  height: 72px;
+
+  border-radius: 14px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-shrink: 0;
+}
+.projectIcon svg {
+  font-size: 38px;
+}
+.projectInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.projectHeader h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+}
+.projectStatus {
+  background: #dbeafe;
+  color: #2563eb;
+
+  padding: 5px 12px;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+.projectInfo p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+.projectDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.detailLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #6b7280;
+  font-size: 16px;
+}
+.detailLeft svg {
+  font-size: 20px;
+}
+.detailValue {
+  color: #374151;
+  font-weight: 500;
+}

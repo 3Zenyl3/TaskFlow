@@ -7,6 +7,7 @@ import Tasks from "./pages/Tasks/Tasks";
 import Profile from "./pages/Profile/Profile";
 import Calendar from "./pages/Calendar/Calendar";
 import { ProjectPage } from "./pages/Project/ProjectPage";
+import { CreateProject } from "./pages/CreateProject/CreateProject";
 
 function App() {
   return (
@@ -20,8 +21,8 @@ function App() {
         <Route path="/dashboard/tasks" element={<Tasks />} />
         <Route path="/dashboard/profile" element={<Profile />} />
         <Route path="/dashboard/calendar" element={<Calendar />} />
-        <Route path="/dashboard/projects/:id" element={<ProjectPage />}
-        />
+        <Route path="/dashboard/projects/:id" element={<ProjectPage />} />
+        <Route path="/dashboard/projects/create" element={<CreateProject />}/>
       </Routes>
     </BrowserRouter>
   );

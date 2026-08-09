@@ -1,0 +1,46 @@
+.createProjectAdvice{
+  width: 100%;
+  height: 18vh;
+  background-color: #f3f7fe;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+}
+.iconLight{
+  color: #f6b665;
+  width: 20px;
+  height: 20px;
+}
+.createProjectAdviceTitleDiv{
+  display: flex;
+  gap: 15px;
+  height: fit-content;
+  align-items: center;
+}
+.createProjectAdviceTitle{
+  font-size: 18px;
+  color: #213176; 
+}
+.advice{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.advice ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.advice li::before {
+  content: "•";
+  color: #2858fa;
+  margin-right: 8px;
+}

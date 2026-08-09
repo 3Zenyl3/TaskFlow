@@ -9,7 +9,7 @@ function ProjectsRightSide({projects, loading}: {projects: Project[], loading: b
     <div className="projectsRightSide">
       <div className="rightSideTitle">
         <h1>Проекты</h1>
-        <button className="newProjectButt"><HiOutlinePlus className="plusIcon" /> Новый проект</button>
+        <NavLink className="newProjectButt" to="/dashboard/projects/create" ><HiOutlinePlus className="plusIcon" /> Новый проект</NavLink>
       </div>
       <div className="listProjects">
         {loading ? (

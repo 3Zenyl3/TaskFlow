@@ -39,7 +39,10 @@ export function Dropdown({ title, options, value, onChange }: DropdownProps) {
   return (
     <div className="statusWrapper" ref={wrapperRef}>
       <div className="statusButton" onClick={() => setIsOpen(!isOpen)}>
-        <p className="currStatus">{title}: {value} <HiOutlineChevronDown /></p>
+        <div className="currStatus">
+          <span>{title}: {value}</span>
+          <HiOutlineChevronDown className="iconArrowDown" />
+        </div>
       </div>
       {isOpen && (
         <ul className="statusDropdown">
