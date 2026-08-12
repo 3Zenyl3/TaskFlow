@@ -12,9 +12,10 @@ function DashboardMyProject({ projects, loading }: { projects: Project[], loadin
         {loading && <p>Загрузка...</p>}
         {!loading && projects.map((project) => (
           <ProjectComponent
+            key={project.id}
             title={project.name}
             description={project.description}
-            percentProject={`${project.progress}%`}
+            percentProject={`${project.progressPercent}%`}
             countTask={project.taskCount.toString()}
           />
         ))}

@@ -18,6 +18,7 @@ function ProjectsRightSide({projects, loading}: {projects: Project[], loading: b
         (
           projects.map((project) => (
             <ProjectPageCard
+              key={project.id}
               project={project}
               />
         )))}

@@ -1,8 +1,12 @@
 import api from "./axios"
+import type { ProjectColor } from "../types/projectCreate";
 
 export interface Project {
   id: number;
   name: string;
+  description: string;
+  icon: string;
+  color: ProjectColor;
   taskCount: number;
   progressPercent: number;
   completedTaskCount: number;

@@ -30,6 +30,7 @@ builder.Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 

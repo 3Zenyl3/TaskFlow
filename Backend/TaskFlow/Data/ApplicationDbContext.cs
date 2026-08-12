@@ -49,6 +49,12 @@ namespace TaskFlow.Data
                 .WithMany()
                 .HasForeignKey(a => a.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Project>()
+                .OwnsOne(p => p.Color);
+            modelBuilder.Entity<Project>()
+                .Property(p => p.Tags)
+                .HasDefaultValueSql("'{}'");
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

@@ -4,17 +4,33 @@ import { useState } from "react";
 import { useEffect, useRef } from "react";
 import type { Project } from "../../api/projects";
 import type { UserDto } from "../../api/projects";
+import {
+  HiOutlineGlobeAlt,
+  HiOutlineHome,
+  HiOutlineBriefcase,
+  HiOutlineCodeBracket,
+  HiOutlineRocketLaunch,
+} from "react-icons/hi2";
 
 
-
-export function ProjectPageCard({project}: {project: Project}) {
-  const people: UserDto[]  = project.members;
+export function ProjectPageCard({ project }: { project: Project }) {
+  const people: UserDto[] = project.members;
 
   const visiblePeople = people.slice(0, 3);
   const remaining = people.length - visiblePeople.length;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  
+  const projectIcons = {
+    globe: HiOutlineGlobeAlt,
+    home: HiOutlineHome,
+    briefcase: HiOutlineBriefcase,
+    code: HiOutlineCodeBracket,
+    rocket: HiOutlineRocketLaunch,
+  };
+  const ProjectIcon =
+    projectIcons[project.icon as keyof typeof projectIcons]
+    ?? HiOutlineBriefcase;
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -35,8 +51,21 @@ export function ProjectPageCard({project}: {project: Project}) {
 
   return (
     <div className="project">
-      <div className="projectTitleDiv">
-        <h3 className="projectTitle">{project.name}</h3>
+      <div className="projectMainInfo">
+        <div
+          className="projectIcon"
+          style={{
+            backgroundColor: project.color?.background ?? "#EEF3FE",
+            color: project.color?.value ?? "#3B82F6",
+          }}
+        >
+          <ProjectIcon size={40} />
+        </div>
+
+        <div className="projectTitleDiv">
+          <h3 className="projectTitle">{project.name}</h3>
+          <p className="projectDescr">{project.description}</p>
+        </div>
       </div>
       <div className="peopleAndCntTask">
         <div className="peopleInProject">
@@ -58,7 +87,7 @@ export function ProjectPageCard({project}: {project: Project}) {
         <p className="taskCountInProject">{project.taskCount} задачи</p>
       </div>
       <div className="projectProgressPage">
-        <span className="percentProject">{ project.progressPercent}%</span>
+        <span className="percentProject">{project.progressPercent}%</span>
         <div className="progressBar">
           <div
             className="progress"
@@ -66,7 +95,7 @@ export function ProjectPageCard({project}: {project: Project}) {
           ></div>
         </div>
         <div className="progressDescr">
-          <p>12 в работе</p>
+          <p>{project.completedTaskCount} выполнено</p>
         </div>
       </div>
       <div className="threePoint" ref={menuRef}>

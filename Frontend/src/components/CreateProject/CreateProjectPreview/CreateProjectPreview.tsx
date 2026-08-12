@@ -1,42 +1,108 @@
 import "./CreateProjectPreview.css";
 import {
-  HiOutlineGlobeAlt,
   HiOutlineTag,
   HiOutlineUsers,
   HiOutlineClipboardDocumentList,
   HiOutlineCalendarDays,
 } from "react-icons/hi2";
 import type { ProjectCreateData } from "../../../types/projectCreate";
+import {
+  HiOutlineGlobeAlt,
+  HiOutlineHome,
+  HiOutlineBriefcase,
+  HiOutlineCodeBracket,
+  HiOutlineRocketLaunch,
+} from "react-icons/hi2";
+import { useState } from "react";
+
 
 type Props = {
   projectData: ProjectCreateData;
+  setProjectData: React.Dispatch<
+    React.SetStateAction<ProjectCreateData>>
 }
 
-export function CreateProjectPreview({ projectData }: Props) {
+const projectIcons = [
+  {
+    name: "globe",
+    component: HiOutlineGlobeAlt,
+  },
+  {
+    name: "home",
+    component: HiOutlineHome,
+  },
+  {
+    name: "briefcase",
+    component: HiOutlineBriefcase,
+  },
+  {
+    name: "code",
+    component: HiOutlineCodeBracket,
+  },
+  {
+    name: "rocket",
+    component: HiOutlineRocketLaunch,
+  },
+];
+
+export function CreateProjectPreview({ projectData, setProjectData }: Props) {
+  const SelectedIcon =
+    projectIcons.find(icon => icon.name === projectData.icon)?.component
+    ?? HiOutlineGlobeAlt;
+  const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
+
   return (
     <div className="createProjectPreview">
       <h3 className="createProjectTitle">Предпросмотр</h3>
 
       <div className="previewContent">
         <div className="projectCard">
-          <div
+          <button
+            type="button"
             className="projectIcon"
+            onClick={() => setIsIconPickerOpen(prev => !prev)}
             style={{
               backgroundColor: projectData.color.background,
               color: projectData.color.value
             }}
           >
-            <HiOutlineGlobeAlt />
-          </div>
+            <SelectedIcon />
+          </button>
+          {isIconPickerOpen && (
+            <div className="iconPicker">
+              {projectIcons.map(({ name, component: Icon }) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => {
+                    setProjectData(prev => ({
+                      ...prev,
+                      icon: name
+                    }));
+
+                    setIsIconPickerOpen(false);
+                  }}
+                >
+                  <Icon />
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="projectInfo">
             <div className="projectHeader">
-              <h2>Название проекта</h2>
-              <span className="projectStatus">Активный</span>
+              <h2>{projectData.title || "Название проекта"}</h2>
+              <span
+                className="projectStatus"
+                style={{
+                  backgroundColor: projectData.color.background,
+                  color: projectData.color.value
+                }}
+              >Активный</span>
             </div>
 
             <p>
-              Краткое описание проекта будет отображаться здесь.
+              {projectData.description || "Краткое описание проекта будет отображаться здесь."}
             </p>
           </div>
         </div>

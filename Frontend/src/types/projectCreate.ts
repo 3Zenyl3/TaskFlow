@@ -8,6 +8,8 @@ export type ProjectColor = {
 export type ProjectCreateData = {
   title: string;
   description: string;
+  icon: string;
+  key: string;
   category: string;
   color: ProjectColor;
   startDate: Date | null;
@@ -19,5 +21,6 @@ export type ProjectCreateData = {
     role: string;
   }[];
 
+  memberEmail: string;
   selectedMemberRole: string;
 }

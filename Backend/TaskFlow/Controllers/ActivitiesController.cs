@@ -4,6 +4,7 @@ using System.Security.Claims;
 using TaskFlow.Data;
 using TaskFlow.Models.DTO;
 using TaskFlow.Services;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Controllers
 {
@@ -11,9 +12,9 @@ namespace TaskFlow.Controllers
     [Route("api/[controller]")]
     public class ActivitiesController : ControllerBase
     {
-        private ActivityService activityService;
+        private IActivityService activityService;
 
-        public ActivitiesController(ActivityService activityService)
+        public ActivitiesController(IActivityService activityService)
         {
             this.activityService = activityService;
         }

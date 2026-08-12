@@ -5,6 +5,7 @@ import { HiCheck } from "react-icons/hi";
 import { HiPlus } from "react-icons/hi";
 import { DatePickerInput } from "../../Input/DatePickerInput/DatePickerInput";
 import type { ProjectCreateData } from "../../../types/projectCreate";
+import { useState } from "react";
 
 
 type Props = {
@@ -44,6 +45,25 @@ export function CreateProjectMainInfo({
     { name: "gray", value: "#6B7280", background: "#F3F4F6" }
   ];
 
+  const [newTag, setNewTag] = useState("");
+  const [isAddingTag, setIsAddingTag] = useState(false);
+  const handleAddMember = () => {
+    if (!projectData.memberEmail.trim()) {
+      return;
+    }
+
+    setProjectData(prev => ({
+      ...prev,
+      members: [
+        ...prev.members,
+        {
+          email: prev.memberEmail.trim(),
+          role: prev.selectedMemberRole
+        }
+      ],
+      memberEmail: ""
+    }));
+  };
 
   return (
     <div className="createProjectMainInfo">
@@ -51,13 +71,19 @@ export function CreateProjectMainInfo({
       <div className="createProjectTexts">
         <div className="createProjectTextsFirst">
           <CreateProjectFormItem
-            title="Название проекта *"
+            title="Название проекта"
             placeholder="Введите название проекта"
+            form="title"
+            projectData={projectData}
+            setProjectData={setProjectData}
           />
           <CreateProjectFormItem
             title="Ключ проекта"
             placeholder="Например SHOP"
             description="Уникальный идентификатор для API и ID задач"
+            form="key"
+            projectData={projectData}
+            setProjectData={setProjectData}
           />
         </div>
         <div className="createProjectFormItem">
@@ -65,6 +91,12 @@ export function CreateProjectMainInfo({
           <textarea
             className="inputFieldMax"
             placeholder="Расскажите о целях и задачах проекта..."
+            onChange={(e) =>
+              setProjectData(prev => ({
+                ...prev,
+                description: e.target.value
+              }))
+            }
           />
         </div>
       </div>
@@ -116,22 +148,65 @@ export function CreateProjectMainInfo({
           <h4 className="createProjectFormTitle">
             Дата начала
           </h4>
-          <DatePickerInput />
+          <DatePickerInput
+            projectData={projectData}
+            setProjectData={setProjectData}
+            field="startDate"
+          />
         </div>
         <div className="dateSetting">
           <h4 className="createProjectFormTitle">
             Дедлайн <span>(необязательно)</span>
           </h4>
-          <DatePickerInput />
+          <DatePickerInput
+            projectData={projectData}
+            setProjectData={setProjectData}
+            field="deadline"
+          />
         </div>
       </div>
       <div className="tagSettingsProject">
         <h4 className="createProjectFormTitle">Метки проекта</h4>
         <div className="tagsInSetting">
-          <span>web</span>
-          <span>e-commerce</span>
-          <span>frontend</span>
-          <button><HiPlus /> Добавить новую метку</button>
+          {projectData.tags.map((tag, index) => (
+            <span
+              key={index}>{tag}
+              <button className="deleteTagButton"
+                onClick={() => {
+                  setProjectData(prev => ({
+                    ...prev,
+                    tags: prev.tags.filter((_, i) => i !== index)
+                  }));
+                }}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+          {isAddingTag && (
+            <input className="addNewTag"
+              type="text"
+              value={newTag}
+              placeholder="Название метки"
+              onChange={(e) => setNewTag(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (!newTag.trim()) return;
+
+                  setProjectData(prev => ({
+                    ...prev,
+                    tags: [...prev.tags, newTag.trim()]
+                  }));
+
+                  setNewTag("");
+                  setIsAddingTag(false);
+                }
+              }}
+            />
+          )}
+          <button onClick={() => setIsAddingTag(true)} className="addTagButton">
+            <HiPlus /> Добавить новую метку
+          </button>
         </div>
       </div>
       <div className="addNewMembers">
@@ -142,6 +217,9 @@ export function CreateProjectMainInfo({
           <div className="addNewMemberEmail">
             <CreateProjectFormItem
               placeholder="Введите email пользователя"
+              form="memberEmail"
+              projectData={projectData}
+              setProjectData={setProjectData}
             />
           </div>
           <div className="selectRoleNewMember">
@@ -158,9 +236,28 @@ export function CreateProjectMainInfo({
             />
           </div>
           <div className="addNewMemberButtonDiv">
-            <button className="addNewMemberButton">Добавить</button>
+            <button className="addNewMemberButton" onClick={handleAddMember}>Добавить</button>
           </div>
         </div>
+        <div className="membersList">
+            {projectData.members.map((member, index) => (
+              <div key={index} className="memberItem">
+                <span>{member.email}</span>
+                <span>{member.role}</span>
+
+                <button
+                  onClick={() => {
+                    setProjectData(prev => ({
+                      ...prev,
+                      members: prev.members.filter((_, i) => i !== index)
+                    }));
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
       </div>
     </div>
   );

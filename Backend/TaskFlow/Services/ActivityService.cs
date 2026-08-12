@@ -18,7 +18,9 @@ namespace TaskFlow.Services
         {
             return await context.Activities
                 .AsNoTracking()
-                .Where(a => a.Project.Members.Any(m => m.UserId == userId))
+                .Where(a =>
+                    a.ProjectId != null &&
+                    a.Project!.Members.Any(m => m.UserId == userId))
                 .OrderByDescending(a => a.CreatedAt)
                 .Select(a => new ActivityDTO
                 {

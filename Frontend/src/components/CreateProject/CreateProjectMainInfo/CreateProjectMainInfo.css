@@ -128,12 +128,37 @@
   gap: 10px;
 }
 .tagsInSetting span{
+  display: flex;
   background-color: #e3ecfd;
   color: #1f3984;
   padding: 5px 8px;
   border-radius: 8px;
+  gap: 7px;
 }
-.tagsInSetting button{
+.addNewTag {
+  height: 32px;
+  width: 140px;
+
+  padding: 0 10px;
+
+  border: 1px solid #d9dee7;
+  border-radius: 8px;
+
+  background-color: #fff;
+  color: #374151;
+  font-size: 14px;
+
+  outline: none;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.deleteTagButton{
+  background-color: #e3ecfd;
+  color: #1f3984;
+  border: none;
+  font-size: 17px;
+}
+.addTagButton{
   margin-left: 5px;
   display: flex;
   gap: 5px;
@@ -173,4 +198,75 @@
 }
 .addNewMemberButtonDiv{
   padding: 10px;
+}
+.membersList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 42px;
+  padding: 7px 10px;
+
+  box-sizing: border-box;
+
+  background-color: #f8fafc;
+  border: 1px solid #e6e8ea;
+  border-radius: 8px;
+
+  font-size: 14px;
+  color: #374151;
+}
+
+.memberItem span:first-child {
+  flex: 1;
+}
+
+.memberItem span:nth-child(2) {
+  min-width: 110px;
+
+  padding: 4px 8px;
+
+  background-color: #e3ecfd;
+  color: #1f3984;
+
+  border-radius: 6px;
+
+  text-align: center;
+  font-size: 13px;
+}
+
+.memberItem button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+
+  padding: 0;
+
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+
+  color: #8b95a5;
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition: 0.15s;
+}
+
+.memberItem button:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
 }

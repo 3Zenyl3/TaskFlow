@@ -28,6 +28,14 @@ namespace TaskFlow.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
+                    Description = p.Description,
+                    Color = new ProjectColor
+                    {
+                        Name = p.Color.Name,
+                        Value = p.Color.Value,
+                        Background = p.Color.Background
+                    },
+                    Icon = p.Icon,
                     TaskCount = p.Tasks.Count(),
                     CompletedTaskCount = p.Tasks
                         .Count(t => t.Status == StatusTask.Done),
@@ -81,15 +89,38 @@ namespace TaskFlow.Services
             {
                 var project = new Project
                 {
-                    CreatedDate = DateTime.UtcNow,
-                    Description = request.Description,
                     Name = request.Name,
-                    Owner = user,
+                    Description = request.Description,
+                    Icon = request.Icon,
+                    Key = request.Key,
+                    Category = request.Category,
+                    Color = request.Color,
+                    StartDate = request.StartDate,
+                    Deadline = request.Deadline,
+                    Tags = request.Tags,
                     OwnerId = user.Id,
+                    CreatedDate = DateTime.UtcNow,
                     Status = StatusProject.Active,
                 };
                 context.Projects.Add(project);
                 await context.SaveChangesAsync();
+                foreach (var memberRequest in request.Members)
+                {
+                    var memberUser = await context.Users
+                        .FirstOrDefaultAsync(u => u.Email == memberRequest.Email);
+
+                    if (memberUser == null || memberUser.Id == user.Id)
+                        continue;
+
+                    var member = new ProjectMember
+                    {
+                        ProjectId = project.Id,
+                        UserId = memberUser.Id,
+                        ProjectRole = memberRequest.Role
+                    };
+
+                    context.ProjectMembers.Add(member);
+                }
 
                 context.ProjectMembers.Add(new ProjectMember
                 {

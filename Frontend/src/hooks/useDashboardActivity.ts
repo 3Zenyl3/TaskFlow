@@ -8,15 +8,15 @@ export function useDashboardActivity() {
   useEffect(() => {
     async function loadActivity() {
       try {
-        const activityFromLocalStorage = localStorage.getItem('activity');
-        if(activityFromLocalStorage){
-          setActivity(JSON.parse(activityFromLocalStorage));
-        }
-        else{
+        //const activityFromLocalStorage = localStorage.getItem('activity');
+        //if(activityFromLocalStorage){
+        //  setActivity(JSON.parse(activityFromLocalStorage));
+        //}
+        //else{
           const activity = await getTeamActivity();
           setActivity(activity);
           localStorage.setItem('activity', JSON.stringify(activity));
-        }
+       // }
       }
       catch (err) {
         console.error(err);
