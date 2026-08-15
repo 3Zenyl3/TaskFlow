@@ -7,10 +7,11 @@ interface DropdownProps {
   options: string[];
   value: string;
   onChange: (value: string) => void;
+  error?: string;
 }
 
 
-export function Dropdown({ title, options, value, onChange }: DropdownProps) {
+export function Dropdown({ title, options, value, onChange, error }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -55,6 +56,9 @@ export function Dropdown({ title, options, value, onChange }: DropdownProps) {
             </li>
           ))}
         </ul>
+      )}
+      {error && (
+        <p className="inputErrorText">{error}</p>
       )}
     </div>
   );

@@ -1,20 +1,47 @@
 import "./ProjectInfoDescription.css"
-import { HiOutlineMapPin, HiOutlineCalendar, HiOutlineCalendarDateRange, HiOutlineTag, HiOutlineHashtag} from "react-icons/hi2";
+import { HiOutlineMapPin, HiOutlineCalendar, HiOutlineCalendarDateRange, HiOutlineTag, HiOutlineHashtag } from "react-icons/hi2";
+import type { ProjectDetails } from "../../api/projects";
 
-export function ProjectInfoDescription() {
+type Props = {
+  project: ProjectDetails;
+};
+
+function formatDate(date: Date | null) {
+  if (!date) {
+    return "Не указан";
+  }
+
+  return new Date(date).toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+export function ProjectInfoDescription({ project }: Props) {
   return (
     <div className="projectInfoDescription">
       <h3 className="projectInfoDescriptionTitle">О проекте</h3>
-      <div><p className="infoDescriptionTitle"><HiOutlineMapPin />Владелец</p></div>
-      <div><p className="infoDescriptionTitle"><HiOutlineCalendar />Создан</p></div>
-      <div><p className="infoDescriptionTitle"><HiOutlineCalendarDateRange />Дедлайн</p></div>
-      <div><p className="infoDescriptionTitle"><HiOutlineTag />Категория</p></div>
-      <div><p className="infoDescriptionTitle"><HiOutlineHashtag />Метки</p></div>
+      <div><p className="infoDescriptionTitle"><HiOutlineMapPin />Владелец: {project.owner.userName}</p></div>
+      <div>
+        <p className="infoDescriptionTitle">
+          <HiOutlineCalendar />
+          Создан: {formatDate(project.startDate)}
+        </p>
+      </div>
+
+      <div>
+        <p className="infoDescriptionTitle">
+          <HiOutlineCalendarDateRange />
+          Дедлайн: {formatDate(project.endDate)}
+        </p>
+      </div>
+      <div><p className="infoDescriptionTitle"><HiOutlineTag />Категория: {project.category}</p></div>
+      <div><p className="infoDescriptionTitle"><HiOutlineHashtag />Метки: {project.tags}</p></div>
       <div className="projectDescriptionInfo">
         <p className="infoDescriptionTitle">Описание</p>
-        <p>Интернет-магазин с каталогом товаров,
-            корзиной и системой онлайн-оплаты.</p>
-        </div>
+        <p>{project.description}.</p>
+      </div>
     </div>
   );
 }

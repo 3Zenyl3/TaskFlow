@@ -13,11 +13,19 @@ type Props = {
   setProjectData: React.Dispatch<
     React.SetStateAction<ProjectCreateData>
   >;
+  errors: {
+    title: string;
+    key: string;
+    category: string;
+    startDate: string;
+    deadline: string;
+  };
 };
 
 export function CreateProjectMainInfo({
   projectData,
-  setProjectData
+  setProjectData,
+  errors
 }: Props) {
   const categories = [
     "Разработка",
@@ -73,6 +81,7 @@ export function CreateProjectMainInfo({
           <CreateProjectFormItem
             title="Название проекта"
             placeholder="Введите название проекта"
+            error={errors.title}
             form="title"
             projectData={projectData}
             setProjectData={setProjectData}
@@ -80,6 +89,7 @@ export function CreateProjectMainInfo({
           <CreateProjectFormItem
             title="Ключ проекта"
             placeholder="Например SHOP"
+            error={errors.key}
             description="Уникальный идентификатор для API и ID задач"
             form="key"
             projectData={projectData}
@@ -113,6 +123,7 @@ export function CreateProjectMainInfo({
                 category: value
               })
             }
+            error={errors.category}
           />
         </div>
         <div className="projectColorSetting">
@@ -152,6 +163,7 @@ export function CreateProjectMainInfo({
             projectData={projectData}
             setProjectData={setProjectData}
             field="startDate"
+            error={errors.startDate}
           />
         </div>
         <div className="dateSetting">
@@ -162,6 +174,7 @@ export function CreateProjectMainInfo({
             projectData={projectData}
             setProjectData={setProjectData}
             field="deadline"
+            error={errors.deadline}
           />
         </div>
       </div>

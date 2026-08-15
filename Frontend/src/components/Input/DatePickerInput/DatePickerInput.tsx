@@ -14,36 +14,42 @@ type Props = {
     React.SetStateAction<ProjectCreateData>
   >;
   field: "startDate" | "deadline";
+  error?: string;
 };
 
-export function DatePickerInput({ projectData, setProjectData, field }: Props) {
+export function DatePickerInput({ projectData, setProjectData, field, error }: Props) {
   const date = projectData[field];
 
   return (
-    <DatePicker
-      selected={date}
-      onChange={(date: Date | null) => {
-        setProjectData(prev => ({
-          ...prev,
-          [field]: date
-        }));
-      }}
-      locale="ru"
-      dateFormat="dd.MM.yyyy"
-      placeholderText="Выберите дату"
-      popperPlacement="top-start"
-      fixedHeight
-      portalId="datepicker-portal"
-      customInput={
-        <div className={`dateInput ${date ? "selectedDate" : ""}`}>
-          <HiOutlineCalendar className="calendarIcon" />
-          <span>
-            {date
-              ? date.toLocaleDateString("ru-RU")
-              : "Выберите дату"}
-          </span>
-        </div>
-      }
-    />
+    <div>
+      <DatePicker
+        selected={date}
+        onChange={(date: Date | null) => {
+          setProjectData(prev => ({
+            ...prev,
+            [field]: date
+          }));
+        }}
+        locale="ru"
+        dateFormat="dd.MM.yyyy"
+        placeholderText="Выберите дату"
+        popperPlacement="top-start"
+        fixedHeight
+        portalId="datepicker-portal"
+        customInput={
+          <div className={`dateInput ${date ? "selectedDate" : ""}`}>
+            <HiOutlineCalendar className="calendarIcon" />
+            <span>
+              {date
+                ? date.toLocaleDateString("ru-RU")
+                : "Выберите дату"}
+            </span>
+          </div>
+        }
+      />
+      {error && (
+        <p className="inputErrorText">{error}</p>
+      )}
+    </div>
   );
 }

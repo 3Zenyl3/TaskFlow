@@ -46,6 +46,10 @@ namespace TaskFlow.Middleware
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     break;
 
+                case ConflictException:
+                    context.Response.StatusCode = StatusCodes.Status409Conflict;
+                    break;
+
                 default:
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     break;
@@ -53,7 +57,7 @@ namespace TaskFlow.Middleware
 
             var response = new
             {
-                error = ex.Message
+                message = ex.Message
             };
 
             await context.Response.WriteAsync(

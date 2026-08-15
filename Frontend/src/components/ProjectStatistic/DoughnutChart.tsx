@@ -21,7 +21,6 @@ export interface PieChartData {
     backgroundColor: string[];
   }[];
 }
-
 function PieChart({ labels, datasets }: PieChartData) {
   return (
     <Doughnut

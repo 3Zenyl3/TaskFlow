@@ -1,8 +1,9 @@
 import api from "./axios";
+import type { UserDto } from "./projects";
 
 export interface Activity {
   id: number;
-  userName: string;
+  user: UserDto;
   avatarUrl?: string;
   description: string;
   createdAt: string;

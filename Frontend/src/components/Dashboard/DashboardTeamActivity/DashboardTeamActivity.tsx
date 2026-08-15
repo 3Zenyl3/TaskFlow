@@ -14,7 +14,7 @@ function DashboardTeamActivity({ activities, loading }: { activities: Activity[]
         {!loading && activities.map(activity => (
           <PeopleActivity
             src={activity.avatarUrl || "default-avatar-url.jpg"}
-            name={activity.userName}
+            name={activity.user.userName}
             description={activity.description}
             time={activity.createdAt}
           />

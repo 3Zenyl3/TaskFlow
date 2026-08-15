@@ -8,8 +8,19 @@ import { ProjectInfoDescription } from "../../components/ProjectInfoDescription/
 import { ProjectCommand } from "../../components/ProjectCommand/ProjectCommand";
 import { ProjectActivity } from "../../components/Project/ProjectActivity/ProjectActivity";
 import { ProjectFile } from "../../components/Project/ProjectFiles/ProjectFile";
+import { useParams } from "react-router-dom";
+import { useProjectInfo } from "../../hooks/useProjectInfo";
 
 export function ProjectPage() {
+  const { id } = useParams<{ id: string }>();
+  const { project, loading } = useProjectInfo(Number(id));
+  if (loading) {
+    return <div>Загрузка проекта...</div>;
+  }
+  if (!project) {
+    return <div>Проект не найден</div>;
+  }
+
   return (
     <div className="projectPage">
       <DashboardLeftSide />
@@ -18,29 +29,39 @@ export function ProjectPage() {
           <div className="projectPageTop">
             <NavLink to="/dashboard/projects"><h2 className="backToProjects">{'<'} Проекты</h2></NavLink>
             <span>/</span>
-            <h2 className="currentProjectName">Internet Shop</h2>
+            <h2 className="currentProjectName">{project?.name}</h2>
           </div>
           <div className="projectPageTitle">
             <div className="projectPageTitleContent">
               <div className="projectTitle">
-                <h1 className="Title">Internet Shop</ h1>
-                <p className="projectStatus">Активный</p>
+                <h1 className="Title">{project?.name}</ h1>
+                <p className="projectStatus">{project?.status}</p>
               </div>
-              <p className="projectPageDescr">Разработка интернет-магазина с каталогом товаров и оплатой онлайн.</p>
+              <p className="projectPageDescr">{project?.description}.</p>
             </div>
             <button className="buttonProjectTitle"><HiOutlinePencil />Редактировать проект</button>
           </div>
           <div>
-            <ProjectStatistic />
+            <ProjectStatistic
+              project={project}
+            />
           </div>
           <div className="tasksCardInProjectPage">
-            <TasksCardInProjectPage />
+            <TasksCardInProjectPage
+              tasks={project.tasks}
+            />
           </div>
         </div>
         <div className="projectPageRight">
-          <ProjectInfoDescription />
-          <ProjectCommand />
-          <ProjectActivity />
+          <ProjectInfoDescription
+            project={project}
+          />
+          <ProjectCommand
+            members={project.members}
+          />
+          <ProjectActivity
+            activities={project.activities}
+          />
           <ProjectFile />
         </div>
       </div>

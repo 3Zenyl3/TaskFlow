@@ -2,13 +2,34 @@ import "./ProjectStatistic.css"
 import TaskCardInProjectPage from "../TaskCard/TaskCardInProjectPageStatistic";
 import DoughnutChart from "./DoughnutChart";
 import type { PieChartData } from "./DoughnutChart";
+import type { ProjectDetails } from "../../api/projects";
 
-export function ProjectStatistic() {
-  const data: { label: string, count: number, color: string }[] = [
-    { label: 'Выполнено', count: 25, color: '#22a04a' },
-    { label: 'В работе', count: 10, color: '#0d85b0' },
-    { label: 'К проверке', count: 11, color: '#9422ba' },
-    { label: 'Просрочено', count: 2, color: '#a31b1d' }
+type Props = {
+  project: ProjectDetails;
+};
+
+export function ProjectStatistic({ project }: Props) {
+  const data = [
+    {
+      label: "Выполнено",
+      count: project.completedTaskCount,
+      color: "#22a04a"
+    },
+    {
+      label: "В работе",
+      count: project.taskInProgressCount,
+      color: "#0d85b0"
+    },
+    {
+      label: "К проверке",
+      count: project.taskInReviewCount,
+      color: "#9422ba"
+    },
+    {
+      label: "Просрочено",
+      count: project.overdueTaskCount,
+      color: "#a31b1d"
+    }
   ];
 
   const doughnutChartData: PieChartData = {
@@ -31,37 +52,40 @@ export function ProjectStatistic() {
             <div className="progressBar">
               <div
                 className="progress"
-                style={{ width: "67%" }}
+                style={{ width: `${project.progressPercent}%` }}
               ></div>
             </div>
-            <span className="percenProject">67%</span>
+            <span className="percenProject">{project.progressPercent}%</span>
           </div>
           <div className="projectProgressInfo">
             <div className="endTaskProject">
               <span className="projectProgressInfoTitle">Завершено</span>
-              <span className="projectProgressInfoCount Compl">25</span>
+              <span className="projectProgressInfoCount Compl">{project.completedTaskCount}</span>
             </div>
             <div className="endTaskProject">
               <span className="projectProgressInfoTitle">В работе</span>
-              <span className="projectProgressInfoCount InWork">25</span>
+              <span className="projectProgressInfoCount InWork">{project.taskInProgressCount}</span>
             </div>
             <div className="endTaskProject">
               <span className="projectProgressInfoTitle">Осталось</span>
-              <span className="projectProgressInfoCount">25</span>
+              <span className="projectProgressInfoCount">{project.leftTaskCount}</span>
             </div>
             <div className="endTaskProject">
               <span className="projectProgressInfoTitle">Просрочено</span>
-              <span className="projectProgressInfoCount Warn">25</span>
+              <span className="projectProgressInfoCount Warn">{project.overdueTaskCount}</span>
             </div>
           </div>
         </div>
         <div className="projectLastTask">
           <h4 className="projectStatsCardTitle">Последние задачи</h4>
-          <TaskCardInProjectPage
-            priority="Low"
-            status="Todo"
-            title="API"
-          />
+          {project.tasks.map(task => (
+            <TaskCardInProjectPage
+              key={task.id}
+              priority={task.priority}
+              status={task.status}
+              title={task.title}
+            />
+          ))}
         </div>
         <div className="projectStatTask">
           <h4 className="projectStatsCardTitle">Статистика задач</h4>

@@ -26,12 +26,67 @@ export function CreateProjectsContent() {
     selectedMemberRole: "Участник",
     memberEmail: ""
   });
+  const [errors, setErrors] = useState({
+    title: "",
+    key: "",
+    category: "",
+    startDate: "",
+    deadline: ""
+  });
+  const [serverError, setServerError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const validateProject = () => {
+    const newErrors = {
+      title: "",
+      key: "",
+      category: "",
+      startDate: "",
+      deadline: ""
+    }
+    if (!projectData.title.trim()) {
+      newErrors.title = "Введите название проекта";
+    }
+
+    if (!projectData.key.trim()) {
+      newErrors.key = "Введите ключ проекта";
+    } else if (!/^[A-Z0-9]+$/.test(projectData.key)) {
+      newErrors.key = "Ключ должен содержать только латинские буквы и цифры";
+    }
+
+    if (!projectData.category) {
+      newErrors.category = "Выберите категорию";
+    }
+
+    if (!projectData.startDate) {
+      newErrors.startDate = "Укажите дату начала";
+    }
+
+    if (
+      projectData.deadline &&
+      projectData.startDate &&
+      projectData.deadline < projectData.startDate
+    ) {
+      newErrors.deadline = "Дедлайн не может быть раньше даты начала";
+    }
+
+    setErrors(newErrors);
+
+    return Object.values(newErrors).every(error => error === "");
+  }
 
   const handleCreateProject = async () => {
+    setServerError("");
+    setSuccessMessage("");
+    if (!validateProject()) {
+      return;
+    }
+
     try {
       const project = await createProject(projectData);
 
       console.log("Проект создан:", project);
+      setSuccessMessage("Проект успешно создан");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Status:", error.response?.status);
@@ -39,8 +94,14 @@ export function CreateProjectsContent() {
           "Validation errors:",
           JSON.stringify(error.response?.data, null, 2)
         );
+        console.log("DATA:", error.response?.data);
+        console.log("STATUS:", error.response?.status);
+        setServerError(
+          error.response?.data?.message ??
+          "Не удалось создать проект"
+        );
       } else {
-        console.error("Ошибка:", error);
+        setServerError("Произошла неизвестная ошибка");
       }
     }
   };
@@ -50,6 +111,7 @@ export function CreateProjectsContent() {
       <CreateProjectMainInfo
         projectData={projectData}
         setProjectData={setProjectData}
+        errors={errors}
       />
       <div className="createProjectsContentRight">
         <CreateProjectPreview
@@ -57,9 +119,26 @@ export function CreateProjectsContent() {
           setProjectData={setProjectData}
         />
         <CreateProjectAdvice />
-        <button className="createProjectSubmit" onClick={handleCreateProject}>
-          Создать проект
-        </button>
+        <div className="createProjectActions">
+          {serverError && (
+            <p className="inputErrorText Content">
+              {serverError}
+            </p>
+          )}
+
+          {successMessage && (
+            <p className="inputSuccesext">
+              {successMessage}
+            </p>
+          )}
+
+          <button
+            className="createProjectSubmit"
+            onClick={handleCreateProject}
+          >
+            Создать проект
+          </button>
+        </div>
       </div>
     </div>
   );

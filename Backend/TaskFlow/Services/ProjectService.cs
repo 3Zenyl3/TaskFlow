@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Exceptions;
 using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
@@ -78,13 +79,73 @@ namespace TaskFlow.Services
                         UserId = p.Owner.Id,
                         UserName = p.Owner.UserName,
                         AvatarUrl = p.Owner.AvatarUrl
-                    }
+                    },
+                    ProgressPercent = p.Tasks.Count() == 0
+                        ? 0
+                        : (int)(p.Tasks.Count(t => t.Status == StatusTask.Done) * 100.0
+                            / p.Tasks.Count()),
+                    CompletedTaskCount = p.Tasks
+                        .Where(t => t.Status == StatusTask.Done)
+                        .Count(),
+                    LeftTaskCount = p.Tasks.Count - p.Tasks
+                        .Where(t => t.Status == StatusTask.Done)
+                        .Count(),
+                    OverdueTaskCount = p.Tasks
+                        .Where(t => t.Status == StatusTask.Overdue)
+                        .Count(),
+                    TaskCount = p.Tasks.Count(),
+                    TaskInProgressCount = p.Tasks
+                        .Where(t => t.Status == StatusTask.InProgress)
+                        .Count(),
+                    Tasks = p.Tasks
+                        .Select(t => new TaskDto
+                        {
+                            Id = t.Id,
+                            Title = t.Title,
+                            Priority = t.Priority,
+                            Status = t.Status,
+                            Deadline = t.Deadline,
+                            Description = t.Description,
+                            ExecutorName = t.Executor.UserName,
+                        })
+                        .ToList(),
+                    TaskInReviewCount = p.Tasks.Count(t => t.Status == StatusTask.Review),
+                    Category = p.Category,
+                    Deadline = p.Deadline,
+                    StartDate = p.StartDate,
+                    Tags = p.Tags,
+                    Activities = context.Activities
+                        .Where(a => a.ProjectId == p.Id)
+                        .OrderByDescending(a => a.CreatedAt)
+                        .Select(a => new ActivityDTO
+                        {
+                            Id = a.Id,
+                            User = new UserDto
+                            {
+                                UserId = a.User.Id,
+                                UserName = a.User.UserName,
+                                AvatarUrl = a.User.AvatarUrl
+                            },
+                            Type = a.Type,
+                            Description = a.Description,
+                            CreatedAt = a.CreatedAt,
+                        })
+                        .ToList()
                 })
                 .FirstOrDefaultAsync();
         }
 
         public async Task<ProjectCreateDto> CreateProject(User user, CreateProjectRequest request)
         {
+            var keyExists = await context.Projects
+                    .AnyAsync(p => p.Key == request.Key);
+
+            if (keyExists)
+            {
+                throw new ConflictException(
+                    $"Проект с ключом '{request.Key}' уже существует.");
+            }
+
             if (user != null)
             {
                 var project = new Project
@@ -104,23 +165,8 @@ namespace TaskFlow.Services
                 };
                 context.Projects.Add(project);
                 await context.SaveChangesAsync();
-                foreach (var memberRequest in request.Members)
-                {
-                    var memberUser = await context.Users
-                        .FirstOrDefaultAsync(u => u.Email == memberRequest.Email);
 
-                    if (memberUser == null || memberUser.Id == user.Id)
-                        continue;
-
-                    var member = new ProjectMember
-                    {
-                        ProjectId = project.Id,
-                        UserId = memberUser.Id,
-                        ProjectRole = memberRequest.Role
-                    };
-
-                    context.ProjectMembers.Add(member);
-                }
+                await AddNewMemberToProject(request, project, user);
 
                 context.ProjectMembers.Add(new ProjectMember
                 {
@@ -140,6 +186,30 @@ namespace TaskFlow.Services
                 };
             }
             return null;
+        }
+
+        private async System.Threading.Tasks.Task AddNewMemberToProject(
+            CreateProjectRequest request,
+            Project project,
+            User user)
+        {
+            foreach (var memberRequest in request.Members)
+            {
+                var memberUser = await context.Users
+                    .FirstOrDefaultAsync(u => u.Email == memberRequest.Email);
+
+                if (memberUser == null || memberUser.Id == user.Id)
+                    continue;
+
+                var member = new ProjectMember
+                {
+                    ProjectId = project.Id,
+                    UserId = memberUser.Id,
+                    ProjectRole = memberRequest.Role
+                };
+
+                context.ProjectMembers.Add(member);
+            }
         }
 
         public async Task<UpdateProjectResponse> UpdateProject(UpdateProjectRequest request, int userId, int projectId)

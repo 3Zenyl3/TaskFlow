@@ -2,6 +2,7 @@ import "./ProjectPageCard.css"
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Project } from "../../api/projects";
 import type { UserDto } from "../../api/projects";
 import {
@@ -48,7 +49,7 @@ export function ProjectPageCard({ project }: { project: Project }) {
     };
   }, []);
 
-
+  const navigate = useNavigate();
   return (
     <div className="project">
       <div className="projectMainInfo">
@@ -108,7 +109,9 @@ export function ProjectPageCard({ project }: { project: Project }) {
 
         {isMenuOpen && (
           <div className="projectMenu">
-            <button>Открыть проект</button>
+            <button onClick={() => navigate(`/dashboard/projects/${project.id}`)}>
+              Открыть проект
+            </button>
             <button>Редактировать</button>
             <button>Участники</button>
             <button>Отчёт</button>

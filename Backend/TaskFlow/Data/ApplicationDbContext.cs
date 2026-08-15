@@ -55,6 +55,10 @@ namespace TaskFlow.Data
             modelBuilder.Entity<Project>()
                 .Property(p => p.Tags)
                 .HasDefaultValueSql("'{}'");
+
+            modelBuilder.Entity<Project>()
+                .HasIndex(p => p.Key)
+                .IsUnique();
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

@@ -1,7 +1,15 @@
 import "./ProjectActivity.css"
 import PeopleActivity from "../../PeopeleActivity/PeopeleActivity";
+import type { Activity } from "../../../api/teamActivity";
 
-export function ProjectActivity() {
+function formatActivityTime(date: string) {
+  return new Date(date).toLocaleTimeString("ru-RU", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+export function ProjectActivity({ activities}: { activities: Activity[] }) {
   return (
     <div className="projectActivity">
       <header className="projectActivityHeader">
@@ -9,12 +17,15 @@ export function ProjectActivity() {
         <button className="seeAllActivity">Смотреть все</button>
       </header>
       <div className="activityItems">
-        <PeopleActivity
-          src="https://sun9-29.vkuserphoto.ru/s/v1/ig2/jrQp8-hzwnXExoCQTDQ-e4Dhz7ENxdqGkInRZN9Cm4LzJsru6dVJZBoC328O2QUNd5RHFrP8HoyjJoq5DDilgyzN.jpg?quality=95&as=32x57,48x85,72x128,108x192,160x284,240x426,360x640,480x853,540x959,640x1137,720x1279,1080x1919,1280x2274,1440x2558,1441x2560&from=bu&u=i-O_d0MUKW3zlwE5XelZaIdBNKithesH4n2LL2c03wo&cs=1441x0"
-          description="Изменил статус"
-          name="Кирилл"
-          time="12:12"
-        />
+        {activities.map(activity => (
+          <PeopleActivity
+            key={activity.id}
+            src={activity.user.avatarUrl}
+            description={activity.description}
+            name={activity.user.userName}
+            time={formatActivityTime(activity.createdAt)}
+          />
+        ))}
       </div>
     </div>
   );

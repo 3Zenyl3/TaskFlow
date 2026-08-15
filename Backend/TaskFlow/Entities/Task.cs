@@ -46,6 +46,7 @@
         Todo,
         InProgress,
         Review,
-        Done
+        Done,
+        Overdue
     }
 }

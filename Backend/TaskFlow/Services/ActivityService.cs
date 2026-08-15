@@ -24,7 +24,12 @@ namespace TaskFlow.Services
                 .OrderByDescending(a => a.CreatedAt)
                 .Select(a => new ActivityDTO
                 {
-                    UserName = a.User.UserName,
+                    User = new UserDto
+                    {
+                        AvatarUrl = a.User.AvatarUrl,
+                        UserName = a.User.UserName,
+                        UserId = a.UserId
+                    },
                     Description = a.Description,
                     CreatedAt = a.CreatedAt,
                     AvatarUrl = a.User.AvatarUrl
