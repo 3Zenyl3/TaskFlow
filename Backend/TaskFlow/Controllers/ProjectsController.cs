@@ -4,6 +4,7 @@ using System.Security.AccessControl;
 using System.Security.Claims;
 using TaskFlow.Data;
 using TaskFlow.Entities;
+using TaskFlow.Exceptions;
 using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
@@ -102,6 +103,42 @@ namespace TaskFlow.Controllers
                 return Forbid();
 
             return Ok(new {message = "Project deleted" });
+        }
+
+        [HttpPost("{projectId}/files")]
+        public async Task<IActionResult> UploadProjectFile(int projectId, IFormFile file)
+        {
+            var (result, userId) = await GetAuthorizedUserId();
+            if (result != null)
+                return result;
+
+            var projectFileDto = await projectService.UploadProjectFile(userId, projectId, file);
+            return Ok(projectFileDto);
+        }
+
+        [HttpGet("{projectId}/files/{fileId}/download")]
+        public async Task<IActionResult> DownloadFile(int projectId, int fileId)
+        {
+            var (result, userId) = await GetAuthorizedUserId();
+            if (result != null)
+                return result;
+
+            var file = await projectService.GetFileForDownload(userId, projectId, fileId);
+
+            var path = file.StoragePath;
+
+            var stream = new FileStream(
+                path,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.Read
+            );
+
+            return File(
+                stream,
+                file.ContentType,
+                file.FileName
+            );
         }
 
 

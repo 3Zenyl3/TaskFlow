@@ -45,6 +45,7 @@ export interface ProjectDetails {
   category: string;
   tags: string[];
   activities: Activity[];
+  files: ProjectFileDTO[]
 }
 
 export interface UserDto {
@@ -52,6 +53,13 @@ export interface UserDto {
   userName: string;
   avatarUrl: string;
 }
+export interface ProjectFileDTO {
+    id: number;
+    fileName: string;
+    contentType: string;
+    size: number;
+    uploadedAt: Date;
+  }
 export type StatusProject = "Active" | "Completed" | "Archived";
 
 export async function GetProjects(): Promise<Project[]> {
@@ -61,4 +69,27 @@ export async function GetProjects(): Promise<Project[]> {
 export async function GetProject(projectId: number): Promise<ProjectDetails> {
   const response = await api.get(`/projects/${projectId}`);
   return response.data;
+}
+export async function UploadProjectFile(projectId: number, file: File):Promise<ProjectFileDTO>  {
+  const formData = new FormData();
+
+  formData.append("file", file);
+  const response = await api.post(
+    `/projects/${projectId}/files`,
+    formData
+  );
+  return response.data;
+}
+export async function DownloadProjectFile(
+  projectId: number,
+  fileId: number
+) {
+  const response = await api.get(
+    `/projects/${projectId}/files/${fileId}/download`,
+    {
+      responseType: "blob",
+    }
+  );
+
+  return response;
 }

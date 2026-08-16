@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Entities;
 using TaskFlow.Exceptions;
@@ -130,7 +131,18 @@ namespace TaskFlow.Services
                             Description = a.Description,
                             CreatedAt = a.CreatedAt,
                         })
-                        .ToList()
+                        .ToList(),
+                    Files = p.Files
+                        .OrderByDescending(f => f.UploadedAt)
+                        .Select(f => new ProjectFileDTO
+                        {
+                            Id = f.Id,
+                            FileName = f.FileName,
+                            ContentType = f.ContentType,
+                            Size = f.Size,
+                            UploadedAt = f.UploadedAt
+                        })
+                        .ToList(),
                 })
                 .FirstOrDefaultAsync();
         }
@@ -252,6 +264,128 @@ namespace TaskFlow.Services
             context.Projects.Remove(project);
             await context.SaveChangesAsync();
             return ProjectOperationResult.Success;
+        }
+
+        public async Task<ProjectFileDTO> UploadProjectFile(int userId, int projectId, IFormFile file)
+        {
+            var allowedExtensions = new HashSet<string>(
+                StringComparer.OrdinalIgnoreCase)
+            {
+                ".pdf",
+                ".png",
+                ".jpg",
+                ".jpeg",
+                ".docx",
+                ".xlsx",
+                ".txt",
+                ".zip"
+            };
+
+            if (file == null)
+            {
+                throw new BadRequestException("Файл не найден");
+            }
+            var maxFileSize = 10 * 1024 * 1024l;
+
+            if (file.Length > maxFileSize)
+            {
+                throw new BadRequestException("Максимальный размер файла — 10 МБ");
+            }
+            if (file.Length == 0)
+            {
+                throw new BadRequestException("Файл пустой");
+            }
+
+            var hasProjectAccess = await context.Projects
+                .Where(p => p.Id == projectId)
+                .AnyAsync(p => p.OwnerId == userId || p.Members
+                    .Any(m => m.UserId == userId)
+                );
+            if (!hasProjectAccess)
+            {
+                throw new ForbiddenException();
+            }
+            var projectFolder = Path.Combine(
+                "uploads",
+                "projects",
+                projectId.ToString()
+            );
+            Directory.CreateDirectory(projectFolder);
+            var fileName = Path.GetFileName(file.FileName);
+
+            var extension = Path.GetExtension(fileName);
+
+            if (!allowedExtensions.Contains(extension))
+            {
+                throw new BadRequestException("Тип файла не поддерживается");
+            }
+
+            var storedFileName = $"{Guid.NewGuid()}{Path.GetExtension(fileName)}";
+
+            var filePath = Path.Combine(
+                projectFolder,
+                storedFileName
+            );
+            await using var stream = new FileStream(
+                filePath,
+                FileMode.Create
+            );
+
+            await file.CopyToAsync(stream);
+
+            var projectFile = new ProjectFile
+            {
+                ProjectId = projectId,
+                UploadedById = userId,
+                ContentType = file.ContentType,
+                Size = file.Length,
+                StoragePath = filePath,
+                StoredFileName = storedFileName,
+                UploadedAt = DateTime.UtcNow,
+                FileName = fileName,
+            };
+
+            await context.ProjectFiles.AddAsync(projectFile);
+            await context.SaveChangesAsync();
+
+            return new ProjectFileDTO
+            {
+                Id = projectFile.Id,
+                ContentType = projectFile.ContentType,
+                FileName = projectFile.FileName,
+                Size = file.Length,
+                UploadedAt = projectFile.UploadedAt
+            };
+        }
+
+        public async Task<ProjectFile> GetFileForDownload(int userId, int projectId, int fileId)
+        {
+            var hasProjectAccess = await context.Projects
+                .Where(p => p.Id == projectId)
+                .AnyAsync(p => p.OwnerId == userId || p.Members
+                    .Any(m => m.UserId == userId)
+                    );
+
+            if (!hasProjectAccess)
+            {
+                throw new ForbiddenException();
+            }
+
+            var file = await context.ProjectFiles
+                .FirstOrDefaultAsync(f => f.Id == fileId && f.ProjectId == projectId);
+
+            if (file == null)
+            {
+                throw new NotFoundException("Файл не найден");
+            }
+
+            if (!System.IO.File.Exists(file.StoragePath))
+            {
+                throw new NotFoundException("Файл не найден на сервере");
+            }
+            var fileInfo = new FileInfo(file.StoragePath);
+
+            return file;
         }
     }
 }

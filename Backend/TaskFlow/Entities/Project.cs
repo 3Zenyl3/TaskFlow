@@ -21,6 +21,7 @@ namespace TaskFlow.Entities
         public User Owner { get; set; }
         public ICollection<ProjectMember> Members { get; set; } = new List<ProjectMember>();
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public ICollection<ProjectFile> Files { get; set; } = [];
     }
 
     public enum StatusProject

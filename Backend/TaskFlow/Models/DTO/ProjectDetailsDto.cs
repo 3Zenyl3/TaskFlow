@@ -24,6 +24,7 @@ namespace TaskFlow.Models.DTO
         public string Category { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
         public List<ActivityDTO> Activities { get; set; } = new List<ActivityDTO>();
+        public ICollection<ProjectFileDTO> Files { get; set; } = [];
     }
 
     public class UserDto

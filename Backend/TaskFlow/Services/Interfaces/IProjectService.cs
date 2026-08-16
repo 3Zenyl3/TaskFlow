@@ -1,4 +1,5 @@
-﻿using TaskFlow.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using TaskFlow.Entities;
 using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
@@ -12,5 +13,7 @@ namespace TaskFlow.Services.Interfaces
         Task<ProjectCreateDto> CreateProject(User user, CreateProjectRequest request);
         Task<UpdateProjectResponse> UpdateProject(UpdateProjectRequest request, int userId, int projectId);
         Task<ProjectOperationResult> DeleteProject(int userId, int projectId);
+        Task<ProjectFileDTO> UploadProjectFile(int userId, int projectId, IFormFile file);
+        Task<ProjectFile> GetFileForDownload(int userId, int projectId, int fileId);
     }
 }

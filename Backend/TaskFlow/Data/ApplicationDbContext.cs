@@ -12,6 +12,7 @@ namespace TaskFlow.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ProjectMember> ProjectMembers { get; set; }
         public DbSet<Activity> Activities { get; set; }
+        public DbSet<ProjectFile> ProjectFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

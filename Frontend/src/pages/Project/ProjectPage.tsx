@@ -62,7 +62,10 @@ export function ProjectPage() {
           <ProjectActivity
             activities={project.activities}
           />
-          <ProjectFile />
+          <ProjectFile
+            projectId={project.id}
+            files={project.files}
+          />
         </div>
       </div>
     </div>
