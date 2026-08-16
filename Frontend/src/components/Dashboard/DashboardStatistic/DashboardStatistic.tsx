@@ -78,6 +78,13 @@ function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolea
     return task.status !== "Done" && deadline < today;
   }).length.toString();
 
+  if(loading){
+    return(
+      <div className="statistic">
+        <p>Загрузка</p>
+      </div>
+    );
+  }
 
   return (
     <div className="statistic">
