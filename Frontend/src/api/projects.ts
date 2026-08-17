@@ -1,6 +1,7 @@
 import api from "./axios"
 import type { ProjectColor } from "../types/projectCreate";
 import type { Activity } from "./teamActivity";
+import type { ProjectCreateData } from "../types/projectCreate";
 
 export interface Project {
   id: number;
@@ -46,6 +47,10 @@ export interface ProjectDetails {
   tags: string[];
   activities: Activity[];
   files: ProjectFileDTO[]
+  icon: string;
+  key: string;
+  color: ProjectColor;
+
 }
 
 export interface UserDto {
@@ -92,4 +97,26 @@ export async function DownloadProjectFile(
   );
 
   return response;
+}
+
+export async function UpdateProject(projectData: ProjectCreateData, id: number){
+  const request = {
+    name: projectData.title,
+    description: projectData.description,
+    icon: projectData.icon,
+    key: projectData.key,
+    category: projectData.category,
+    color: projectData.color,
+    startDate: projectData.startDate,
+    deadline: projectData.deadline,
+    tags: projectData.tags,
+    members: projectData.members.map(member => ({
+      email: member.email,
+      role: member.role
+    }))
+  };
+
+  const response = await api.put(`/projects/${id}`, request);
+
+  return response.data;
 }

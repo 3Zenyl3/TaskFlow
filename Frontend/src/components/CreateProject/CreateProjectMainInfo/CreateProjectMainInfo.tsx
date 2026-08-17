@@ -101,6 +101,7 @@ export function CreateProjectMainInfo({
           <textarea
             className="inputFieldMax"
             placeholder="Расскажите о целях и задачах проекта..."
+            value={projectData.description}
             onChange={(e) =>
               setProjectData(prev => ({
                 ...prev,

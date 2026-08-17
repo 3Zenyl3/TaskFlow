@@ -37,7 +37,24 @@ export function ProjectInfoDescription({ project }: Props) {
         </p>
       </div>
       <div><p className="infoDescriptionTitle"><HiOutlineTag />Категория: {project.category}</p></div>
-      <div><p className="infoDescriptionTitle"><HiOutlineHashtag />Метки: {project.tags}</p></div>
+      <div className="projectTags">
+        <p className="infoDescriptionTitle">
+          <HiOutlineHashtag />
+          Метки:
+        </p>
+
+        <div className="tagsList">
+          {project.tags.length > 0 ? (
+            project.tags.map((tag, index) => (
+              <span key={index} className="projectTag">
+                {tag}
+              </span>
+            ))
+          ) : (
+            <span className="noTags">Нет меток</span>
+          )}
+        </div>
+      </div>
       <div className="projectDescriptionInfo">
         <p className="infoDescriptionTitle">Описание</p>
         <p>{project.description}.</p>

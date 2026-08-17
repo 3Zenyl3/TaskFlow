@@ -68,11 +68,17 @@ namespace TaskFlow.Services
                     Status = p.Status,
                     Description = p.Description,
                     Members = p.Members
-                        .Select(m => new UserDto
+                        .Where(m => m.UserId != p.OwnerId)
+                        .Select(m => new ProjectMemberDto
                         {
-                            UserId = m.User.Id,
-                            UserName = m.User.UserName,
-                            AvatarUrl = m.User.AvatarUrl,
+                            UserDto = new UserDto
+                            {
+                                UserId = m.User.Id,
+                                UserName = m.User.UserName,
+                                AvatarUrl = m.User.AvatarUrl,
+                            },
+                            Email = m.User.Email,
+                            Role = m.ProjectRole
                         })
                         .ToList(),
                     Owner = new UserDto
@@ -143,6 +149,14 @@ namespace TaskFlow.Services
                             UploadedAt = f.UploadedAt
                         })
                         .ToList(),
+                    Color = new ProjectColor
+                    {
+                        Name = p.Color.Name,
+                        Value = p.Color.Value,
+                        Background = p.Color.Background
+                    },
+                    Icon = p.Icon,
+                    Key = p.Key
                 })
                 .FirstOrDefaultAsync();
         }
@@ -224,27 +238,51 @@ namespace TaskFlow.Services
             }
         }
 
-        public async Task<UpdateProjectResponse> UpdateProject(UpdateProjectRequest request, int userId, int projectId)
+        public async Task<UpdateProjectResponse> UpdateProject(
+            UpdateProjectRequest request,
+            int userId,
+            int projectId)
         {
-            var project = await context.Projects.FindAsync(projectId);
+            var project = await context.Projects
+                .FirstOrDefaultAsync(p => p.Id == projectId);
 
             if (project == null)
+            {
                 return new UpdateProjectResponse
                 {
                     UpdateProjectResult = ProjectOperationResult.NotFound
                 };
+            }
+
+            var keyExists = await context.Projects
+                .AnyAsync(p => p.Key == request.Key && p.Id != projectId);
+
+            if (keyExists)
+            {
+                throw new ConflictException(
+                    $"Проект с ключом '{request.Key}' уже существует.");
+            }
+
             if (project.OwnerId != userId)
+            {
                 return new UpdateProjectResponse
                 {
                     UpdateProjectResult = ProjectOperationResult.Forbidden
                 };
+            }
 
+            project.Name = request.Name;
+            project.Description = request.Description;
+            project.Icon = request.Icon;
+            project.Tags = request.Tags;
+            project.Key = request.Key;
+            project.StartDate = request.StartDate;
+            project.Color = request.Color;
+            project.Deadline = request.Deadline;
+            project.Category = request.Category;
 
-            if (request.Name != null)
-                project.Name = request.Name;
-            if (request.Description != null)
-                project.Description = request.Description;
             await context.SaveChangesAsync();
+
             return new UpdateProjectResponse
             {
                 UpdateProjectResult = ProjectOperationResult.Success,

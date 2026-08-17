@@ -10,8 +10,10 @@ import { ProjectActivity } from "../../components/Project/ProjectActivity/Projec
 import { ProjectFile } from "../../components/Project/ProjectFiles/ProjectFile";
 import { useParams } from "react-router-dom";
 import { useProjectInfo } from "../../hooks/useProjectInfo";
+import { useNavigate } from "react-router-dom";
 
 export function ProjectPage() {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { project, loading } = useProjectInfo(Number(id));
   if (loading) {
@@ -19,6 +21,17 @@ export function ProjectPage() {
   }
   if (!project) {
     return <div>Проект не найден</div>;
+  }
+
+  function getStatus(status: string){
+    switch(status){
+      case "Active":
+        return "Активный"
+      case "Completed":
+        return "Сделанный"
+      case "Archived":
+        return "Архивный"
+    }
   }
 
   return (
@@ -35,11 +48,11 @@ export function ProjectPage() {
             <div className="projectPageTitleContent">
               <div className="projectTitle">
                 <h1 className="Title">{project?.name}</ h1>
-                <p className="projectStatus">{project?.status}</p>
+                <p className="projectStatus">{getStatus(project?.status)}</p>
               </div>
               <p className="projectPageDescr">{project?.description}.</p>
             </div>
-            <button className="buttonProjectTitle"><HiOutlinePencil />Редактировать проект</button>
+            <button onClick={() => navigate(`/dashboard/project/${project.id}/edit`)} className="buttonProjectTitle"><HiOutlinePencil />Редактировать проект</button>
           </div>
           <div>
             <ProjectStatistic
@@ -57,6 +70,7 @@ export function ProjectPage() {
             project={project}
           />
           <ProjectCommand
+            owner={project.owner}
             members={project.members}
           />
           <ProjectActivity

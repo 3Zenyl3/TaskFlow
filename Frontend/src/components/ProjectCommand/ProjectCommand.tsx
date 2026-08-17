@@ -2,9 +2,10 @@ import "./ProjectCommand.css"
 import type { UserDto } from "../../api/projects";
 
 type Props = {
+  owner: UserDto;
   members: UserDto[];
 };
-export function ProjectCommand({ members }: Props) {
+export function ProjectCommand({ owner, members }: Props) {
   return (
     <div className="projectCommand">
       <header className="projectCommandHeader">
@@ -12,6 +13,12 @@ export function ProjectCommand({ members }: Props) {
         <button className="addNewMember">Пригласить</button>
       </header>
       <div className="peopleAvatarInProjectComDiv">
+        <img
+          key={owner.userId}
+          src={owner.avatarUrl}
+          alt={owner.userName}
+          className="peopleAvatarInProjectCom"
+        />
         {members.map(member => (
           <img
             key={member.userId}

@@ -3,11 +3,21 @@ import { CreateProjectMainInfo } from "../CreateProjectMainInfo/CreateProjectMai
 import { CreateProjectPreview } from "../CreateProjectPreview/CreateProjectPreview";
 import { CreateProjectAdvice } from "../CreateProjectAdvice/CreateProjectAdvice";
 import type { ProjectCreateData } from "../../../types/projectCreate";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { createProject } from "../../../api/createProject";
 import axios from "axios";
+import { GetProject } from "../../../api/projects";
+import { UpdateProject } from "../../../api/projects";
 
-export function CreateProjectsContent() {
+export type ProjectMode = "create" | "edit";
+
+type CreateProjectsContentProps = {
+  mode: ProjectMode;
+}
+
+export function CreateProjectsContent({ mode }: CreateProjectsContentProps) {
+  const { id } = useParams();
   const [projectData, setProjectData] = useState<ProjectCreateData>({
     title: "",
     description: "",
@@ -35,6 +45,64 @@ export function CreateProjectsContent() {
   });
   const [serverError, setServerError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(mode === "edit");
+
+  useEffect(() => {
+    if (mode !== "edit") {
+      return;
+    }
+
+    if (!id) {
+      return;
+    }
+
+    const loadProject = async () => {
+      try {
+        setLoading(true);
+        setServerError("");
+
+        const project = await GetProject(Number(id));
+
+        setProjectData({
+          title: project.name,
+          description: project.description,
+          icon: project.icon,
+          key: project.key,
+          category: project.category,
+          color: project.color,
+          startDate: project.startDate
+            ? new Date(project.startDate)
+            : null,
+          deadline: project.endDate
+            ? new Date(project.endDate)
+            : null,
+          tags: project.tags ?? [],
+          members: project.members.map((member) => ({
+            email: member.userName,
+            role: "Участник",
+          })),
+          selectedMemberRole: "Участник",
+          memberEmail: "",
+
+        });
+      } catch (error) {
+        console.error("Ошибка загрузки проекта:", error);
+
+        if (axios.isAxiosError(error)) {
+          setServerError(
+            error.response?.data?.message ??
+            "Не удалось загрузить проект"
+          );
+        } else {
+          setServerError("Произошла неизвестная ошибка");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProject();
+  }, [mode, id]);
 
   const validateProject = () => {
     const newErrors = {
@@ -75,36 +143,80 @@ export function CreateProjectsContent() {
     return Object.values(newErrors).every(error => error === "");
   }
 
-  const handleCreateProject = async () => {
+  const handleSubmit = async () => {
     setServerError("");
     setSuccessMessage("");
+
     if (!validateProject()) {
       return;
     }
 
     try {
-      const project = await createProject(projectData);
+      if (mode === "create") {
+        const project =
+          await createProject(projectData);
 
-      console.log("Проект создан:", project);
-      setSuccessMessage("Проект успешно создан");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Status:", error.response?.status);
-        console.error(
-          "Validation errors:",
-          JSON.stringify(error.response?.data, null, 2)
+        console.log(
+          "Проект создан:",
+          project
         );
-        console.log("DATA:", error.response?.data);
-        console.log("STATUS:", error.response?.status);
+
+        setSuccessMessage(
+          "Проект успешно создан"
+        );
+
+        return;
+      }
+
+      if (!id) {
+        setServerError(
+          "Не указан идентификатор проекта"
+        );
+        return;
+      }
+
+      const project =
+        await UpdateProject(
+          projectData,
+          Number(id)
+        );
+
+      console.log(
+        "Проект изменён:",
+        project
+      );
+
+      setSuccessMessage(
+        "Проект успешно изменён"
+      );
+    } catch (error) {
+      console.error(
+        "Ошибка сохранения проекта:",
+        error
+      );
+
+      if (axios.isAxiosError(error)) {
         setServerError(
           error.response?.data?.message ??
-          "Не удалось создать проект"
+          (mode === "create"
+            ? "Не удалось создать проект"
+            : "Не удалось изменить проект")
         );
       } else {
-        setServerError("Произошла неизвестная ошибка");
+        setServerError(
+          "Произошла неизвестная ошибка"
+        );
       }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="createProjectsContent">
+        <p>Загрузка проекта...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="createProjectsContent" >
@@ -134,9 +246,11 @@ export function CreateProjectsContent() {
 
           <button
             className="createProjectSubmit"
-            onClick={handleCreateProject}
+            onClick={handleSubmit}
           >
-            Создать проект
+            {mode === "create"
+              ? "Создать проект"
+              : "Сохранить изменения"}
           </button>
         </div>
       </div>

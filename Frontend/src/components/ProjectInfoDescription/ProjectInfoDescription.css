@@ -24,3 +24,24 @@
   gap: 15px;
   color: #656e81;
 }
+.projectTags {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.tagsList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.projectTag {
+    padding: 4px 5px;
+    border-radius: 6px;
+    font-size: 13px;
+     color: #656e81;
+}
+
+.noTags {
+    color: #888;
+    font-size: 14px;
+}
