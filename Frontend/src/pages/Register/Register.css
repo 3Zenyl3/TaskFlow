@@ -122,7 +122,7 @@
     .toLogin button{
       padding: 5px 10px;
     }
-    .rightSide {
+    .rightSide1 {
         width: 100%;
         min-height: calc(100vh - 70px);
 
@@ -133,11 +133,11 @@
         overflow-y: auto;
     }
 
-    .registerWindow {
+    .registerWindow1 {
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
 
-        padding: 30px 20px;
+        padding: 20px 20px;
 
         height: auto;
     }
