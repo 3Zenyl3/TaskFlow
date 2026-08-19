@@ -1,4 +1,3 @@
-import "../../../styles/Auth.css"
 import AuthLeftSide from "../../components/AuthLayout/AuthLeftSide";
 import Input from "../../components/Input/Input";
 import React, { useState } from "react";
@@ -6,6 +5,7 @@ import LoginButton from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import "./Login.css";
+
 
 function Login() {
   const { email, setEmail, password, setPassword, login } = useLogin();
@@ -48,8 +48,8 @@ function Login() {
   return (
     <div className="loginWindow">
       <AuthLeftSide></AuthLeftSide>
-      <form onSubmit={handleLogin} className="rightSide">
-        <div className="registerWindow">
+      <form onSubmit={handleLogin} className="rightSide1">
+        <div className="registerWindow1">
           <h2 className="regTitle">
             Вход
           </h2>

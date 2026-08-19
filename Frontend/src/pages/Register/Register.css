@@ -1,14 +1,16 @@
 .register{
   display: flex;
+  width: 100%;
+  min-height: 100vh;
 }
 .titleFirst{
   color: #f9f7f7;
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(24px, 3vw, 40px);
   transition: color 0.3s ease;
 }
 .titleSecond{
   color: #0d74f4;
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(24px, 3vw, 40px);
   transition: color 0.3s ease;
 }
 .logo{
@@ -24,22 +26,78 @@
   color: #f9f7f7;
 }
 .check_mark{
-  width: 40px;
-  height: 40px;
+  width: clamp(24px, 3vw, 40px);
+  height: clamp(24px, 3vw, 40px);
   margin-right: 15px;
   transition: transform 0.3s ease;
 }
 .logo:hover .check_mark {
   transform: rotate(10deg);
 }
-.leftSide{
+.leftSide {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+
+    box-sizing: border-box;
+
+    width: 30%;
+    min-height: 100vh;
+    padding-top: 78px;
+    background-color: #011227;
+}
+.loginWindow{
+  display: flex;
+}
+.rightSide1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 40px;
+    box-sizing: border-box;
+    background-color: #f5f8fb;
+}
+.registerWindow1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 16px;
+
+    width: min(100%, 840px);
+
+    padding: 48px;
+
+    border-radius: 16px;
+    background-color: #fefdfd;
+}
+.regTitle{
+  font-size: clamp(17px, 3vw, 36px);
+}
+.regDescription{
+  color: #989fab;
+}
+.regMenu{
   display: flex;
   flex-direction: column;
-  gap: 60px;
-  width: 30vw;
-  height: 100vh;
-  padding-top: 78px;
-  background-color: #011227;
+  justify-content: start;
+  gap: 16px;
+  width: 100%;
+  max-width: 730px;
+  height: 100%;
+  max-height: 470px;
+  margin-top: 16px;
+}
+.regMunuTitle{
+  font-size: clamp(13px, 2vw, 16px);
+}
+.errMessage{
+  text-align: center;
 }
 .slogan{
   display: flex;
@@ -56,11 +114,13 @@
 .sloganDescription{
   max-width: 360px;
   color: #aebbca;
-  font-size: clamp(10px, 2vw, 17px);
+  font-size: clamp(14px, 1.5vw, 17px);
 }
-.taskPeopleImage{
-  width: 100%;
-  height: auto;
+.taskPeopleImage {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
 }
 .regDescription{
   color: #989fab;
@@ -91,4 +151,37 @@
 }
 .toLogin button:hover{
   color: #3982f8;
+}
+
+@media (max-width: 768px) {
+    .register {
+        flex-direction: column;
+    }
+
+    
+    .toLogin p{
+      display: none;
+    }
+    .toLogin button{
+      padding: 5px 10px;
+    }
+    .rightSide {
+        width: 100%;
+        min-height: calc(100vh - 70px);
+
+        padding: 30px 20px;
+
+        justify-content: flex-start;
+
+        overflow-y: auto;
+    }
+
+    .registerWindow {
+        width: 100%;
+        max-width: 500px;
+
+        padding: 30px 20px;
+
+        height: auto;
+    }
 }

@@ -1,5 +1,6 @@
 import logo from "../../assets/ГалочкаДляTaskFlow.svg"
 import tasksPeople from "../../assets/КартинкаTaskFlow.svg"
+import "./AuthLayout.css"
 
 function AuthLeftSide(){
   return(

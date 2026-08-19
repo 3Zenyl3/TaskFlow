@@ -1,6 +1,7 @@
 .teamActivity{
-  width: 18.2vw;
-  height: 40vh;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
   background-color: #fefefe;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -17,4 +18,12 @@
 .seeAllTeamActivity{
   text-decoration: none;
   color: #2e7dfb;
+}
+@media (max-width: 768px) {
+    .teamActivity {
+        width: 100%;
+        max-width: none;
+        height: 40vh;
+        border-radius: 10px;
+    }
 }

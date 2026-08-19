@@ -8,24 +8,40 @@
   min-height: 100vh;
   background-color: #f8f9fa;
 }
-.firstLineRightSide,
-.secondLineRightSide{
-  display: flex;
-  padding: 0 34px;
-  gap: 16px;
+.firstLineRightSide {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+
+    padding: 0 34px;
 }
-.secondLineRightSide{
-  margin-top: 16px;
+.secondLineRightSide {
+    display: grid;
+    grid-template-columns: minmax(200px, 1.5fr) minmax(200px, 1fr) minmax(280px, 0.7fr);
+    gap: 16px;
+
+    margin-top: 16px;
+
+    padding: 0 34px;
 }
 .calendar{
   width: 18.2vw;
   height: 40vh;
-  background-color: #fefefe;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  background-color: #fefefe;
 }
 .divCalendar{
   padding: 20px;
   text-transform: capitalize;
 }
-
+@media(max-width: 768px) {
+  .dashboard,
+  .firstLineRightSide,
+  .secondLineRightSide{
+    display: flex;
+    flex-direction: column;
+  }
+}

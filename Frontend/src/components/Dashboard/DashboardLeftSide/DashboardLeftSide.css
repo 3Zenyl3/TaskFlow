@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 13.2vw;
   min-height: 100vh;
+  min-width: 220px;
   padding-top: 40px;
   background-color: #101c27;
   flex-shrink: 0;
@@ -23,6 +24,9 @@
   margin-right: 12px;
   transition: 0.3s;
 }
+.openMenuDashboard{
+  display: none;
+}
 .dashboardLogo{
   display: flex;
   flex-direction: row;
@@ -40,4 +44,34 @@
 }
 .dashboardLogo:hover .dashboardCheckHeadLine{
   transform: rotate(10deg);
+}
+
+@media(max-width: 768px){
+  .openMenuDashboard{
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .dashboardLeftSide {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 70px;
+    height: 70px;
+    padding-top: 0;
+    flex-direction: column;
+
+    }
+
+    .dashboardLogo {
+      height: 70px;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
 }

@@ -22,3 +22,61 @@
 .toRegister button:hover{
   color: #3982f8;
 }
+@media (max-width: 768px) {
+    .loginWindow {
+        flex-direction: column;
+    }
+
+    .leftSide {
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 50px;
+
+        padding: 15px 20px;
+        background-color: #011227;
+    }
+
+    .logo {
+        padding: 0;
+    }
+    .taskPeopleImage{
+      display: none;
+    }
+    .slogan {
+        display: none;
+    }
+    .toRegister{
+      top: 15px;
+    }
+    .toRegister p{
+      display: none;
+    }
+    .toRegister button{
+      padding: 5px 10px;
+    }
+    .rightSide {
+        width: 100%;
+        min-height: calc(100vh - 70px);
+
+        padding: 30px 20px;
+
+        justify-content: flex-start;
+
+        overflow-y: auto;
+    }
+
+    .registerWindow {
+        width: 100%;
+        max-width: 500px;
+
+        padding: 30px 20px;
+
+        height: auto;
+    }
+}

@@ -28,3 +28,24 @@
     position: relative;
     top: 3px;
 }
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 15px;
+        box-sizing: border-box;
+        background-color: #101c27;
+        display: none;
+        z-index: 1000;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .sidebar.open {
+        display: flex;
+    }
+}

@@ -1,5 +1,11 @@
-.myCalendar{
-  width: 100%;
+.calendar {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #fefefe;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 .calendarGrid{
   display: grid;

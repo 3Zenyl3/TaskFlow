@@ -1,12 +1,15 @@
-.myTasks{
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  width: 45vw;
-  height: 42vh;
-  border-radius: 12px;
-  background-color: #fefefe;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+.myTasks {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    min-width: 0;
+    height: 100%;
+    border-radius: 12px;
+    background-color: #fefefe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+    box-sizing: border-box;
 }
 .myTasksHeader{
   display: flex;
@@ -62,4 +65,13 @@
 
 .tasksList::-webkit-scrollbar-track {
   background: transparent;
+}
+
+@media (max-width: 768px) {
+    .myTasks {
+        width: 100%;
+        max-width: none;
+        height: 60vh;
+        border-radius: 10px;
+    }
 }

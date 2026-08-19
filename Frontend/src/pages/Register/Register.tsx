@@ -1,5 +1,4 @@
 import "./Register.css"
-import "../../../styles/Auth.css"
 import Input from "../../../src/components/Input/Input"
 import RegisterButton from "../../components/Button/Button"
 import React, { useState } from "react";
@@ -67,8 +66,8 @@ function Register() {
   return (
     <div className="register">
       <AuthLeftSide></AuthLeftSide>
-      <form onSubmit={handleRegister} className="rightSide">
-        <div className="registerWindow">
+      <form onSubmit={handleRegister} className="rightSide1">
+        <div className="registerWindow1">
           <h2 className="regTitle">
             Создание аккаунта
           </h2>
