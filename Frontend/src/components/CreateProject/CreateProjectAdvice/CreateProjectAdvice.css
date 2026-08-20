@@ -1,6 +1,6 @@
 .createProjectAdvice{
   width: 100%;
-  height: 18vh;
+  max-height: 250px;
   background-color: #f3f7fe;
   border-radius: 12px;
   display: flex;

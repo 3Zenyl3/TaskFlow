@@ -1,85 +1,163 @@
-.tasksInProject{
-  width: 100%;
-  background-color: white;
-  height: 100%;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  border-radius: 12px;
+.tasksInProject {
+    width: 100%;
+    height: 100%;
+    max-height: 545px;
+    min-height: 300px;
+
+    min-width: 0;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 12px;
 }
-.tasksInProjectHeader{
-  display: flex;
-  flex-direction: column;
-  padding: 20px 10px;
-  gap: 10px;
+
+.tasksInProjectHeader {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    gap: 10px;
 }
-.tasksInProjectTitle{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
+
+.tasksInProjectTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
 }
-.titleIntasksInProject{
-  font-size: 20px;
+
+.titleIntasksInProject {
+    font-size: 20px;
 }
-.newTaskButton{
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border: none;
-  font-size: 16px;
-  background-color: #2283ef;
-  color: white;
-  padding: 10px 10px;
-  border-radius: 6px;
+
+.newTaskButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    font-size: 16px;
+    background-color: #2283ef;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
 }
-.newTaskButton:hover{
-  background-color: #3089ef;
+
+.newTaskButton:hover {
+    background-color: #3089ef;
 }
-.newTaskButton:active{
-  background-color: #2b74c8;
+
+.newTaskButton:active {
+    background-color: #2b74c8;
 }
-.tasksInProjectSearch{
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
+
+.tasksInProjectSearch {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
-.searchTask{
-  width: 25%;
+
+.searchTask {
+    width: 25%;
 }
+
 .searchTask input {
-  height: 20px;
-  border-radius: 6px;
+    height: 20px;
+    border-radius: 6px;
 }
-.tasksInProjectPage{
-  padding: 0 10px;
+
+.tasksInProjectPage {
+    padding: 0 10px;
+    min-width: 0;
+    
 }
+
 .tasksCardsHeader {
-  display: grid;
-  grid-template-columns:
-    5vw 
-    19vw 
-    9vw  
-    9vw  
-    9vw 
-    9vw; 
-  align-items: center;
-  column-gap: 20px;
-  padding: 10px;
-  border-top: 1px solid #f8f9f9;
-  border-bottom: 1px solid #f8f9f9;
-  border-radius: 6px;
-  background-color: #f8f8fb;
-  font-size: 12px;
-  color: #858b9c;
+    display: grid;
+    grid-template-columns:
+        5vw
+        19vw
+        9vw
+        9vw
+        9vw
+        9vw;
+    align-items: center;
+    column-gap: 20px;
+    padding: 10px;
+    border-top: 1px solid #f8f9f9;
+    border-bottom: 1px solid #f8f9f9;
+    border-radius: 6px;
+    background-color: #f8f8fb;
+    font-size: 12px;
+    color: #858b9c;
 }
-.executorInTasksHeader,
-.priorityInTasksHeader,
-.statusInTasksHeader,
-.deadlineInTasksHeader{
-  width: 9vw;
+
+
+@media (max-width: 768px) {
+    .tasksInProjectPage{
+      overflow-x: auto;
+    }
+    .tasksInProjectHeader {
+        padding: 15px;
+    }
+
+    .tasksInProjectTitle {
+        align-items: center;
+        gap: 10px;
+    }
+
+    .titleIntasksInProject {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .newTaskButton {
+        font-size: 14px;
+        padding: 8px;
+        flex-shrink: 0;
+    }
+
+    .tasksInProjectSearch {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .searchTask {
+        width: 100%;
+    }
+
+    .searchTask input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .tasksInProjectPage {
+        padding: 0 10px 10px;
+        overflow-x: auto;
+    }
+
+    .tasksCardsHeader {
+        min-width: 700px;
+    }
 }
-.idInTasksHeader{
-  width: 5vw;
-}
-.taskNameInTasksHeader{
-  width: 17vw;
+
+@media (max-width: 480px) {
+
+    .tasksInProjectHeader {
+        padding: 12px;
+    }
+
+    .tasksInProjectTitle {
+        align-items: flex-start;
+    }
+
+    .titleIntasksInProject {
+        font-size: 17px;
+    }
+
+    .newTaskButton {
+        font-size: 13px;
+        padding: 7px;
+    }
+
+    .tasksCardsHeader {
+        min-width: 650px;
+    }
 }

@@ -1,3 +1,10 @@
 .projects{
   display: flex;
 }
+
+@media(max-width: 768px){
+  .projects{
+  display: flex;
+  flex-direction: column;
+  }
+}

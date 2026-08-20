@@ -1,14 +1,18 @@
 .projectPage{
   display: flex;
+  width: 100%;
+  min-height: 100vh;
 }
 .projectPageRightSide{
   display: flex;
-  width: 100vw;
+  flex: 1;
+  min-width: 0;
   background-color: #fafcfe;
   flex-direction: row;
 }
 .leftPageRightSide{
   width: 75%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
@@ -36,7 +40,7 @@ a{
   flex-direction: row;
   justify-content: space-between;
   align-items: start;
-  padding: 5px 30px;
+  padding: 5px 20px;
 }
 .projectPageTitleContent{
   display: flex;
@@ -76,6 +80,7 @@ a{
   display: flex;
   flex-direction: column;
   width: 25%;
+  min-width: 0;
   gap: 25px;
   height: 100vh;
   padding: 40px 0 20px 0;
@@ -91,6 +96,82 @@ a{
   gap: 10px
 }
 .tasksCardInProjectPage{
-  padding: 20px 30px;
+  padding: 20px 20px;
   height: 100%;
+}
+@media (max-width: 1444px) {
+  .projectPageRightSide {
+        flex-direction: column;
+    }
+    .leftPageRightSide {
+        width: 100%;
+    }
+    .projectPageRight {
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 768px) {
+    .projectPageRightSide {
+        flex-direction: column;
+    }
+    .projectPage {
+        flex-direction: column;
+    }
+
+    .leftPageRightSide {
+        width: 100%;
+    }
+
+    .projectPageRight {
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .projectPageTop {
+        padding: 15px 20px;
+    }
+
+    .projectPageTitle {
+        flex-direction: column;
+        gap: 15px;
+        padding: 5px 20px;
+    }
+
+    .projectPageTitleContent {
+        width: 100%;
+    }
+
+    .buttonProjectTitle {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tasksCardInProjectPage {
+        padding: 15px 20px;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .projectTitle {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .Title {
+        font-size: 24px;
+    }
+
+    .backToProjects,
+    .currentProjectName {
+        font-size: 14px;
+    }
 }

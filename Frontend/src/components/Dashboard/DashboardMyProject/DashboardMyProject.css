@@ -1,42 +1,44 @@
-.myProjects{
+.myProjects {
   display: flex;
   flex-direction: column;
-  justify-content: start;
   width: 100%;
   min-width: 0;
-  height: 100%;
+  height: 40vh;
+  min-height: 300px;
+  max-height: 500px;
   border-radius: 12px;
   background-color: #fefefe;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 .myProjectsTitle{
   font-size: 18px;
 }
-.myProjectsHeader{
+.myProjectsHeader {
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 20px;
-  font-size: 18px;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
-.myProjectsList{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.myProjectsList {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    flex: 1;
 }
-.myProjects{
-  overflow-y: auto;
-}
-.myProjects::-webkit-scrollbar {
+.myProjectsList::-webkit-scrollbar {
   width: 6px;
 }
 
-.myProjects::-webkit-scrollbar-thumb {
+.myProjectsList::-webkit-scrollbar-thumb {
   background: #d1d5db;
   border-radius: 10px;
 }
 
-.myProjects::-webkit-scrollbar-track {
+.myProjectsList::-webkit-scrollbar-track {
   background: transparent;
 }
 @media (max-width: 768px) {

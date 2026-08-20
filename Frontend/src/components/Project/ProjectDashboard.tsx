@@ -12,9 +12,9 @@ function ProjectDashboard({ title, description, percentProject, countTask }: pro
     <div className="project">
       <div className="projectTitleDiv">
         <h3 className="projectTitle">{title}</h3>
-        <p className="projectDescr">{description}</p>
+        <p className="projectDescr1">{description}</p>
       </div>
-      <div className="progressBar">
+      <div className="progressBar1">
         <div
           className="progress"
           style={{ width: percentProject }}

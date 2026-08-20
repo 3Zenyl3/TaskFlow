@@ -1,12 +1,14 @@
 .createProjectMainInfo{
   display: flex;
   background-color: white;
-  width: 51vw;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,.12);
   padding: 20px 20px;
   flex-direction: column;
   gap: 40px;
+  width: 100%;
+  min-width: 0;
+  flex: 1.5;
 }
 .createProjectTitle{
   font-size: 16px;
@@ -269,4 +271,10 @@
 .memberItem button:hover {
   background-color: #fee2e2;
   color: #ef4444;
+}
+
+@media(max-width: 425px) {
+  .createProjectFormTitle span{
+    font-size: 12px;
+  }
 }

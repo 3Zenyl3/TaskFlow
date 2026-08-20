@@ -11,7 +11,7 @@
   flex-direction: column;
   gap: 10px;
 }
-.projectDescr{
+.projectDescr1{
   width: 25vw;
   color: #949ca8;
   font-size: 13px;
@@ -20,7 +20,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.progressBar {
+.progressBar1 {
   width: 100%;
   height: 10px;
   background-color: #e5e7eb;

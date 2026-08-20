@@ -1,145 +1,273 @@
-.projectStats{
-  display: flex;
-  flex-direction: column;
-  height: 28vh;
-  gap: 10px;
-  padding: 10px 30px;
+.projectStats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
 }
-.projectStatsTitle{
-  width: 100%;
-  border-bottom: 2px solid #f7f9fc;
-  padding-bottom: 10px;
+
+.projectStatsTitle {
+    width: 100%;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f7f9fc;
 }
-.stats{
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  gap: 15px;
+
+.stats {
+    display: flex;
+    gap: 15px;
 }
+
 .projectProgress,
 .projectLastTask,
-.projectStatTask{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 22vh;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  gap: 10px;
+.projectStatTask {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    height: 22vh;
+    gap: 10px;
+
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
-.projectStatsCardTitle{
-  padding: 10px;
-  font-size: 14px;
+
+.projectStatsCardTitle {
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
 }
-.progressBar {
-  width: 100%;
-  height: 13px;
-  background-color: #eef2f7;
-  border-radius: 999px;
-}
+
 .progressWrapper {
-  display: flex;
-  align-items: end;
-  padding: 0 10px;
-  gap:20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 10px;
 }
+
+.progressBar {
+    width: 100%;
+    height: 13px;
+    background-color: #eef2f7;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
 .progress {
-  height: 100%;
-  background-color: #2563ff;
-  border-radius: 999px;
-  transition: width 0.3s ease;
+    height: 100%;
+    background-color: #2563ff;
+    border-radius: 999px;
+    transition: width 0.3s ease;
 }
-.percenProject{
-  font-weight: bold;
-  font-size: 20px;
+
+.percenProject {
+    flex-shrink: 0;
+    font-size: 20px;
+    font-weight: bold;
 }
-.projectProgressInfo{
-  display: flex;
-  flex-direction: row;
+
+.projectProgressInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 20px 10px;
 }
-.endTaskProject{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
+
+.endTaskProject {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
 }
-.projectProgressInfo{
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 10px;
+
+.projectProgressInfoTitle {
+    color: #b3b7c0;
+    font-size: 13px;
+    text-align: center;
 }
-.projectProgressInfoTitle{
-  color: #b3b7c0;
-  font-size: 13px;
+
+.projectProgressInfoCount {
+    font-weight: bold;
 }
-.projectProgressInfoCount{
-  font-weight: bold;
-}
+
 .projectProgressInfoCount.Compl {
-  color: #3e5746;
+    color: #3e5746;
 }
+
 .projectProgressInfoCount.InWork {
-  color: #0d85b0;
+    color: #0d85b0;
 }
-.projectProgressInfoCount.Warn{
-  color: #d46b6d;
-  font-weight: bold;
+
+.projectProgressInfoCount.Warn {
+    color: #d46b6d;
 }
-.tasksInProject{
-  width: 100%;
-}
-.projectStats {
-  flex-direction: column;
-}
+
 .projectTaskInfo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    gap: 20px;
+    padding: 0 20px;
 }
+
 .doughnutChart {
-  height: 100%;
-  height: calc(22vh - 60px);
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
 }
-.doughnutChart {
-  position: relative;
-}
+
 .doughnutCenter {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    transform: translate(-50%, -50%);
 }
+
 .taskCount {
-  font-size: 28px;
-  color: #0e278d;
-  font-weight: bold;
+    color: #0e278d;
+    font-size: 28px;
+    font-weight: bold;
 }
+
 .taskText {
-  font-size: 13px;
-  color: #7a7a7a;
+    color: #7a7a7a;
+    font-size: 13px;
 }
-.statusLegend{
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  
+
+.statusLegend {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
-.legendItem{
-  display: flex;
-  gap: 15px;
-  color: #818595;
-  align-items: center;
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #818595;
+    font-size: 13px;
 }
+
 .legendColor {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+@media (max-width: 1224px) {
+
+    .projectStats {
+        padding: 10px 20px;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .projectProgressInfo {
+        gap: 5px;
+        padding: 15px 8px;
+    }
+
+    .projectProgressInfoTitle {
+        font-size: 12px;
+    }
+
+    .projectTaskInfo {
+        padding: 0 10px;
+        gap: 10px;
+    }
+
+    .doughnutChart {
+        width: 100px;
+        height: 100px;
+    }
+
+    .taskCount {
+        font-size: 24px;
+    }
+
+    .statusLegend {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .projectStats {
+        height: auto;
+        padding: 10px 20px;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .projectProgress,
+    .projectLastTask,
+    .projectStatTask {
+        width: 100%;
+        height: auto;
+        min-height: 180px;
+        flex: none;
+    }
+
+    .projectProgressInfo {
+        padding: 15px 10px;
+    }
+
+    .projectTaskInfo {
+        padding: 10px 20px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .projectStats {
+        padding: 10px 15px;
+    }
+
+    .projectStatsTitle {
+        font-size: 18px;
+    }
+
+    .projectProgressInfo {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .projectProgressInfoTitle {
+        font-size: 12px;
+    }
+
+    .projectTaskInfo {
+        justify-content: center;
+        gap: 25px;
+    }
+
+    .doughnutChart {
+        width: 110px;
+        height: 110px;
+    }
+
+    .statusLegend {
+        gap: 10px;
+    }
+
+    .legendItem {
+        font-size: 12px;
+    }
 }
