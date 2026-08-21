@@ -59,106 +59,145 @@ namespace TaskFlow.Services
 
         public async Task<ProjectDetailsDto?> GetCurrentProject(int projectId, int userId)
         {
-            return await context.Projects
-                .Where(p => p.Id == projectId && (p.Members.Any(m => m.UserId == userId) || p.OwnerId == userId))
-                .Select(p => new ProjectDetailsDto
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Status = p.Status,
-                    Description = p.Description,
-                    Members = p.Members
-                        .Where(m => m.UserId != p.OwnerId)
-                        .Select(m => new ProjectMemberDto
-                        {
-                            UserDto = new UserDto
-                            {
-                                UserId = m.User.Id,
-                                UserName = m.User.UserName,
-                                AvatarUrl = m.User.AvatarUrl,
-                            },
-                            Email = m.User.Email,
-                            Role = m.ProjectRole
-                        })
-                        .ToList(),
-                    Owner = new UserDto
-                    {
-                        UserId = p.Owner.Id,
-                        UserName = p.Owner.UserName,
-                        AvatarUrl = p.Owner.AvatarUrl
-                    },
-                    ProgressPercent = p.Tasks.Count() == 0
-                        ? 0
-                        : (int)(p.Tasks.Count(t => t.Status == StatusTask.Done) * 100.0
-                            / p.Tasks.Count()),
-                    CompletedTaskCount = p.Tasks
-                        .Where(t => t.Status == StatusTask.Done)
-                        .Count(),
-                    LeftTaskCount = p.Tasks.Count - p.Tasks
-                        .Where(t => t.Status == StatusTask.Done)
-                        .Count(),
-                    OverdueTaskCount = p.Tasks
-                        .Where(t => t.Status == StatusTask.Overdue)
-                        .Count(),
-                    TaskCount = p.Tasks.Count(),
-                    TaskInProgressCount = p.Tasks
-                        .Where(t => t.Status == StatusTask.InProgress)
-                        .Count(),
-                    Tasks = p.Tasks
-                        .Select(t => new TaskDto
-                        {
-                            Id = t.Id,
-                            Title = t.Title,
-                            Priority = t.Priority,
-                            Status = t.Status,
-                            Deadline = t.Deadline,
-                            Description = t.Description,
-                            ExecutorName = t.Executor.UserName,
-                        })
-                        .ToList(),
-                    TaskInReviewCount = p.Tasks.Count(t => t.Status == StatusTask.Review),
-                    Category = p.Category,
-                    Deadline = p.Deadline,
-                    StartDate = p.StartDate,
-                    Tags = p.Tags,
-                    Activities = context.Activities
-                        .Where(a => a.ProjectId == p.Id)
-                        .OrderByDescending(a => a.CreatedAt)
-                        .Select(a => new ActivityDTO
-                        {
-                            Id = a.Id,
-                            User = new UserDto
-                            {
-                                UserId = a.User.Id,
-                                UserName = a.User.UserName,
-                                AvatarUrl = a.User.AvatarUrl
-                            },
-                            Type = a.Type,
-                            Description = a.Description,
-                            CreatedAt = a.CreatedAt,
-                        })
-                        .ToList(),
-                    Files = p.Files
-                        .OrderByDescending(f => f.UploadedAt)
-                        .Select(f => new ProjectFileDTO
-                        {
-                            Id = f.Id,
-                            FileName = f.FileName,
-                            ContentType = f.ContentType,
-                            Size = f.Size,
-                            UploadedAt = f.UploadedAt
-                        })
-                        .ToList(),
-                    Color = new ProjectColor
-                    {
-                        Name = p.Color.Name,
-                        Value = p.Color.Value,
-                        Background = p.Color.Background
-                    },
-                    Icon = p.Icon,
-                    Key = p.Key
-                })
+            var project = await context.Projects
+                .Include(p => p.Owner)
+                .Include(p => p.Members)
+                    .ThenInclude(m => m.User)
+                .Include(p => p.Tasks)
+                    .ThenInclude(t => t.Executor)
+                .Include(p => p.Files)
+                .Include(p => p.Color)
+                .Where(p =>
+                    p.Id == projectId &&
+                    (p.Members.Any(m => m.UserId == userId) ||
+                     p.OwnerId == userId)
+                )
                 .FirstOrDefaultAsync();
+
+            if (project == null)
+                return null;
+
+            return await CreateProjectDetails(project);
+        }
+
+        private async Task<ProjectDetailsDto> CreateProjectDetails(Project project)
+        {
+            return new ProjectDetailsDto
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Status = project.Status,
+                Description = project.Description,
+
+                Members = project.Members
+                    .Where(m => m.UserId != project.OwnerId)
+                    .Select(m => new ProjectMemberDto
+                    {
+                        UserDto = new UserDto
+                        {
+                            UserId = m.User.Id,
+                            UserName = m.User.UserName,
+                            AvatarUrl = m.User.AvatarUrl
+                        },
+                        Email = m.User.Email,
+                        Role = m.ProjectRole
+                    })
+                .ToList(),
+
+                Owner = new UserDto
+                {
+                    UserId = project.Owner.Id,
+                    UserName = project.Owner.UserName,
+                    AvatarUrl = project.Owner.AvatarUrl
+                },
+
+                ProgressPercent = project.Tasks.Count == 0
+                ? 0
+                : (int)(
+                    project.Tasks.Count(t => t.Status == StatusTask.Done) * 100.0
+                    / project.Tasks.Count
+                ),
+                CompletedTaskCount = project.Tasks
+                .Count(t => t.Status == StatusTask.Done),
+
+                LeftTaskCount = project.Tasks.Count -
+                        project.Tasks.Count(t => t.Status == StatusTask.Done),
+
+                OverdueTaskCount = project.Tasks
+                    .Count(t => t.Status == StatusTask.Overdue),
+
+                TaskCount = project.Tasks.Count,
+
+                TaskInProgressCount = project.Tasks
+                    .Count(t => t.Status == StatusTask.InProgress),
+
+                TaskInReviewCount = project.Tasks
+                    .Count(t => t.Status == StatusTask.Review),
+
+                Tasks = project.Tasks
+                    .Select(t => new TaskDto
+                    {
+                        Id = t.Id,
+                        Title = t.Title,
+                        Priority = t.Priority,
+                        Status = t.Status,
+                        Deadline = t.Deadline,
+                        Description = t.Description,
+                        ExecutorName = t.Executor != null
+                            ? t.Executor.UserName
+                            : null
+                    })
+                    .ToList(),
+
+                Category = project.Category,
+
+                Deadline = project.Deadline,
+
+                StartDate = project.StartDate,
+
+                Tags = project.Tags,
+
+                Files = project.Files
+                    .OrderByDescending(f => f.UploadedAt)
+                    .Select(f => new ProjectFileDTO
+                    {
+                        Id = f.Id,
+                        FileName = f.FileName,
+                        ContentType = f.ContentType,
+                        Size = f.Size,
+                        UploadedAt = f.UploadedAt
+                    })
+                    .ToList(),
+
+                Color = project.Color == null
+                ? null
+                : new ProjectColor
+                {
+                    Name = project.Color.Name,
+                    Value = project.Color.Value,
+                    Background = project.Color.Background
+                },
+
+                Icon = project.Icon,
+
+                Key = project.Key,
+                Activities = project.Activities
+                    .OrderByDescending(a => a.CreatedAt)
+                    .Select(a => new ActivityDTO
+                    {
+                        Id = a.Id,
+                        User = new UserDto
+                        {
+                            UserId = a.User.Id,
+                            UserName = a.User.UserName,
+                            AvatarUrl = a.User.AvatarUrl
+                        },
+                        Type = a.Type,
+                        Description = a.Description,
+                        CreatedAt = a.CreatedAt
+                    })
+                    .ToList(),
+            };
         }
 
         public async Task<ProjectCreateDto> CreateProject(User user, CreateProjectRequest request)

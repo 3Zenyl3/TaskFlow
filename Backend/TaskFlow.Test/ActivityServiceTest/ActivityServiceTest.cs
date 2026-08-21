@@ -44,7 +44,10 @@ namespace TaskFlow.Test.ActivityServiceTest
             var project = new Project
             {
                 Id = 1,
-                Name = "TaskFlow"
+                Name = "TaskFlow",
+                Category = "Development",
+                Icon = "code",
+                Key = "TASK"
             };
 
             var member = new ProjectMember
@@ -82,7 +85,7 @@ namespace TaskFlow.Test.ActivityServiceTest
             var result = await service.GetTeamActivity(1);
 
             Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result[0].UserName, Is.EqualTo("Kirill"));
+            Assert.That(result[0].User.UserName, Is.EqualTo("Kirill"));
             Assert.That(result[0].Description, Is.EqualTo("создал задачу"));
         }
 
@@ -94,6 +97,9 @@ namespace TaskFlow.Test.ActivityServiceTest
             {
                 Id = 1,
                 Name = "Other project",
+                Category = "Development",
+                Icon = "code",
+                Key = "OTHER",
                 Members = new List<ProjectMember>()
             };
 
@@ -130,7 +136,10 @@ namespace TaskFlow.Test.ActivityServiceTest
             var project = new Project
             {
                 Id = 1,
-                Name = "Project"
+                Name = "Project",
+                Category = "Development",
+                Icon = "code",
+                Key = "PROJ"
             };
             var member = new ProjectMember
             {

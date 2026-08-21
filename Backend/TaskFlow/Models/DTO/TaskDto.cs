@@ -13,5 +13,7 @@ namespace TaskFlow.Models.DTO
         public DateTime Deadline { get; set; }
         public string ProjectName { get; set; }
         public string ExecutorName { get; set; }
+        public int? StageId { get; set; }
+        public string? StageName { get; set; }
     }
 }

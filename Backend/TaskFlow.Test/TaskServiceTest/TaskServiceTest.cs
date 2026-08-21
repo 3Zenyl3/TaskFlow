@@ -56,6 +56,9 @@ namespace TaskFlow.Test.TaskServiceTest
                 Name = "Test project",
                 Description = "Description",
                 OwnerId = ownerId,
+                Key = $"TEST{id}",
+                Icon = "globe",
+                Category = "Development",
                 Members = new List<ProjectMember>()
             };
         }
@@ -212,7 +215,8 @@ namespace TaskFlow.Test.TaskServiceTest
                 ProjectId = 1,
                 ExecutorId = 2,
                 DeadLine = DateTime.UtcNow.AddDays(5),
-                Priority = Priority.High
+                Priority = Priority.High,
+                StageId = null
             };
 
 

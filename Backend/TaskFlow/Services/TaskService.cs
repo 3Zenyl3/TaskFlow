@@ -33,7 +33,9 @@ namespace TaskFlow.Services
                     Status = t.Status,
                     ExecutorName = t.Executor != null ? t.Executor.UserName : null,
                     Priority = t.Priority,
-                    ProjectName = t.Project.Name
+                    ProjectName = t.Project.Name,
+                    StageId = t.StageId,
+                    StageName = t.Stage.Name
                 })
                 .ToListAsync();
         }
@@ -51,7 +53,9 @@ namespace TaskFlow.Services
                     Status = t.Status,
                     ExecutorName = t.Executor != null ? t.Executor.UserName : null,
                     Priority = t.Priority,
-                    ProjectName = t.Project.Name
+                    ProjectName = t.Project.Name,
+                    StageId = t.StageId,
+                    StageName = t.Stage.Name
                 })
                 .ToListAsync();
         }
@@ -68,7 +72,9 @@ namespace TaskFlow.Services
                     Status = t.Status,
                     ExecutorName = t.Executor != null ? t.Executor.UserName : null,
                     Priority = t.Priority,
-                    ProjectName = t.Project.Name
+                    ProjectName = t.Project.Name,
+                    StageId = t.StageId,
+                    StageName = t.Stage.Name
                 })
                 .FirstOrDefaultAsync();
         }
@@ -77,6 +83,7 @@ namespace TaskFlow.Services
         {
             var project = await context.Projects
                 .Include(p => p.Members)
+                .Include(p => p.Stages)
                 .FirstOrDefaultAsync(p => p.Id == request.ProjectId);
 
             if (project == null)
@@ -102,6 +109,19 @@ namespace TaskFlow.Services
             if (!executorInProject)
                 throw new BadRequestException("Исполнитель не состоит в проекте.");
 
+            if (request.StageId.HasValue)
+            {
+                var stageExists = await context.ProjectStages
+                    .AnyAsync(s =>
+                        s.Id == request.StageId.Value &&
+                        s.ProjectId == request.ProjectId);
+
+                if (!stageExists)
+                {
+                    throw new NotFoundException("Этап не найден");
+                }
+            }
+
             var task = new TaskFlow.Entities.Task
             {
                 Title = request.Title,
@@ -115,7 +135,8 @@ namespace TaskFlow.Services
                 CreatedAt = DateTime.UtcNow,
                 Priority = request.Priority,
                 ProjectId = request.ProjectId,
-                Status = StatusTask.Todo
+                Status = StatusTask.Todo,
+                StageId = request.StageId
             };
             var notification = new Notification
             {

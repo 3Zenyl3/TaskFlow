@@ -32,6 +32,8 @@
 
         public DateTime CreatedAt { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public int? StageId { get; set; }
+        public ProjectStage? Stage { get; set; }
     }
 
     public enum Priority

@@ -13,6 +13,7 @@ namespace TaskFlow.Data
         public DbSet<ProjectMember> ProjectMembers { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<ProjectFile> ProjectFiles { get; set; }
+        public DbSet<ProjectStage> ProjectStages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,18 @@ namespace TaskFlow.Data
                 .WithMany(u => u.CreatedTasks)
                 .HasForeignKey(t => t.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProjectStage>()
+                .HasOne(s => s.Project)
+                .WithMany(s => s.Stages)
+                .HasForeignKey(s => s.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Entities.Task>()
+                .HasOne(t => t.Stage)
+                .WithMany()
+                .HasForeignKey(t => t.StageId)
+                .OnDelete(DeleteBehavior.SetNull);
 
 
             modelBuilder.Entity<Entities.Task>()
@@ -47,7 +60,7 @@ namespace TaskFlow.Data
 
             modelBuilder.Entity<Activity>()
                 .HasOne(a => a.Project)
-                .WithMany()
+                .WithMany(p => p.Activities)
                 .HasForeignKey(a => a.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 

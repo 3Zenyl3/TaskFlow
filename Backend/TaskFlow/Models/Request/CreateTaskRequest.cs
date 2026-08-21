@@ -10,5 +10,6 @@ namespace TaskFlow.Models.Request
         public int ExecutorId { get; set; }
         public Priority Priority { get; set; }
         public DateTime DeadLine { get; set; }
+        public int? StageId { get; set; }
     }
 }
