@@ -1,0 +1,323 @@
+.createStageModal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(23, 32, 51, 0.35);
+  backdrop-filter: blur(2px);
+
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.createStageModal {
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px;
+
+  background: #ffffff;
+  border: 1px solid #edf0f5;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.createStageModal__title {
+  margin: 0 0 24px;
+
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Основная часть */
+
+.createStageMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Поля */
+
+.createStageFormItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.createStageFormTitle {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.createStageFormItem input,
+.createStageFormItem textarea {
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: 1px solid #e6e8ea;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #374151;
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.createStageFormItem input {
+  height: 42px;
+}
+
+.createStageFormItem textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.createStageFormItem input::placeholder,
+.createStageFormItem textarea::placeholder {
+  color: #aeb7c5;
+}
+
+.createStageFormItem input:focus,
+.createStageFormItem textarea:focus {
+  border-color: #6791f4;
+  box-shadow: 0 0 0 3px rgba(103, 145, 244, 0.1);
+}
+
+/* Настройки этапа */
+
+.createStageSettings {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.stageSetting {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+}
+
+/* Иконки */
+
+.stageIcons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stageIconItem {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #e6e8ea;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #6b7280;
+
+  cursor: pointer;
+
+}
+
+.stageIconItem:hover {
+  background: #f3f4f6;
+  border-color: #cbd5e1;
+  color: #111827;
+}
+
+.stageIconItem:active {
+  transform: scale(0.94);
+}
+
+.stageIconItem svg {
+  font-size: 21px;
+}
+
+.stageIconItem.active {
+  background: #eef3fe;
+  border-color: #6791f4;
+  color: #3b82f6;
+}
+
+.colorPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.colorItem {
+  position: relative;
+
+  width: 25px;
+  height: 25px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.colorItem:hover {
+  transform: scale(1.08);
+}
+
+.colorItem.active {
+  box-shadow: 0 0 0 5px var(--color-background);
+}
+
+.colorItem .checkIcon {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  font-size: 16px;
+  color: #ffffff;
+}
+.timeSettingsStage {
+  display: flex;
+  width: 100%;
+  gap: 30px;
+}
+
+.dateSetting {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+}
+
+.createStageFormTitle span {
+  color: #8b95a5;
+  font-weight: 400;
+}
+.createStageModal__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 28px;
+  padding-top: 20px;
+
+  border-top: 1px solid #edf0f5;
+}
+
+.createStageModal__actions button {
+  height: 40px;
+
+  padding: 0 18px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.createStageModal__actions button:active {
+  transform: scale(0.97);
+}
+
+.createStageModal__actions button[type="button"] {
+  background: #ffffff;
+  border: 1px solid #e6e8ea;
+
+  color: #526078;
+}
+
+.createStageModal__actions button[type="button"]:hover {
+  background: #f8fafc;
+  border-color: #d1d5db;
+}
+
+.createStageModal__actions button[type="submit"] {
+  background: #4e8df7;
+  border: 1px solid #4e8df7;
+
+  color: #ffffff;
+}
+
+.createStageModal__actions button[type="submit"]:hover {
+  background: #397de8;
+  border-color: #397de8;
+}
+
+.createStageModal__actions button[type="submit"]:disabled {
+  background: #b9cef5;
+  border-color: #b9cef5;
+
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+
+  .createStageModal {
+    max-height: 95vh;
+    padding: 20px;
+  }
+
+  .createStageSettings {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .timeSettingsStage {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .createStageModal__actions {
+    flex-direction: column-reverse;
+  }
+
+  .createStageModal__actions button {
+    width: 100%;
+  }
+}

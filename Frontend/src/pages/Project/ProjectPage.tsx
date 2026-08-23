@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import DashboardLeftSide from "../../components/Dashboard/DashboardLeftSide/DashboardLeftSide";
 import { ProjectStatistic } from "../../components/ProjectStatistic/ProjectStatistic";
 import { HiOutlinePencil } from "react-icons/hi";
-import TasksCardInProjectPage from "../../components/TaskCard/TasksCardInProjectPage";
+{/* import TasksCardInProjectPage from "../../components/TaskCard/TasksCardInProjectPage"; */}
 import { ProjectInfoDescription } from "../../components/ProjectInfoDescription/ProjectInfoDescription";
 import { ProjectCommand } from "../../components/ProjectCommand/ProjectCommand";
 import { ProjectActivity } from "../../components/Project/ProjectActivity/ProjectActivity";
@@ -11,20 +11,23 @@ import { ProjectFile } from "../../components/Project/ProjectFiles/ProjectFile";
 import { useParams } from "react-router-dom";
 import { useProjectInfo } from "../../hooks/useProjectInfo";
 import { useNavigate } from "react-router-dom";
+import { useProjectStages } from "../../hooks/useProjectStages";
+import ProjectStages from "../../components/ProjectStages/ProjectStages";
 
 export function ProjectPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { project, loading } = useProjectInfo(Number(id));
-  if (loading) {
+  const { project, loading: loadingProject } = useProjectInfo(Number(id));
+  const { stages, loading: loadingStages } = useProjectStages(Number(id));
+  if (loadingProject) {
     return <div>Загрузка проекта...</div>;
   }
   if (!project) {
     return <div>Проект не найден</div>;
   }
 
-  function getStatus(status: string){
-    switch(status){
+  function getStatus(status: string) {
+    switch (status) {
       case "Active":
         return "Активный"
       case "Completed":
@@ -60,9 +63,21 @@ export function ProjectPage() {
             />
           </div>
           <div className="tasksCardInProjectPage">
-            <TasksCardInProjectPage
-              tasks={project.tasks}
+            <ProjectStages
+              projectId={Number(id)}
+              stages={stages}
+              loading={loadingStages}
+              onStageClick={(stage) => {
+                console.log("Открыть этап:", stage);
+              }}
+              onStageMenuClick={(stage) => {
+                console.log("Меню:", stage);
+              }}
             />
+            {/* <TasksCardInProjectPage
+              tasks={project.tasks}
+            />*/}
+            
           </div>
         </div>
         <div className="projectPageRight">

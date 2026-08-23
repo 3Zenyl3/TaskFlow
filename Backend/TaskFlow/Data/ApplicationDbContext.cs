@@ -31,6 +31,9 @@ namespace TaskFlow.Data
                 .HasForeignKey(s => s.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<ProjectStage>()
+                .OwnsOne(s => s.ColorStage);
+
             modelBuilder.Entity<Entities.Task>()
                 .HasOne(t => t.Stage)
                 .WithMany()

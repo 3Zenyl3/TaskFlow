@@ -28,7 +28,7 @@ export function CreateProjectRightSide({title, description, mode}: Props,  ) {
             <span>/</span>
             <h2 className="currentProjectName">{title}</h2>
           </div>
-          <NavLink to="/dashboard/projects"> <button className="cancelButton">Отмена</button></NavLink>
+          <NavLink to={backUrl}> <button className="cancelButton">Отмена</button></NavLink>
         </div>
         <div className="projectHeaderTitlesContainer">
           <h1 className="createProjectTitleH1">{title}</h1>

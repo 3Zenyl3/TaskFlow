@@ -161,9 +161,13 @@ export function CreateProjectMainInfo({
             Дата начала
           </h4>
           <DatePickerInput
-            projectData={projectData}
-            setProjectData={setProjectData}
-            field="startDate"
+            value={projectData.startDate}
+            onChange={(date) =>
+              setProjectData(prev => ({
+                ...prev,
+                startDate: date
+              }))
+            }
             error={errors.startDate}
           />
         </div>
@@ -172,9 +176,13 @@ export function CreateProjectMainInfo({
             Дедлайн <span>(необязательно)</span>
           </h4>
           <DatePickerInput
-            projectData={projectData}
-            setProjectData={setProjectData}
-            field="deadline"
+            value={projectData.deadline}
+            onChange={(date) =>
+              setProjectData(prev => ({
+                ...prev,
+                deadline: date
+              }))
+            }
             error={errors.deadline}
           />
         </div>
@@ -254,24 +262,24 @@ export function CreateProjectMainInfo({
           </div>
         </div>
         <div className="membersList">
-            {projectData.members.map((member, index) => (
-              <div key={index} className="memberItem">
-                <span>{member.email}</span>
-                <span>{member.role}</span>
+          {projectData.members.map((member, index) => (
+            <div key={index} className="memberItem">
+              <span>{member.email}</span>
+              <span>{member.role}</span>
 
-                <button
-                  onClick={() => {
-                    setProjectData(prev => ({
-                      ...prev,
-                      members: prev.members.filter((_, i) => i !== index)
-                    }));
-                  }}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
+              <button
+                onClick={() => {
+                  setProjectData(prev => ({
+                    ...prev,
+                    members: prev.members.filter((_, i) => i !== index)
+                  }));
+                }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

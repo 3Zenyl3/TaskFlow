@@ -3,6 +3,7 @@ using TaskFlow.Data;
 using TaskFlow.Entities;
 using TaskFlow.Exceptions;
 using TaskFlow.Models.DTO;
+using TaskFlow.Models.Request;
 
 namespace TaskFlow.Services
 {
@@ -18,6 +19,7 @@ namespace TaskFlow.Services
         public async Task<List<ProjectStageDto>> GetStages(int projectId)
         {
             var projectStages = context.ProjectStages
+                .AsNoTracking()
                 .Where(x => x.ProjectId == projectId)
                 .OrderBy(x => x.Position);
 
@@ -28,8 +30,20 @@ namespace TaskFlow.Services
                     Name = s.Name,
                     Position = s.Position,
                     ProjectId = s.ProjectId,
-                    CreatedDate = s.CreatedDate,
-                    Description = s.Description
+                    StartDate = s.StartDate,
+                    Description = s.Description,
+                    ColorStage = s.ColorStage,
+                    CompletedTasks = context.Tasks
+                        .Where(t => t.StageId == s.Id &&
+                            t.ProjectId == projectId &&
+                            t.Status == StatusTask.Done)
+                        .Count(),
+                    TotalTasks = context.Tasks
+                        .Where(t => t.StageId == s.Id &&
+                            t.ProjectId == projectId)
+                        .Count(),
+                    EndDate = s.EndDate,
+                    Icon = s.Icon
                 })
                 .ToListAsync();
         }
@@ -47,7 +61,10 @@ namespace TaskFlow.Services
                 Description = request.Description,
                 Position = maxPosition + 1,
                 ProjectId = projectId,
-                CreatedDate = DateTime.UtcNow,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                ColorStage = request.StageColor,
+                Icon = request.Icon,
             };
 
             await context.ProjectStages.AddAsync(stage);
@@ -60,7 +77,10 @@ namespace TaskFlow.Services
                 Description = stage.Description,
                 Position = stage.Position,
                 ProjectId = stage.ProjectId,
-                CreatedDate = stage.CreatedDate
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                ColorStage = request.StageColor,
+                Icon = request.Icon,
             };
         }
 
@@ -86,7 +106,10 @@ namespace TaskFlow.Services
                 Description = stage.Description,
                 Position = stage.Position,
                 ProjectId = stage.ProjectId,
-                CreatedDate = stage.CreatedDate
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                ColorStage = request.StageColor,
+                Icon = request.Icon,
             };
         }
 

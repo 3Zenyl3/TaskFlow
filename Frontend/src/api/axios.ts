@@ -25,6 +25,7 @@ api.interceptors.response.use(
       console.error("URL:", error.config?.url);
       console.error("Response:", error.response?.data);
       console.error("Message:", error.message);
+      console.log("Validation errors:", error.response?.data?.errors);
       console.error("================================");
     } else {
       console.error("Unknown error:", error);
