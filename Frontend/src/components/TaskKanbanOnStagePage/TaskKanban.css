@@ -1,0 +1,86 @@
+.TaskKanban{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  height: 100%;
+}
+.TaskKanbanHeader{
+  display: flex;
+  gap: 15px;
+}
+.taskKanbanOfStatus{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  height: 100%;
+}
+.TaskStatusTitle{
+  font-size: 14px;
+}
+.TaskStatusTitle::before{
+  content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    margin-right: 8px;
+}
+.TaskStatusTitle.InProgress::before{
+  background-color: #7dacf8;
+}
+.TaskStatusTitle.Review::before{
+  background-color: #ffab3e;
+}
+.TaskStatusTitle.Ready::before{
+  background-color: #1ba94a;
+}
+.TaskStatusTitle.Postponed::before{
+  background-color: #acafbb;
+}
+.TasksColumn{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  border-radius: 8px;
+  padding: 15px;
+}
+.TasksColumn.Todo{
+  background-color: #f4f5f8;
+}
+.TasksColumn.InProgress{
+  background-color: #eef1f8;
+}
+.TasksColumn.Review{
+  background-color: #fef8f0;
+}
+.TasksColumn.Ready{
+  background-color: #f3f8f5;
+}
+.TasksColumn.Postponed{
+  background-color: #f5f5f8;
+}
+.task-board-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: auto;
+  padding: 10px 5px;
+  border: none;
+  background: transparent;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.task-board-add:hover {
+  color: #2563eb;
+}
+.task-board-add svg {
+  width: 17px;
+  height: 17px;
+}

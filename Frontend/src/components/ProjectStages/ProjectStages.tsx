@@ -44,7 +44,7 @@ export default function ProjectStages({
     rocket: HiOutlineRocketLaunch,
   };
 
-  const formatDate = (date?: string) => {
+  const formatDate = (date: Date | null | undefined) => {
     if (!date) {
       return "—";
     }

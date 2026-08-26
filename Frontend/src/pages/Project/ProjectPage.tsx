@@ -68,7 +68,7 @@ export function ProjectPage() {
               stages={stages}
               loading={loadingStages}
               onStageClick={(stage) => {
-                console.log("Открыть этап:", stage);
+                navigate(`/dashboard/project/${project.id}/stage/${stage.id}`);
               }}
               onStageMenuClick={(stage) => {
                 console.log("Меню:", stage);

@@ -9,6 +9,7 @@ import Calendar from "./pages/Calendar/Calendar";
 import { ProjectPage } from "./pages/Project/ProjectPage";
 import { CreateProject } from "./pages/CreateProject/CreateProject";
 import { EditProject } from "./pages/EditProject/EditProject";
+import { StagePage } from "./pages/StagePage/StagePage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/dashboard/projects/:id" element={<ProjectPage />} />
         <Route path="/dashboard/projects/create" element={<CreateProject />}/>
         <Route path="/dashboard/project/:id/edit" element={<EditProject />} />
+        <Route path="/dashboard/project/:id/stage/:stageId" element={<StagePage />} />
       </Routes>
     </BrowserRouter>
   );

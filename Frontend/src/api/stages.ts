@@ -4,14 +4,15 @@ import type { ProjectColor } from "../types/projectCreate";
 export type ProjectStage = {
   id: number;
   name: string;
+  description: string;
   icon?: string;
   colorStage?: ProjectColor;
 
   completedTasks: number;
   totalTasks: number;
 
-  startDate?: string;
-  endDate?: string;
+  startDate: Date;
+  endDate?: Date;
 };
 
 export interface CreateProjectStageRequest {
@@ -27,6 +28,12 @@ export async function GetProjectStages(projectId: number): Promise<ProjectStage[
   const response = await api.get(`/projects/${projectId}/stages`);
   return response.data;
 }
+
+export async function GetCurrentProjectStage(projectId: number, stageId: number): Promise<ProjectStage> {
+  const response = await api.get(`/projects/${projectId}/stages/${stageId}`);
+  return response.data;
+}
+
 export async function CreateProjectStage(
   projectId: number,
   stageName: string,

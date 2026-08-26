@@ -1,0 +1,42 @@
+.CanbanTaskCard{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  height: 100px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 10px;
+}
+.tasktTitle{
+  font-size: 12px;
+}
+.taskTag{
+  display: inline-flex;
+  align-items: center;
+
+  padding: 3px 8px;
+
+  border-radius: 5px;
+
+  background: #f0e9ff;
+  color: #6941c6;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+.taskInfo{
+  display: flex;
+  justify-content: end;
+  gap: 9px;
+}
+.taskDeadline{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: #667085;
+
+  font-size: 11px;
+  font-weight: 500;
+}
