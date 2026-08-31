@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskFlow.Data;
@@ -12,9 +13,11 @@ using TaskFlow.Data;
 namespace TaskFlow.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260829082525_RemoveTaskUserId")]
+    partial class RemoveTaskUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,9 +323,6 @@ namespace TaskFlow.Migrations
                     b.Property<int?>("StageId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -337,6 +337,9 @@ namespace TaskFlow.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -346,6 +349,8 @@ namespace TaskFlow.Migrations
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("StageId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tasks");
                 });
@@ -580,6 +585,10 @@ namespace TaskFlow.Migrations
                         .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("TaskFlow.Entities.User", null)
+                        .WithMany("Tasks")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Creator");
 
                     b.Navigation("Executor");
@@ -620,6 +629,8 @@ namespace TaskFlow.Migrations
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("Projects");
+
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

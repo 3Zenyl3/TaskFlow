@@ -14,5 +14,6 @@ namespace TaskFlow.Models.DTO
         public int ProgressPercent { get; set; }
 
         public List<UserDto> Members { get; set; } = new();
+        public List<ProjectStage> Stages { get; set; } = new();
     }
 }

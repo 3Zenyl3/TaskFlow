@@ -118,7 +118,12 @@ namespace TaskFlow.Controllers
                 .Select(c => new CommentDTO
                 {
                     Id = c.Id,
-                    Author = c.Author,
+                    Author = new UserDto
+                    {
+                        AvatarUrl = c.Author.AvatarUrl,
+                        UserId = c.Author.Id,
+                        UserName = c.Author.UserName
+                    },
                     Text = c.Text,
                     CreateAt = c.CreatedAt
                 })

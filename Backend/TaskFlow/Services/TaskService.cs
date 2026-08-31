@@ -27,15 +27,34 @@ namespace TaskFlow.Services
                 {
                     Id = t.Id,
                     ProjectId = t.ProjectId,
+                    Key = $"{t.Project.Key}-{t.Id}",
                     Title = t.Title,
                     Description = t.Description,
-                    Deadline = t.Deadline,
-                    Status = t.Status,
-                    ExecutorName = t.Executor != null ? t.Executor.UserName : null,
                     Priority = t.Priority,
+                    Status = t.Status,
+                    Deadline = t.Deadline,
                     ProjectName = t.Project.Name,
+                    ExecutorName = t.Executor != null
+                            ? t.Executor.UserName
+                            : null,
                     StageId = t.StageId,
-                    StageName = t.Stage.Name
+                    Tags = t.Tags,
+                    Comments = t.Comments
+                            .Select(c => new CommentDTO
+                            {
+                                Id = c.Id,
+                                Author = new UserDto
+                                {
+                                    UserId = c.Author.Id,
+                                    AvatarUrl = c.Author.AvatarUrl,
+                                    UserName = c.Author.UserName
+                                },
+                                CreateAt = c.CreatedAt,
+                                Text = c.Text
+                            })
+                            .ToList(),
+                    Type = t.Type,
+                    StartDate = t.StartDate
                 })
                 .ToListAsync();
         }
@@ -135,8 +154,11 @@ namespace TaskFlow.Services
                 CreatedAt = DateTime.UtcNow,
                 Priority = request.Priority,
                 ProjectId = request.ProjectId,
-                Status = StatusTask.Todo,
-                StageId = request.StageId
+                Status = request.Status,
+                StageId = request.StageId,
+                Tags = request.Tags,
+                Type = request.Type,
+                StartDate = request.StartDate,
             };
             var notification = new Notification
             {

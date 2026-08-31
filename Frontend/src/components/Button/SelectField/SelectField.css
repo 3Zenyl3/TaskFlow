@@ -1,0 +1,116 @@
+.selectField {
+  position: relative;
+  width: 100%;
+}
+
+.selectFieldTitle {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 15px;
+  font-weight: 550;
+}
+
+.selectFieldTitle span {
+  color: #ff4d4f;
+}
+
+.selectFieldButton {
+  width: 100%;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  background: none;
+  border: 1px solid #dfe5ec;
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inputErrorText {
+  margin: 4px 0 0;
+
+  font-size: 13px;
+  line-height: 1.2;
+
+  color: #e53935;
+}
+
+.selectFieldButton:hover,
+.selectFieldButton.active {
+  border-color: #b8c3d1;
+}
+
+.selectFieldButton.active {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.placeholder {
+  color: #9ca3af;
+}
+
+.selectArrow {
+  font-size: 20px;
+  color: #6b7280;
+
+  transition: transform 0.2s;
+}
+
+.selectArrow.rotate {
+  transform: rotate(180deg);
+}
+
+.selectFieldDropdown {
+  position: absolute;
+  z-index: 100;
+
+  left: 0;
+  right: 0;
+
+  margin-top: 5px;
+  padding: 5px;
+
+  background: white;
+
+  border: 1px solid #dfe5ec;
+  border-radius: 10px;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.selectOption {
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+
+  text-align: left;
+  font-size: 14px;
+  color: #171717;
+
+  cursor: pointer;
+}
+
+.selectOption:hover {
+  background: #f3f6fa;
+}
+
+.selectOption.selected {
+  background: #eef4ff;
+  color: #2563eb;
+}

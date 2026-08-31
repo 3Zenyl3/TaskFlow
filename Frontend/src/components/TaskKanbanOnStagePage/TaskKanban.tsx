@@ -3,12 +3,48 @@ import Input from "../Input/Input";
 import { Dropdown } from "../Button/Dropdown";
 import { useState } from "react";
 import {
-  getPriorityName,
   getStatusName,
 } from "../../../utils/taskUtils";
 import type { ProjectTask } from "../../api/projects";
 import { CanbanTaskCard } from "../TaskCard/CanbanTaskCard/CanbanTaskCard";
 import { HiOutlinePlus } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import {
+  DndContext,
+  type DragEndEvent,
+  useDroppable,
+  type DragStartEvent,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { updateTaskStatus, } from "../../api/tasks";
+import type { StatusTask } from "../../api/tasks";
+import { TaskModal } from "../TaskModal/TaskModal";
+import type { Project } from "../../api/projects";
+import type { ProjectStage } from "../../api/stages";
+
+function KanbanColumn({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
+  const { setNodeRef, isOver } = useDroppable({
+    id,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`TasksColumn ${id} ${isOver ? "dragOver" : ""}`}
+    >
+      {children}
+    </div>
+  );
+}
 
 const statuses = [
   "Все",
@@ -19,67 +55,123 @@ const statuses = [
   "Просрочена",
 ];
 
-const priorities = [
-  "Все",
-  "Критический",
-  "Высокий",
-  "Средний",
-  "Низкий",
-];
-
 type Props = {
   tasks: ProjectTask[];
+  project: Project;
+  stage: ProjectStage;
+  projectId: number;
+  stageId: number;
+  onTaskStatusChange: (taskId: number, status: StatusTask) => void;
 };
 
-export function TaskKanban({tasks}: Props) {
+
+export function TaskKanban({ tasks, project, stage, projectId, stageId, onTaskStatusChange }: Props) {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
-    const [status, setStatus] = useState("Все");
-    const [priority, setPriority] = useState("Все");
-    const [executor, setExecutor] = useState("Все");
-  
-    const executors = [
-      "Все",
-      ...Array.from(
-        new Set(
-          tasks
-            .filter(task => task.executorName)
-            .map(task => task.executorName)
-        )
-      ),
-    ];
-  
-    const filteredTasks = tasks.filter(task => {
-      const matchesSearch =
-        searchValue === "" ||
-        task.title
-          .toLowerCase()
-          .includes(searchValue.trim().toLowerCase());
-  
-      const matchesStatus =
-        status === "Все" ||
-        status === getStatusName(task.status);
-  
-      const matchesPriority =
-        priority === "Все" ||
-        priority === getPriorityName(task.priority);
-  
-      const matchesExecutor =
-        executor === "Все" ||
-        task.executorName === executor;
-  
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesPriority &&
-        matchesExecutor
-      );
-    });
+  const [status, setStatus] = useState("Все");
+  const [tag, setTag] = useState("Все");
+  const [executor, setExecutor] = useState("Все");
+  const [activeTask, setActiveTask] = useState<ProjectTask | null>(null);
+  const [selectedTask, setSelectedTask] =
+    useState<ProjectTask | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    })
+  );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const task = tasks.find(task => task.id === event.active.id);
+
+    if (task) {
+      setActiveTask(task);
+    }
+  };
+
+  const tags = [
+    "Все",
+    ...Array.from(
+      new Set(
+        tasks.flatMap(task => task.tags ?? [])
+      )
+    ),
+  ];
+
+  const executors = [
+    "Все",
+    ...Array.from(
+      new Set(
+        tasks
+          .filter(task => task.executorName)
+          .map(task => task.executorName)
+      )
+    ),
+  ];
+
+  const filteredTasks = tasks.filter(task => {
+    const matchesSearch =
+      searchValue === "" ||
+      task.title
+        .toLowerCase()
+        .includes(searchValue.trim().toLowerCase());
+
+    const matchesStatus =
+      status === "Все" ||
+      status === getStatusName(task.status);
+
+    const matchesTag =
+      tag === "Все" ||
+      task.tags?.includes(tag);
+
+    const matchesExecutor =
+      executor === "Все" ||
+      task.executorName === executor;
+
+    return (
+      matchesSearch &&
+      matchesStatus &&
+      matchesTag &&
+      matchesExecutor
+    );
+  });
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    setActiveTask(null);
+
+    if (!over) {
+      return;
+    }
+
+    const taskId = Number(active.id);
+    const newStatus = String(over.id) as StatusTask;
+
+    const task = tasks.find(task => task.id === taskId);
+
+    if (!task) {
+      return;
+    }
+
+    if (task.status === newStatus) {
+      return;
+    }
+
+    console.log("Task:", taskId);
+    console.log("Old status:", task.status);
+    console.log("New status:", newStatus);
+    await updateTaskStatus(taskId, newStatus);
+    onTaskStatusChange(taskId, newStatus);
+  };
 
   return (
-    <div className="TaskKanban">
-      <h2 className="">Задачи</h2>
+    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} sensors={sensors}>
+      <div className="TaskKanban">
+        <h2 className="">Задачи</h2>
         <form className="TaskKanbanHeader">
-           <div>
+          <div>
             <Input
               type="string"
               placeholder="Поиск задач..."
@@ -96,10 +188,10 @@ export function TaskKanban({tasks}: Props) {
           />
 
           <Dropdown
-            title="Приоритет"
-            value={priority}
-            options={priorities}
-            onChange={setPriority}
+            title="Метка"
+            value={tag}
+            options={tags}
+            onChange={setTag}
           />
 
           <Dropdown
@@ -111,48 +203,145 @@ export function TaskKanban({tasks}: Props) {
         </form>
 
         <div className="taskKanbanOfStatus">
-          <div className="TasksColumn Todo">
+          <DragOverlay>
+            {activeTask ? (
+              <CanbanTaskCard task={activeTask} />
+            ) : null}
+          </DragOverlay>
+          <KanbanColumn id="Todo">
             <h3 className="TaskStatusTitle Todo">К выполнению</h3>
-            <CanbanTaskCard />
-
-            <button className="task-board-add">
+            <div className="TasksList">
+              {filteredTasks
+                .filter(task => task.status === "Todo")
+                .map(task => (
+                  <CanbanTaskCard
+                    key={task.id}
+                    task={task}
+                    isDragging={activeTask?.id === task.id}
+                    onClick={() => setSelectedTask(task)}
+                  />
+                ))}
+            </div>
+            <button className="task-board-add"
+              onClick={() =>
+                navigate(
+                  `/dashboard/project/${projectId}/stage/${stageId}/task/create?status=Todo`
+                )
+              }
+            >
               <HiOutlinePlus />
               Добавить задачу
             </button>
-          </div>
-          <div className="TasksColumn InProgress">
+          </KanbanColumn>
+          <KanbanColumn id="InProgress">
             <h3 className="TaskStatusTitle InProgress">В работе</h3>
+            <div className="TasksList">
+              {filteredTasks
+                .filter(task => task.status === "InProgress")
+                .map(task => (
+                  <CanbanTaskCard
+                    key={task.id}
+                    task={task}
+                    isDragging={activeTask?.id === task.id}
+                    onClick={() => setSelectedTask(task)}
+                  />
+                ))}
+            </div>
 
-            <button className="task-board-add">
+            <button className="task-board-add"
+              onClick={() =>
+                navigate(
+                  `/dashboard/project/${projectId}/stage/${stageId}/task/create?status=InProgress`
+                )
+              }
+            >
               <HiOutlinePlus />
               Добавить задачу
             </button>
-          </div>
-          <div className="TasksColumn Review">
+          </KanbanColumn>
+          <KanbanColumn id="Review">
             <h3 className="TaskStatusTitle Review">На проверке</h3>
+            <div className="TasksList">
+              {filteredTasks
+                .filter(task => task.status === "Review")
+                .map(task => (
+                  <CanbanTaskCard
+                    key={task.id}
+                    task={task}
+                    isDragging={activeTask?.id === task.id}
+                    onClick={() => setSelectedTask(task)}
+                  />
+                ))}
+            </div>
 
-            <button className="task-board-add">
+            <button className="task-board-add"
+              onClick={() =>
+                navigate(
+                  `/dashboard/project/${projectId}/stage/${stageId}/task/create?status=Review`
+                )
+              }
+            >
               <HiOutlinePlus />
               Добавить задачу
             </button>
-          </div>
-          <div className="TasksColumn Ready">
-            <h3 className="TaskStatusTitle Ready">Готово</h3>
+          </KanbanColumn>
+          <KanbanColumn id="Done">
+            <h3 className="TaskStatusTitle Done">Готово</h3>
+            <div className="TasksList">
+              {filteredTasks
+                .filter(task => task.status === "Done")
+                .map(task => (
+                  <CanbanTaskCard
+                    key={task.id}
+                    task={task}
+                    isDragging={activeTask?.id === task.id}
+                    onClick={() => setSelectedTask(task)}
+                  />
+                ))}
+            </div>
 
-            <button className="task-board-add">
+            <button className="task-board-add"
+              onClick={() =>
+                navigate(
+                  `/dashboard/project/${projectId}/stage/${stageId}/task/create?status=Done`
+                )
+              }
+            >
               <HiOutlinePlus />
               Добавить задачу
             </button>
-          </div>
-          <div className="TasksColumn Postponed">
+          </KanbanColumn>
+          <KanbanColumn id="Postponed">
             <h3 className="TaskStatusTitle Postponed">Отложено</h3>
+            <div className="TasksList">
+              {filteredTasks
+                .filter(task => task.status === "Postponed")
+                .map(task => (
+                  <CanbanTaskCard
+                    key={task.id}
+                    task={task}
+                    isDragging={activeTask?.id === task.id}
+                    onClick={() => setSelectedTask(task)}
+                  />
+                ))}
+            </div>
 
-            <button className="task-board-add">
+            <button className="task-board-add"
+              onClick={() =>
+                navigate(`/dashboard/project/${projectId}/stage/${stageId}/task/create?status=Postponed`)}
+            >
               <HiOutlinePlus />
               Добавить задачу
             </button>
-          </div>
+          </KanbanColumn>
         </div>
-    </div>
+      </div>
+      <TaskModal
+        task={selectedTask}
+        stage={stage}
+        project={project}
+        onClose={() => setSelectedTask(null)}
+      />
+    </DndContext>
   );
 }

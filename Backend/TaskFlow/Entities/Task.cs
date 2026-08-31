@@ -23,11 +23,13 @@
 
         public User? Executor { get; set; }
 
-
+        public List<string> Tags { get; set; } = new List<string>();
         public Priority Priority { get; set; }
 
         public StatusTask Status { get; set; }
+        public TaskType Type { get; set; }
 
+        public DateTime StartDate { get; set; }
         public DateTime Deadline { get; set; }
 
         public DateTime CreatedAt { get; set; }
@@ -49,6 +51,14 @@
         InProgress,
         Review,
         Done,
-        Overdue
+        Overdue,
+        Postponed
+    }
+    public enum TaskType
+    {
+        Bug,
+        Development,
+        Task,
+        Improvement
     }
 }

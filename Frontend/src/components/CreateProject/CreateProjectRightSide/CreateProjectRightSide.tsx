@@ -10,7 +10,7 @@ type Props = {
   mode:ProjectMode
 };
 
-export function CreateProjectRightSide({title, description, mode}: Props,  ) {
+export function CreateProjectRightSide({title, description, mode}: Props) {
   const { id } = useParams();
   const backUrl = mode === "create"
     ? "/dashboard/projects"

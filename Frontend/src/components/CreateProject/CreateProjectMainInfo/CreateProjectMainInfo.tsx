@@ -1,5 +1,5 @@
 import "./CreateProjectMainInfo.css"
-import { CreateProjectFormItem } from "../../Input/CreateProjectFormItem/CreateProjectFormItem";
+import { CreateFormItem } from "../../Input/CreateProjectFormItem/CreateProjectFormItem";
 import { Dropdown } from "../../Button/Dropdown";
 import { HiCheck } from "react-icons/hi";
 import { HiPlus } from "react-icons/hi";
@@ -78,22 +78,22 @@ export function CreateProjectMainInfo({
       <h3 className="createProjectTitle">Основная информация</h3>
       <div className="createProjectTexts">
         <div className="createProjectTextsFirst">
-          <CreateProjectFormItem
+          <CreateFormItem
             title="Название проекта"
             placeholder="Введите название проекта"
             error={errors.title}
-            form="title"
-            projectData={projectData}
-            setProjectData={setProjectData}
+            field="title"
+            data={projectData}
+            setData={setProjectData}
           />
-          <CreateProjectFormItem
+          <CreateFormItem
             title="Ключ проекта"
             placeholder="Например SHOP"
             error={errors.key}
             description="Уникальный идентификатор для API и ID задач"
-            form="key"
-            projectData={projectData}
-            setProjectData={setProjectData}
+            field="key"
+            data={projectData}
+            setData={setProjectData}
           />
         </div>
         <div className="createProjectFormItem">
@@ -237,11 +237,11 @@ export function CreateProjectMainInfo({
         </h4>
         <div className="formsAddUsers">
           <div className="addNewMemberEmail">
-            <CreateProjectFormItem
+            <CreateFormItem
               placeholder="Введите email пользователя"
-              form="memberEmail"
-              projectData={projectData}
-              setProjectData={setProjectData}
+              field="memberEmail"
+              data={projectData}
+              setData={setProjectData}
             />
           </div>
           <div className="selectRoleNewMember">

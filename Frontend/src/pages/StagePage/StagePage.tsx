@@ -12,20 +12,43 @@ import { useProjectInfo } from "../../hooks/useProjectInfo";
 import { useNavigate } from "react-router-dom";
 import { useCurrentProjectStages } from "../../hooks/useCurrentProjectStage";
 import { TaskKanban } from "../../components/TaskKanbanOnStagePage/TaskKanban";
+import { useState } from "react";
+import type { StatusTask } from "../../api/tasks";
 
 export function StagePage() {
   const navigate = useNavigate();
   const { id, stageId } = useParams();
   const { project, loading: loadingProject } = useProjectInfo(Number(id));
   const { stage, loading: loadingStage } = useCurrentProjectStages(Number(id), Number(stageId));
+  const [taskStatuses, setTaskStatuses] = useState<
+    Record<number, StatusTask>
+  >({});
+
   if (loadingProject || loadingStage) {
     return <div>Загрузка...</div>;
   }
   if (!project) {
     return <div>Проект не найден</div>;
   }
+  if (!stage) {
+    return <div>Этап не найден</div>;
+  }
 
-
+  const tasks = project.tasks
+  .filter(task => task.stageId === Number(stageId))
+  .map(task => ({
+    ...task,
+    status: taskStatuses[task.id] ?? task.status,
+  }));
+  const handleTaskStatusChange = (
+    taskId: number,
+    newStatus: StatusTask
+  ) => {
+    setTaskStatuses(prev => ({
+      ...prev,
+      [taskId]: newStatus,
+    }));
+  };
 
   return (
     <div className="projectPage">
@@ -56,7 +79,12 @@ export function StagePage() {
           </div>
 
           <TaskKanban
-            tasks={project.tasks}
+            tasks={tasks}
+            project={project}
+            stage={stage}
+            projectId={Number(id)}
+            stageId={Number(stageId)}
+            onTaskStatusChange={handleTaskStatusChange}
           />
 
         </div>

@@ -1,0 +1,40 @@
+.taskCreateRightSide{
+  display: flex;
+  width: 100vw;
+  background-color: #fafcfe;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+.taskCreateTop{
+  display: flex;
+  gap: 10px;
+}
+.taskCreateFormContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.taskCreateMain{
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  gap: 15px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+.taskCreatePreview{
+  flex: 1;
+}
+.taskDescription{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.createTaskForms{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

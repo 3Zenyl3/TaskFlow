@@ -1,0 +1,229 @@
+.taskPreview {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+
+.taskPreviewTitle {
+  margin: 0 0 28px;
+
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.taskPreviewCard {
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eaf1;
+  border-radius: 16px;
+
+  box-shadow: 0 4px 15px rgba(30, 60, 90, 0.04);
+}
+
+
+/* Верхняя часть */
+
+.taskPreviewTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 34px;
+}
+
+.taskPreviewStatus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #4385ed;
+}
+
+.taskPreviewStatus svg {
+  width: 22px;
+  height: 22px;
+}
+
+.taskPreviewStatus span {
+  padding: 5px 10px;
+
+  border-radius: 6px;
+
+  background: #edf4ff;
+
+  color: #4385ed;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.taskPreviewPriority {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.taskPreviewPriority svg {
+  width: 22px;
+  height: 22px;
+
+  color: #f5a900;
+}
+
+
+/* Название */
+
+.taskPreviewName {
+  margin: 0 0 12px;
+
+  font-size: 25px;
+  font-weight: 700;
+  color: #202631;
+}
+
+
+/* Проект */
+
+.taskPreviewProject {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 30px;
+
+  color: #334155;
+
+  font-size: 15px;
+}
+
+.taskPreviewProject svg {
+  width: 20px;
+  height: 20px;
+
+  color: #367df0;
+}
+
+
+/* Описание */
+
+.taskPreviewDescription {
+  margin: 0;
+
+  color: #7b8799;
+
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* Разделитель */
+
+.taskPreviewDivider {
+  width: 100%;
+  height: 1px;
+
+  margin: 24px 0;
+
+  background: #e9edf2;
+}
+
+
+/* Строки */
+
+.taskPreviewRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 42px;
+
+  font-size: 15px;
+}
+
+.taskPreviewRowLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #667085;
+}
+
+.taskPreviewRowLeft svg {
+  width: 21px;
+  height: 21px;
+
+  color: #7d8da3;
+}
+
+.taskPreviewValue {
+  color: #667085;
+}
+
+
+/* Badge */
+
+.taskPreviewBadge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.taskPreviewType {
+  background: #f0eaff;
+  color: #8063d8;
+}
+
+
+/* Метки */
+
+.taskPreviewTags {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.taskPreviewTagsTitle {
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #475569;
+}
+
+.taskPreviewTagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.taskPreviewTag {
+  background: #edf4ff;
+  color: #315da8;
+}
+
+.taskPreviewTagsList .taskPreviewTag:nth-child(2) {
+  background: #f1ebff;
+  color: #7654c7;
+}
+
+.taskPreviewTagsList .taskPreviewTag:nth-child(3) {
+  background: #fff1e5;
+  color: #e68a32;
+}

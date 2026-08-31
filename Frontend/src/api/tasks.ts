@@ -1,4 +1,5 @@
 import api from "./axios";
+import type { ProjectTask } from "./projects";
 
 export type Priority =
     | "Low"
@@ -10,7 +11,8 @@ export type StatusTask =
     | "Todo"
     | "InProgress"
     | "Review"
-    | "Done";
+    | "Done"
+    | "Postponed";
 
 
 export interface Task {
@@ -25,7 +27,13 @@ export interface Task {
     executorName: string;
 }
 
-export async function GetMyTask(): Promise<Task[]>{
+export async function GetMyTask(): Promise<ProjectTask[]>{
   const response = await api.get("/tasks/my");
   return response.data;
+}
+
+export async function updateTaskStatus(taskId: number, status: StatusTask): Promise<void>{
+    return api.patch(`/tasks/${taskId}/status`, {
+    status,
+  });
 }

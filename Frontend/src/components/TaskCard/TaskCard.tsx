@@ -4,12 +4,13 @@ import {getPriorityName, getStatusName} from "./../../../utils/taskUtils"
 interface TaskCardProps {
   title: string;
   description: string;
-  deadline: string;
+  deadline: string | Date;
   priority: string;
   status: string;
+  onClick?: () => void;
 }
 
-function TaskCard({ title, description, deadline, priority, status }: TaskCardProps) {
+function TaskCard({ title, description, deadline, priority, status, onClick }: TaskCardProps) {
   function getPriorityClass(priority: string) {
     switch (priority) {
       case "Low":
@@ -56,7 +57,7 @@ function TaskCard({ title, description, deadline, priority, status }: TaskCardPr
   }
 
   return (
-    <div className="card">
+    <div className="card" onClick={onClick}>
       <div className="cardContent">
         <h3 className="cardTitle">{title}</h3>
         <p className="cardDescr">{description}</p>
@@ -69,7 +70,7 @@ function TaskCard({ title, description, deadline, priority, status }: TaskCardPr
         </div>
         <span className={getStatusClass(status)}>{getStatusName(status)}</span>
         <span className="taskDeadline">
-          {formatDeadline(deadline)}
+          {formatDeadline(deadline.toString())}
         </span>
       </div>
     </div>

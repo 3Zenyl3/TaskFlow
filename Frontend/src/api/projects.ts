@@ -2,6 +2,7 @@ import api from "./axios"
 import type { ProjectColor } from "../types/projectCreate";
 import type { Activity } from "./teamActivity";
 import type { ProjectCreateData } from "../types/projectCreate";
+import type { ProjectStage } from "./stages";
 
 export interface Project {
   id: number;
@@ -13,18 +14,31 @@ export interface Project {
   progressPercent: number;
   completedTaskCount: number;
   members: UserDto[];
+  stages: ProjectStage[];
 }
 
 export interface ProjectTask {
   id: number;
   projectId: number;
+  key: string;
   title: string;
   description: string;
   status: string;
   priority: string;
   deadline: Date;
+  startDate: Date;
   projectName: string;
   executorName: string;
+  stageId: number;
+  tags: string[];
+  comments:Comment[];
+  type: string;
+}
+export interface Comment{
+  id: number;
+  author: UserDto;
+  createAt:Date;
+  text: string;
 }
 export interface ProjectDetails {
   id: number;
@@ -50,7 +64,7 @@ export interface ProjectDetails {
   icon: string;
   key: string;
   color: ProjectColor;
-
+  stages: ProjectStage[];
 }
 
 export interface UserDto {

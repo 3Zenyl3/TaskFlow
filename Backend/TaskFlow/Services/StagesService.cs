@@ -48,6 +48,37 @@ namespace TaskFlow.Services
                 .ToListAsync();
         }
 
+        public async Task<ProjectStageDto?> GetCurrentStage(int projectId, int stageId)
+        {
+            var projectStage = context.ProjectStages
+                .AsNoTracking()
+                .Where(x => x.ProjectId == projectId && x.Id == stageId);
+
+            return await projectStage
+                .Select(s => new ProjectStageDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Position = s.Position,
+                    ProjectId = s.ProjectId,
+                    StartDate = s.StartDate,
+                    Description = s.Description,
+                    ColorStage = s.ColorStage,
+                    CompletedTasks = context.Tasks
+                        .Where(t => t.StageId == s.Id &&
+                            t.ProjectId == projectId &&
+                            t.Status == StatusTask.Done)
+                        .Count(),
+                    TotalTasks = context.Tasks
+                        .Where(t => t.StageId == s.Id &&
+                            t.ProjectId == projectId)
+                        .Count(),
+                    EndDate = s.EndDate,
+                    Icon = s.Icon
+                })
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<ProjectStageDto> CreateStage(CreateProjectStageRequest request, int projectId)
         {
             var maxPosition = await context.ProjectStages

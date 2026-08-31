@@ -4,6 +4,7 @@
   gap: 10px;
   padding: 20px;
   height: 100%;
+  min-height: 0;
 }
 .TaskKanbanHeader{
   display: flex;
@@ -11,12 +12,14 @@
 }
 .taskKanbanOfStatus{
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 15px;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 .TaskStatusTitle{
   font-size: 14px;
+  padding: 15px 15px 0 15px;
 }
 .TaskStatusTitle::before{
   content: "";
@@ -33,7 +36,7 @@
 .TaskStatusTitle.Review::before{
   background-color: #ffab3e;
 }
-.TaskStatusTitle.Ready::before{
+.TaskStatusTitle.Done::before{
   background-color: #1ba94a;
 }
 .TaskStatusTitle.Postponed::before{
@@ -42,10 +45,10 @@
 .TasksColumn{
   display: flex;
   flex-direction: column;
-  height: 100%;
   min-width: 0;
+  min-height: 0;
   border-radius: 8px;
-  padding: 15px;
+  gap: 15px;
 }
 .TasksColumn.Todo{
   background-color: #f4f5f8;
@@ -56,11 +59,21 @@
 .TasksColumn.Review{
   background-color: #fef8f0;
 }
-.TasksColumn.Ready{
+.TasksColumn.Done{
   background-color: #f3f8f5;
 }
 .TasksColumn.Postponed{
   background-color: #f5f5f8;
+}
+.TasksList {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  gap: 10px;
+  scrollbar-width: none;
 }
 .task-board-add {
   display: flex;
@@ -83,4 +96,7 @@
 .task-board-add svg {
   width: 17px;
   height: 17px;
+}
+.dragOver {
+  background-color: #f5f7fa;
 }

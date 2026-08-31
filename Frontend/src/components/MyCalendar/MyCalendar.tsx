@@ -2,13 +2,13 @@ import { useState } from "react";
 import "./MyCalendar.css"
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { HiOutlineChevronRight } from "react-icons/hi";
-import type { Task } from "../../api/tasks";
+import type { ProjectTask } from "../../api/projects";
 
 
 type CalendarDay = {
   date: Date;
   isCurrentMonth: boolean;
-  tasks: Task[];
+  tasks: ProjectTask[];
 };
 
 function getDaysInMonth(year: number, month: number) {
@@ -69,7 +69,7 @@ function getDifferentMonth(isNextMonth: boolean, currentDate: Date) {
   return newMonth;
 }
 
-function getTasksByDate(tasks: Task[], date: Date): number {
+function getTasksByDate(tasks: ProjectTask[], date: Date): number {
   return tasks.filter(task =>
     new Date(task.deadline).getDate() === date.getDate() &&
     new Date(task.deadline).getMonth() === date.getMonth() &&
@@ -77,7 +77,7 @@ function getTasksByDate(tasks: Task[], date: Date): number {
   ).length;
 }
 
-function MyCalendar({ tasks }: { tasks: Task[] }) {
+function MyCalendar({ tasks }: { tasks: ProjectTask[] }) {
   const months = [
     "Январь",
     "Февраль",

@@ -10,7 +10,6 @@
         public DateTime CreatedAt { get; set; }
         public string AvatarUrl { get; set; } = string.Empty;
         public ICollection<ProjectMember> Projects { get; set; } = new List<ProjectMember>();
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
 
         public ICollection<Project> OwnedProjects { get; set; } = new List<Project>();
 

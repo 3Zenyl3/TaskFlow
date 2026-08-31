@@ -53,6 +53,7 @@ namespace TaskFlow.Services
                             AvatarUrl = m.User.AvatarUrl,
                         })
                         .ToList(),
+                    Stages = p.Stages.ToList()
                 })
                 .ToListAsync();
         }
@@ -138,14 +139,35 @@ namespace TaskFlow.Services
                     .Select(t => new TaskDto
                     {
                         Id = t.Id,
+                        ProjectId = t.ProjectId,
+                        Key = $"{project.Key}-{t.Id}",
                         Title = t.Title,
+                        Description = t.Description,
                         Priority = t.Priority,
                         Status = t.Status,
                         Deadline = t.Deadline,
-                        Description = t.Description,
+                        ProjectName = t.Project.Name,
                         ExecutorName = t.Executor != null
                             ? t.Executor.UserName
-                            : null
+                            : null,
+                        StageId = t.StageId,
+                        Tags = t.Tags,
+                        Comments = t.Comments
+                            .Select(c => new CommentDTO
+                            {
+                                Id = c.Id,
+                                Author = new UserDto
+                                {
+                                    UserId = c.Author.Id,
+                                    AvatarUrl = c.Author.AvatarUrl,
+                                    UserName = c.Author.UserName
+                                },
+                                CreateAt = c.CreatedAt,
+                                Text = c.Text
+                            })
+                            .ToList(),
+                        Type = t.Type,
+                        StartDate = t.StartDate,
                     })
                     .ToList(),
 

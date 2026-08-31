@@ -1,24 +1,45 @@
 import "./CanbanTaskCard.css"
-import type { Task } from "../../../api/tasks";
+import type { ProjectTask } from "../../../api/projects";
 import { HiOutlineCalendarDays } from "react-icons/hi2";
+import { useDraggable } from "@dnd-kit/core";
 
 type Props = {
-  task: Task
+  task: ProjectTask
+  isDragging?: boolean;
+  onClick?: () => void;
 }
 
-export function CanbanTaskCard(){
+export function CanbanTaskCard({ task, isDragging, onClick, }: Props) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+  } = useDraggable({
+    id: task.id,
+  });
+
   return (
-    <div className="CanbanTaskCard">
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      onClick={onClick}
+      className={`CanbanTaskCard ${isDragging ? "dragging" : ""}`}
+    >
       <header>
-        <h4 className="tasktTitle">Название задачи</h4>
+        <h4 className="tasktTitle">{task.title}</h4>
       </header>
-      <div className="taskTags">
-        <span className="taskTag">Тег</span>
+      <div className="taskTags1">
+        {task.tags?.map((tag) => (
+          <span key={tag} className="taskTag">
+            {tag}
+          </span>
+        ))}
       </div>
       <div className="taskInfo">
         <span className="taskDeadline">
           <HiOutlineCalendarDays />
-          12
+          {new Date(task.deadline).toLocaleDateString("ru-RU")}
         </span>
       </div>
     </div>

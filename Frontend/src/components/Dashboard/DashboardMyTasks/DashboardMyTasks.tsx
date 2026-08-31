@@ -1,12 +1,15 @@
 import "./DashboardMyTasks.css"
 import { useState } from "react";
 import TaskCard from "../../TaskCard/TaskCard";
-import type { Task } from "../../../api/tasks";
+import type { ProjectTask } from "../../../api/projects";
+import { TaskModal } from "../../TaskModal/TaskModal";
 
 type TaskFilter = "Today" | "Tomorrow" | "Week";
 
-function DashboardMyTask({ tasks, loading }: { tasks: Task[], loading: boolean }) {
+function DashboardMyTask({ tasks, loading }: { tasks: ProjectTask[], loading: boolean }) {
   const [active, setActive] = useState<TaskFilter>("Today")
+  const [selectedTask, setSelectedTask] =
+      useState<ProjectTask | null>(null);
 
   const filterTasks = tasks.filter(task => {
     const deadLine = new Date(task.deadline);
@@ -70,9 +73,16 @@ function DashboardMyTask({ tasks, loading }: { tasks: Task[], loading: boolean }
             deadline={task.deadline}
             status={task.status}
             priority={task.priority}
+            onClick={() => setSelectedTask(task)}
           />
         ))}
       </div>
+      <TaskModal
+              task={selectedTask}
+              stageId={selectedTask?.stageId}
+              projectId={selectedTask?.projectId}
+              onClose={() => setSelectedTask(null)}
+            />
     </div>
   );
 }

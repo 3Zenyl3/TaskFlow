@@ -7,7 +7,7 @@
 }
 
 .mini-cardTitle {
-  font-size: 14px;
+  font-size: 12px;
 }
 .mini-cardDetails{
   display: flex;
@@ -22,12 +22,13 @@
 
   border-radius: 6px;
   padding: 0 8px;
-
+  font-size: 12px;
   font-weight: bold;
 }
 
 .status {
   display: flex;
+  font-size: 12px;
   justify-content: center;
   align-items: center;
   height: 22px;

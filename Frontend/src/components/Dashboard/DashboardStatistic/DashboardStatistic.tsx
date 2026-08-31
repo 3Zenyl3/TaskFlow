@@ -3,12 +3,12 @@ import {
   HiOutlineClock, HiOutlineClipboardCheck, HiOutlineClipboardList, HiOutlineExclamation,
 } from "react-icons/hi";
 import StatisticCard from "../../StatisticCard/StatisticCard";
-import type { Task } from "../../../api/tasks";
+import type { ProjectTask } from "../../../api/projects";
 import { useState } from "react";
 
 type StatisticFilter = "CurrentWeek" | "CurrentMonth" | "PrevWeek" | "PrevMonth";
 
-function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolean }) {
+function DashboardStatistic({ tasks, loading }: { tasks: ProjectTask[], loading: boolean }) {
   const [filter, setFilter] = useState<StatisticFilter>("CurrentWeek");
 
   const currentFilter = (): string => {
@@ -26,7 +26,7 @@ function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolea
 
   const strFilter = currentFilter();
 
-  const filterTasks = (): Task[] => {
+  const filterTasks = (): ProjectTask[] => {
     switch (filter) {
       case "CurrentMonth":
         return tasks.filter(task => {
@@ -61,7 +61,7 @@ function DashboardStatistic({ tasks, loading }: { tasks: Task[], loading: boolea
     }
   }
 
-  const filteredTasks: Task[] = filterTasks();
+  const filteredTasks: ProjectTask[] = filterTasks();
   const taskCount = filteredTasks.length.toString();
   const completedTaskCount = filteredTasks.filter(task => {
     return task.status === "Done";

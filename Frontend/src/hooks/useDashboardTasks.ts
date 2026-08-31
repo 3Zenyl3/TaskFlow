@@ -1,9 +1,9 @@
 import { GetMyTask } from "../api/tasks";
 import { useEffect, useState } from "react";
-import type { Task } from "../api/tasks";
+import type { ProjectTask } from "../api/projects";
 
 export function useDashboardTasks(){
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<ProjectTask[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

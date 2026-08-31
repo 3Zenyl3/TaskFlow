@@ -41,6 +41,26 @@ namespace TaskFlow.Controllers
             return Ok(await stagesService.GetStages(projectId));
         }
 
+        [HttpGet("{projectId}/stages/{stageId}")]
+        public async Task<IActionResult> GetCurrentStages(int projectId, int stageId)
+        {
+            var (result, userId) = await GetAuthorizedUserId();
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            var thisUserInProject = await IsUserInProject(projectId, userId);
+
+            if (!thisUserInProject)
+            {
+                throw new ForbiddenException();
+            }
+
+            return Ok(await stagesService.GetCurrentStage(projectId, stageId));
+        }
+
         [HttpPost("{projectId}/stages")]
         public async Task<IActionResult> CreateStage(CreateProjectStageRequest request, int projectId)
         {
