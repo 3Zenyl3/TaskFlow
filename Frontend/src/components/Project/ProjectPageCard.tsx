@@ -14,7 +14,7 @@ import {
 } from "react-icons/hi2";
 
 
-export function ProjectPageCard({ project }: { project: Project }) {
+export function ProjectPageCard({ project, onClick }: { project: Project, onClick: () => void }) {
   const people: UserDto[] = project.members;
 
   const visiblePeople = people.slice(0, 3);
@@ -51,7 +51,7 @@ export function ProjectPageCard({ project }: { project: Project }) {
 
   const navigate = useNavigate();
   return (
-    <div className="project">
+    <div className="project" onClick={onClick}>
       <div className="projectMainInfo">
         <div
           className="projectIcon"

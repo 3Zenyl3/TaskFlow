@@ -2,27 +2,33 @@ import type { ProjectDetails } from "../api/projects";
 import { GetProject } from "../api/projects";
 import { useEffect, useState } from "react";
 
-export function useProjectInfo(projectId: number){
+export function useProjectInfo(projectId?: number) {
   const [project, setProject] = useState<ProjectDetails | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function loadingProject(){
-      try{
-        const project = await GetProject(projectId);
-        setProject(project);
-      }
-      catch(err){
-        console.error(err);     
-      }
-      finally {
+    if (!projectId || Number.isNaN(projectId)) {
+      return;
+    }
+
+    const loadingProject = async () => {
+      try {
+        setLoading(true);
+
+        const data = await GetProject(projectId);
+        setProject(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
         setLoading(false);
       }
-    }
+    };
+
     loadingProject();
-  }, [projectId])
+  }, [projectId]);
+
   return {
     project,
-    loading
-  }
+    loading,
+  };
 }

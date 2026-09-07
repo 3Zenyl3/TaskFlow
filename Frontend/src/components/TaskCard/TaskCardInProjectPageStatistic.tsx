@@ -5,9 +5,10 @@ interface TaskCardInProjectPageProps {
   title: string;
   priority: string;
   status: string;
+  onClick?: () => void;
 }
 
-function TaskCardInProjectPage({ title, priority, status }: TaskCardInProjectPageProps) {
+function TaskCardInProjectPage({ title, priority, status,  onClick}: TaskCardInProjectPageProps) {
   function getPriorityClass(priority: string) {
     switch (priority) {
       case "Low": return "priority low";
@@ -27,7 +28,7 @@ function TaskCardInProjectPage({ title, priority, status }: TaskCardInProjectPag
   }
 
   return (
-    <div className="mini-card">
+    <div className="mini-card" onClick={onClick}>
       <h3 className="mini-cardTitle">{title}</h3>
       <div className="mini-cardDetails">
         <span className={getPriorityClass(priority)}>{getPriorityName(priority)}</span>

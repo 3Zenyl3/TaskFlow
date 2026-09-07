@@ -3,8 +3,10 @@ import { HiOutlinePlus } from "react-icons/hi";
 import { ProjectPageCard } from "../Project/ProjectPageCard";
 import type { Project } from "../../api/projects";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ProjectsRightSide({projects, loading}: {projects: Project[], loading: boolean}) {
+  const navigate = useNavigate();
   return (
     <div className="projectsRightSide">
       <div className="rightSideTitle">
@@ -20,6 +22,7 @@ function ProjectsRightSide({projects, loading}: {projects: Project[], loading: b
             <ProjectPageCard
               key={project.id}
               project={project}
+              onClick={() => navigate(`/dashboard/projects/${project.id}`)}
               />
         )))}
       </div>

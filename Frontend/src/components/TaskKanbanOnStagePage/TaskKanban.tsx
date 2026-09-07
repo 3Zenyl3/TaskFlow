@@ -62,10 +62,21 @@ type Props = {
   projectId: number;
   stageId: number;
   onTaskStatusChange: (taskId: number, status: StatusTask) => void;
+  onTaskStageChange: (taskId: number, stageId: number) => void;
+  onTaskDelete: (taskId: number) => void;
 };
 
 
-export function TaskKanban({ tasks, project, stage, projectId, stageId, onTaskStatusChange }: Props) {
+export function TaskKanban({
+  tasks,
+  project,
+  stage,
+  projectId,
+  stageId,
+  onTaskStatusChange,
+  onTaskStageChange,
+  onTaskDelete,
+}: Props) {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [status, setStatus] = useState("Все");
@@ -159,11 +170,20 @@ export function TaskKanban({ tasks, project, stage, projectId, stageId, onTaskSt
       return;
     }
 
-    console.log("Task:", taskId);
-    console.log("Old status:", task.status);
-    console.log("New status:", newStatus);
     await updateTaskStatus(taskId, newStatus);
     onTaskStatusChange(taskId, newStatus);
+  };
+  const handleModalStatusChange = (
+    taskId: number,
+    newStatus: StatusTask
+  ) => {
+    onTaskStatusChange(taskId, newStatus);
+
+    setSelectedTask(prev =>
+      prev && prev.id === taskId
+        ? { ...prev, status: newStatus }
+        : prev
+    );
   };
 
   return (
@@ -341,6 +361,9 @@ export function TaskKanban({ tasks, project, stage, projectId, stageId, onTaskSt
         stage={stage}
         project={project}
         onClose={() => setSelectedTask(null)}
+        onTaskStatusChange={handleModalStatusChange}
+        onTaskStageChange={onTaskStageChange}
+        onTaskDelete={onTaskDelete}
       />
     </DndContext>
   );

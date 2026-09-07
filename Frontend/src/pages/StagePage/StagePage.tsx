@@ -23,6 +23,10 @@ export function StagePage() {
   const [taskStatuses, setTaskStatuses] = useState<
     Record<number, StatusTask>
   >({});
+  const [taskStages, setTaskStages] = useState<
+    Record<number, number>
+  >({});
+  const [deletedTasks, setDeletedTasks] = useState<number[]>([]);
 
   if (loadingProject || loadingStage) {
     return <div>Загрузка...</div>;
@@ -35,11 +39,15 @@ export function StagePage() {
   }
 
   const tasks = project.tasks
-  .filter(task => task.stageId === Number(stageId))
-  .map(task => ({
-    ...task,
-    status: taskStatuses[task.id] ?? task.status,
-  }));
+    .filter(task => !deletedTasks.includes(task.id))
+    .filter(
+      task =>
+        (taskStages[task.id] ?? task.stageId) === Number(stageId)
+    )
+    .map(task => ({
+      ...task,
+      status: taskStatuses[task.id] ?? task.status,
+    }));
   const handleTaskStatusChange = (
     taskId: number,
     newStatus: StatusTask
@@ -49,6 +57,20 @@ export function StagePage() {
       [taskId]: newStatus,
     }));
   };
+  const handleTaskStageChange = (
+    taskId: number,
+    newStageId: number
+  ) => {
+    setTaskStages(prev => ({
+      ...prev,
+      [taskId]: newStageId,
+    }));
+  };
+  const handleTaskDelete = (taskId: number) => {
+    setDeletedTasks(prev => [...prev, taskId]);
+  };
+
+  console.log("PARAMS:", { id, stageId });
 
   return (
     <div className="projectPage">
@@ -85,6 +107,8 @@ export function StagePage() {
             projectId={Number(id)}
             stageId={Number(stageId)}
             onTaskStatusChange={handleTaskStatusChange}
+            onTaskStageChange={handleTaskStageChange}
+            onTaskDelete={handleTaskDelete}
           />
 
         </div>

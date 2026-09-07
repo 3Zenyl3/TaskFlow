@@ -154,8 +154,39 @@ namespace TaskFlow.Controllers
             };
             context.Comments.Add(comment);
             await context.SaveChangesAsync();
-            return Ok(new {id = comment.Id, text = request.Text});
+
+            var resultComment = await context.Comments
+                .Where(c => c.Id == comment.Id)
+                .Select(c => new CommentDTO
+                {
+                    Id = c.Id,
+                    Author = new UserDto
+                    {
+                        AvatarUrl = c.Author.AvatarUrl,
+                        UserId = c.Author.Id,
+                        UserName = c.Author.UserName
+                    },
+                    Text = c.Text,
+                    CreateAt = c.CreatedAt
+                })
+                .FirstAsync();
+
+            return Ok(resultComment);
         }
+        [HttpPatch("{taskId}/stage")]
+        public async Task<IActionResult> UpdateTaskStage(int taskId, UpdateTaskStageRequest request)
+        {
+            var (result, userId) = await GetAuthorizedUserId();
+            if (result != null)
+            {
+                return result;
+            }
+
+            var stage = await taskService.UpdateTaskStage(taskId, request, userId);
+
+            return Ok(stage);
+        }
+
 
         private async Task<(IActionResult? Result, int UserId)> GetAuthorizedUserId()
         {

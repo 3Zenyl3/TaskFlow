@@ -3,6 +3,9 @@ import TaskCardInProjectPage from "../TaskCard/TaskCardInProjectPageStatistic";
 import DoughnutChart from "./DoughnutChart";
 import type { PieChartData } from "./DoughnutChart";
 import type { ProjectDetails } from "../../api/projects";
+import { useState } from "react";
+import type { ProjectTask } from "../../api/projects";
+import { TaskModal } from "../TaskModal/TaskModal";
 
 type Props = {
   project: ProjectDetails;
@@ -31,6 +34,8 @@ export function ProjectStatistic({ project }: Props) {
       color: "#a31b1d"
     }
   ];
+  const [selectedTask, setSelectedTask] =
+    useState<ProjectTask | null>(null);
 
   const doughnutChartData: PieChartData = {
     labels: data.map(d => d.label),
@@ -40,7 +45,6 @@ export function ProjectStatistic({ project }: Props) {
       backgroundColor: data.map(d => d.color)
     }]
   };
-
 
   return (
     <div className="projectStats">
@@ -84,6 +88,7 @@ export function ProjectStatistic({ project }: Props) {
               priority={task.priority}
               status={task.status}
               title={task.title}
+              onClick={() => setSelectedTask(task)}
             />
           ))}
         </div>
@@ -115,7 +120,13 @@ export function ProjectStatistic({ project }: Props) {
           </div>
         </div>
       </div>
-
+      {selectedTask && (
+        <TaskModal
+          task={selectedTask}
+          stageId={selectedTask.stageId}
+          projectId={project.id}
+          onClose={() => setSelectedTask(null)}
+        />)}
     </div>
   );
 }

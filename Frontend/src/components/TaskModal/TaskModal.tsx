@@ -8,38 +8,107 @@ import {
   HiOutlineTag,
   HiOutlineCalendarDays,
   HiOutlineClock,
-  HiOutlinePencil,
   HiOutlineArrowsRightLeft,
   HiOutlineTrash,
-  HiOutlinePaperClip,
-  HiOutlineFaceSmile,
   HiOutlinePaperAirplane,
 } from "react-icons/hi2";
 
 import { NavLink } from "react-router-dom";
 
-import type { ProjectStage } from "../../api/stages";
 import type { Project, ProjectTask } from "../../api/projects";
 
 import { useProjectInfo } from "../../hooks/useProjectInfo";
 import { useCurrentProjectStages } from "../../hooks/useCurrentProjectStage";
+import { useEffect, useState } from "react";
+import {
+  getTaskComments,
+  createTaskComment,
+  updateTaskStage,
+  deleteTask
+} from "../../api/tasks";
+import type { Comment } from "../../api/tasks";
+import type { StatusTask } from "../../api/tasks";
+import { updateTaskStatus } from "../../api/tasks";
+import {
+  type ProjectStage
+} from "../../api/stages";
+import { useProjectStages } from "../../hooks/useProjectStages";
 
 type TaskModalProps = {
   task: ProjectTask | null;
-
-  project?: Project;
-  projectId?: number;
-
-  stage?: ProjectStage;
-  stageId?: number;
-
   onClose: () => void;
-};
-
+  onTaskStatusChange?: (taskId: number, status: StatusTask) => void;
+  onTaskStageChange?: (taskId: number, stageId: number) => void;
+  onTaskDelete?: (taskId: number) => void;
+} & (
+    | {
+      project: Project;
+      projectId?: never;
+    }
+    | {
+      projectId: number;
+      project?: never;
+    }
+  ) & (
+    | {
+      stage: ProjectStage;
+      stageId?: never;
+    }
+    | {
+      stageId: number;
+      stage?: never;
+    }
+  );
 export function TaskModal(props: TaskModalProps) {
-  const { task, onClose } = props;
+  const { task, onClose, onTaskStatusChange, onTaskStageChange, onTaskDelete } = props;
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentText, setCommentText] = useState("");
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [commentSending, setCommentSending] = useState(false);
+  const [isStageMenuOpen, setIsStageMenuOpen] = useState(false);
+  const [stageOverride, setStageOverride] = useState<number | null>(null);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
- 
+  useEffect(() => {
+    if (!task) {
+      return;
+    }
+
+    const loadComments = async () => {
+      try {
+        setCommentsLoading(true);
+
+        const data = await getTaskComments(task.id);
+
+        setComments(data);
+      } catch (error) {
+        console.error("Не удалось загрузить комментарии:", error);
+      } finally {
+        setCommentsLoading(false);
+      }
+    };
+
+    loadComments();
+  }, [task?.id]);
+
+  const statuses: StatusTask[] = [
+    "Todo",
+    "InProgress",
+    "Review",
+    "Done",
+    "Postponed"
+  ];
+  const statusNames = {
+    Todo: "К выполнению",
+    InProgress: "В работе",
+    Review: "На проверке",
+    Done: "Выполнено",
+    Postponed: "Отложено"
+  };
+
+
   const projectId =
     "projectId" in props ? props.projectId : undefined;
 
@@ -65,10 +134,90 @@ export function TaskModal(props: TaskModalProps) {
 
   const project = projectFromProps ?? projectFromApi;
   const stage = stageFromProps ?? stageFromApi;
+  const {
+    stages: projectStages,
+    loading: stagesLoading,
+  } = useProjectStages(project?.id);
+
 
   if (!task) {
     return null;
   }
+  const currentStageId =
+    stageOverride ?? task.stageId ?? stage?.id ?? 0;
+  const handleStatusChange = async (newStatus: StatusTask) => {
+    try {
+      await updateTaskStatus(task.id, newStatus);
+
+      onTaskStatusChange?.(task.id, newStatus);
+
+      setIsStatusOpen(false);
+    } catch (error) {
+      console.error("Не удалось изменить статус:", error);
+    }
+  };
+  const handleCreateComment = async () => {
+    const text = commentText.trim();
+
+    if (!text) {
+      return;
+    }
+
+    try {
+      setCommentSending(true);
+
+      const newComment = await createTaskComment(
+        task.id,
+        text
+      );
+      console.log("NEW COMMENT:", newComment);
+      setComments(prev => [
+        ...prev,
+        newComment
+      ]);
+
+      setCommentText("");
+    } catch (error) {
+      console.error(
+        "Не удалось добавить комментарий:",
+        error
+      );
+    } finally {
+      setCommentSending(false);
+    }
+  };
+
+  const handleStageChange = async (newStageId: number) => {
+    try {
+      const updatedStage = await updateTaskStage(task.id, newStageId);
+
+      console.log("Этап изменён:", updatedStage);
+      onTaskStageChange?.(task.id, newStageId);
+      setStageOverride(newStageId);
+
+      setIsStageMenuOpen(false);
+    } catch (error) {
+      console.error("Ошибка при изменении этапа:", error);
+    }
+  };
+  const handleDeleteTask = async (taskId: number) => {
+    try {
+      setDeleteLoading(true);
+
+      await deleteTask(taskId);
+
+      onTaskDelete?.(taskId);
+      console.log("Задача удалена");
+
+      setIsDeleteConfirmOpen(false);
+      onClose();
+    } catch (error) {
+      console.error("Ошибка при удалении задачи:", error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
 
   if (loadingProject || loadingStage) {
     return (
@@ -128,10 +277,13 @@ export function TaskModal(props: TaskModalProps) {
             </h2>
 
             <span>/</span>
-
-            <h2 className="currentProjectName">
-              {stage.name}
-            </h2>
+            <NavLink
+              to={`/dashboard/project/${project.id}/stage/${stage.id}`}
+            >
+              <h2 className="backToProjects">
+                {stage.name}
+              </h2>
+            </NavLink>
           </div>
 
           <div className="taskModalHeaderActions">
@@ -167,27 +319,47 @@ export function TaskModal(props: TaskModalProps) {
                 {task.priority}
               </div>
 
-              <button className="taskModalStatus">
-                <span className="statusDot" />
+              <div className="taskModalStatusWrapper">
+                <button
+                  className="taskModalStatus"
+                  onClick={() => setIsStatusOpen(prev => !prev)}
+                >
+                  <span className="statusDot" />
 
-                {task.status ?? "В работе"}
+                  {statusNames[task.status as StatusTask] ?? "В работе"}
 
-                <span className="statusArrow">
-                  ⌄
-                </span>
-              </button>
+                  <span className="statusArrow">
+                    v
+                  </span>
+                </button>
+
+                {isStatusOpen && (
+                  <div className="statusDropdown">
+                    {statuses.map(status => (
+                      <button
+                        key={status}
+                        className="statusOption"
+                        onClick={() => handleStatusChange(status as StatusTask)}
+                      >
+                        <span className="statusDot" />
+                        {statusNames[status]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <div className="taskModalDeadline">
                 <HiOutlineCalendarDays />
 
                 {task.deadline
                   ? new Date(
-                      task.deadline
-                    ).toLocaleDateString("ru-RU", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })
+                    task.deadline
+                  ).toLocaleDateString("ru-RU", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
                   : "Без дедлайна"}
               </div>
             </div>
@@ -213,87 +385,46 @@ export function TaskModal(props: TaskModalProps) {
                   {task.comments.length}
                 </span>
               </div>
+              {commentsLoading ? (
+                <p>Загрузка комментариев...</p>
+              ) : comments.length === 0 ? (
+                <p>Комментариев пока нет.</p>
+              ) : (
+                comments.map(comment => (
+                  <div
+                    className="taskComment"
+                    key={comment.id}
+                  >
+                    <div className="taskCommentAvatar">
+                      {comment.author.userName
+                        .slice(0, 2)
+                        .toUpperCase()}
+                    </div>
 
-              <div className="taskComment">
-                <div className="taskCommentAvatar">
-                  ИП
-                </div>
+                    <div className="taskCommentContent">
+                      <div className="taskCommentTop">
+                        <strong>
+                          {comment.author.userName}
+                        </strong>
 
-                <div className="taskCommentContent">
-                  <div className="taskCommentTop">
-                    <strong>
-                      Иван Петров
-                    </strong>
+                        <span>
+                          {new Date(
+                            comment.createAt
+                          ).toLocaleString("ru-RU")}
+                        </span>
+                      </div>
 
-                    <span>
-                      Сегодня, 10:32
-                    </span>
+                      <p>
+                        {comment.text}
+                      </p>
+                    </div>
+
+                    <button className="taskCommentMore">
+                      <HiOutlineEllipsisHorizontal />
+                    </button>
                   </div>
-
-                  <p>
-                    API уже готов, осталось
-                    добавить проверку токена.
-                  </p>
-                </div>
-
-                <button className="taskCommentMore">
-                  <HiOutlineEllipsisHorizontal />
-                </button>
-              </div>
-
-              <div className="taskComment">
-                <div className="taskCommentAvatar">
-                  МИ
-                </div>
-
-                <div className="taskCommentContent">
-                  <div className="taskCommentTop">
-                    <strong>
-                      Мария Иванова
-                    </strong>
-
-                    <span>
-                      Вчера, 18:45
-                    </span>
-                  </div>
-
-                  <p>
-                    Проверила регистрацию —
-                    работает.
-                  </p>
-                </div>
-
-                <button className="taskCommentMore">
-                  <HiOutlineEllipsisHorizontal />
-                </button>
-              </div>
-
-              <div className="taskComment">
-                <div className="taskCommentAvatar">
-                  АС
-                </div>
-
-                <div className="taskCommentContent">
-                  <div className="taskCommentTop">
-                    <strong>
-                      Алексей Смирнов
-                    </strong>
-
-                    <span>
-                      Вчера, 17:20
-                    </span>
-                  </div>
-
-                  <p>
-                    Нужно добавить лимит запросов
-                    для защиты от брутфорса.
-                  </p>
-                </div>
-
-                <button className="taskCommentMore">
-                  <HiOutlineEllipsisHorizontal />
-                </button>
-              </div>
+                ))
+              )}
 
               <div className="taskCommentInputWrapper">
                 <div className="taskModalCurrentAvatar">
@@ -303,19 +434,20 @@ export function TaskModal(props: TaskModalProps) {
                 <input
                   type="text"
                   placeholder="Написать комментарий..."
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
                 />
 
-                <button className="commentInputIcon">
-                  <HiOutlinePaperClip />
-                </button>
-
-                <button className="commentInputIcon">
-                  <HiOutlineFaceSmile />
-                </button>
-
-                <button className="commentSendButton">
+                <button
+                  className="commentSendButton"
+                  onClick={handleCreateComment}
+                  disabled={commentSending || !commentText.trim()}
+                >
                   <HiOutlinePaperAirplane />
-                  Отправить
+
+                  {commentSending
+                    ? "Отправка..."
+                    : "Отправить"}
                 </button>
               </div>
             </section>
@@ -335,7 +467,9 @@ export function TaskModal(props: TaskModalProps) {
 
               <div className="taskInfoValue">
                 <div className="taskInfoAvatar">
-                  ИП
+                  {task.executorName
+                    .slice(0, 2)
+                    .toUpperCase()}
                 </div>
 
                 {task.executorName}
@@ -376,8 +510,8 @@ export function TaskModal(props: TaskModalProps) {
               <span className="taskInfoValue taskInfoDeadline">
                 {task.deadline
                   ? new Date(
-                      task.deadline
-                    ).toLocaleDateString("ru-RU")
+                    task.deadline
+                  ).toLocaleDateString("ru-RU")
                   : "Не указан"}
               </span>
             </div>
@@ -392,8 +526,8 @@ export function TaskModal(props: TaskModalProps) {
               <span className="taskInfoValue">
                 {task.startDate
                   ? new Date(
-                      task.startDate
-                    ).toLocaleDateString("ru-RU")
+                    task.startDate
+                  ).toLocaleDateString("ru-RU")
                   : "Не указан"}
               </span>
             </div>
@@ -426,22 +560,83 @@ export function TaskModal(props: TaskModalProps) {
         </div>
 
         <div className="taskModalFooter">
-          <button className="taskModalFooterButton">
-            <HiOutlinePencil />
-            Редактировать
-          </button>
+          <div className="stageMoveWrapper">
+            <button
+              className="taskModalFooterButton"
+              onClick={() => setIsStageMenuOpen(prev => !prev)}
+            >
+              <HiOutlineArrowsRightLeft />
+              Переместить в другой этап
+            </button>
 
-          <button className="taskModalFooterButton">
-            <HiOutlineArrowsRightLeft />
-            Переместить в другой этап
-          </button>
+            {isStageMenuOpen && (
+              <div className="stageMoveMenu">
+                {stagesLoading ? (
+                  <div className="stageMoveLoading">
+                    Загрузка...
+                  </div>
+                ) : (
+                  projectStages.map((stageItem) => (
+                    <button
+                      key={stageItem.id}
+                      className="stageMoveItem"
+                      onClick={() => handleStageChange(stageItem.id)}
+                      disabled={stageItem.id === currentStageId}
+                    >
+                      {stageItem.name}
+                    </button>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
 
-          <button className="taskModalDeleteButton">
+
+          <button className="taskModalDeleteButton"
+            onClick={() => setIsDeleteConfirmOpen(true)}
+          >
             <HiOutlineTrash />
             Удалить задачу
           </button>
         </div>
       </div>
+      {isDeleteConfirmOpen && (
+        <div
+          className="deleteConfirmOverlay"
+          onMouseDown={() => setIsDeleteConfirmOpen(false)}
+        >
+          <div
+            className="deleteConfirmModal"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <h2>Удалить задачу?</h2>
+
+            <p>
+              Вы уверены, что хотите удалить задачу
+              <strong> «{task.title}»</strong>?
+              Это действие нельзя отменить.
+            </p>
+
+            <div className="deleteConfirmActions">
+              <button
+                className="deleteConfirmCancel"
+                onClick={() => setIsDeleteConfirmOpen(false)}
+                disabled={deleteLoading}
+              >
+                Отмена
+              </button>
+
+              <button
+                className="deleteConfirmDelete"
+                onClick={() => handleDeleteTask(task.id)}
+                disabled={deleteLoading}
+              >
+                {deleteLoading ? "Удаление..." : "Удалить"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

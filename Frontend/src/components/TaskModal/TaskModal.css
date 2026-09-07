@@ -5,8 +5,8 @@
   z-index: 1000;
 
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
   padding: 30px;
 
@@ -16,20 +16,20 @@
 }
 
 .taskModal {
-  width: min(925px, 100%);
-  max-height: calc(100vh - 60px);
 
   display: flex;
   flex-direction: column;
-
-  background: #ffffff;
+  width: min(925px, 100%);
+  max-height: calc(100vh - 60px);
 
   border-radius: 16px;
 
-  overflow: hidden;
-
   box-shadow:
     0 25px 70px rgba(15, 23, 42, 0.2);
+
+  overflow: hidden;
+
+  background: #ffffff;
 }
 
 /* =========================
@@ -37,22 +37,22 @@
 ========================= */
 
 .taskModalHeader {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   min-height: 70px;
 
   padding: 0 28px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .taskModalBreadcrumbs {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #64748b;
 
   font-size: 14px;
-  color: #64748b;
 }
 
 .taskModalBreadcrumbs span:first-child,
@@ -68,25 +68,25 @@
 
 .taskModalIconButton,
 .taskModalCloseButton {
-  width: 40px;
-  height: 40px;
 
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
 
   border: 1px solid #e2e8f0;
   border-radius: 8px;
 
-  background: white;
-
   color: #334155;
-
-  cursor: pointer;
 
   font-size: 21px;
 
+  background: white;
+
   transition: 0.2s;
+
+  cursor: pointer;
 }
 
 .taskModalIconButton:hover {
@@ -107,9 +107,9 @@
 ========================= */
 
 .taskModalContent {
-  flex: 1;
 
   display: grid;
+  flex: 1;
   grid-template-columns: minmax(0, 1fr) 310px;
 
   overflow-y: auto;
@@ -120,9 +120,9 @@
 }
 
 .taskModalSidebar {
-  padding: 20px 26px;
 
   border-left: 1px solid #e5e7eb;
+  padding: 20px 26px;
 }
 
 /* =========================
@@ -132,28 +132,28 @@
 .taskModalTaskKey {
   display: inline-flex;
 
-  padding: 5px 9px;
-
   margin-bottom: 12px;
 
   border-radius: 6px;
 
-  background: #f1f5f9;
+  padding: 5px 9px;
 
   color: #475569;
+  font-weight: 600;
 
   font-size: 13px;
-  font-weight: 600;
+
+  background: #f1f5f9;
 }
 
 .taskModalTitle {
   margin: 0 0 27px;
 
   color: #111827;
+  font-weight: 700;
 
   font-size: 28px;
   line-height: 1.2;
-  font-weight: 700;
 }
 
 .taskModalMeta {
@@ -163,48 +163,89 @@
 }
 
 .taskModalPriority {
-  height: 34px;
-
-  padding: 0 13px;
 
   display: flex;
   align-items: center;
   gap: 7px;
+  height: 34px;
 
   border-radius: 7px;
 
-  background: #fee2e2;
+  padding: 0 13px;
 
   color: #dc2626;
+  font-weight: 700;
 
   font-size: 13px;
-  font-weight: 700;
+
+  background: #fee2e2;
 }
 
 .priorityArrow {
   font-size: 20px;
 }
+.taskModalStatusWrapper {
+  position: relative;
+  display: inline-block;
+}
 
 .taskModalStatus {
-  height: 34px;
-
-  padding: 0 12px;
 
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 34px;
 
   border: none;
   border-radius: 7px;
 
-  background: #dbeafe;
+  padding: 0 12px;
 
   color: #2563eb;
-
-  font-size: 13px;
   font-weight: 600;
 
+  font-size: 13px;
+
+  background: #dbeafe;
+
   cursor: pointer;
+}
+.statusDropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+
+  z-index: 100;
+
+  min-width: 160px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  padding: 5px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+  background: white;
+}
+
+.statusOption {
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+
+  border: none;
+  border-radius: 5px;
+
+  padding: 8px 10px;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.statusOption:hover {
+  background: #f2f2f2;
 }
 
 .statusDot {
@@ -221,22 +262,22 @@
 }
 
 .taskModalDeadline {
-  height: 34px;
-
-  padding: 0 12px;
 
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 34px;
 
   border-radius: 7px;
 
-  background: #f1f5f9;
+  padding: 0 12px;
 
   color: #475569;
+  font-weight: 600;
 
   font-size: 13px;
-  font-weight: 600;
+
+  background: #f1f5f9;
 }
 
 .taskModalDeadline svg {
@@ -260,9 +301,12 @@
   margin: 0 0 13px;
 
   color: #111827;
+  font-weight: 700;
 
   font-size: 15px;
-  font-weight: 700;
+}
+.taskModalCommentsHeader span{
+  margin: 0 0 13px;
 }
 
 .taskModalSection p {
@@ -303,23 +347,23 @@
 .taskCommentAvatar,
 .taskModalCurrentAvatar,
 .taskInfoAvatar {
+
+  display: flex;
   flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
 
   width: 34px;
   height: 34px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   border-radius: 50%;
 
-  background: #e2e8f0;
-
   color: #334155;
+  font-weight: 700;
 
   font-size: 11px;
-  font-weight: 700;
+
+  background: #e2e8f0;
 }
 
 .taskCommentContent {
@@ -357,11 +401,11 @@
   align-self: flex-start;
 
   border: none;
-  background: none;
 
   color: #475569;
 
   font-size: 18px;
+  background: none;
 
   cursor: pointer;
 }
@@ -371,13 +415,13 @@
 ========================= */
 
 .taskCommentInputWrapper {
-  min-height: 48px;
-
-  margin-top: 8px;
 
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 48px;
+
+  margin-top: 8px;
 
   border: 1px solid #dbe2ea;
   border-radius: 9px;
@@ -412,33 +456,33 @@
   height: 28px;
 
   border: none;
-  background: transparent;
 
   color: #64748b;
 
   font-size: 18px;
+  background: transparent;
 
   cursor: pointer;
 }
 
 .commentSendButton {
-  height: 36px;
-
-  padding: 0 13px;
 
   display: flex;
   align-items: center;
   gap: 6px;
+  height: 36px;
 
   border: none;
   border-radius: 7px;
 
-  background: #2563eb;
+  padding: 0 13px;
 
   color: white;
+  font-weight: 600;
 
   font-size: 12px;
-  font-weight: 600;
+
+  background: #2563eb;
 
   cursor: pointer;
 }
@@ -481,25 +525,25 @@
 }
 
 .taskInfoValue {
-  min-width: 0;
 
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 
   color: #1e293b;
+  font-weight: 500;
 
   font-size: 13px;
-  font-weight: 500;
 }
 
 .taskInfoAvatar {
   width: 27px;
   height: 27px;
 
-  background: #f1f5f9;
-
   font-size: 9px;
+
+  background: #f1f5f9;
 }
 
 .taskInfoDeadline {
@@ -513,9 +557,9 @@
 .taskTags {
   margin-top: 25px;
 
-  padding-top: 22px;
-
   border-top: 1px solid #e5e7eb;
+
+  padding-top: 22px;
 }
 
 .taskTags h3 {
@@ -533,27 +577,27 @@
 }
 
 .taskTag {
-  padding: 7px 10px;
 
   border-radius: 7px;
+  padding: 7px 10px;
+  font-weight: 600;
 
   font-size: 12px;
-  font-weight: 600;
 }
 
 .taskTagPurple {
-  background: #ede9fe;
   color: #7c3aed;
+  background: #ede9fe;
 }
 
 .taskTagBlue {
-  background: #dbeafe;
   color: #2563eb;
+  background: #dbeafe;
 }
 
 .taskTagGreen {
-  background: #dcfce7;
   color: #16a34a;
+  background: #dcfce7;
 }
 
 .taskTagAdd {
@@ -563,11 +607,11 @@
   border: 1px solid #dbe2ea;
   border-radius: 7px;
 
-  background: white;
-
   color: #475569;
 
   font-size: 20px;
+
+  background: white;
 
   cursor: pointer;
 }
@@ -577,48 +621,88 @@
 ========================= */
 
 .taskModalFooter {
-  min-height: 80px;
-
-  padding: 0 28px;
 
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: center;
   gap: 14px;
+  min-height: 80px;
 
   border-top: 1px solid #e5e7eb;
+
+  padding: 0 28px;
 
   background: #ffffff;
 }
 
 .taskModalFooterButton,
 .taskModalDeleteButton {
-  height: 42px;
-
-  padding: 0 18px;
 
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 9px;
+  height: 42px;
 
   border: 1px solid #dbe2ea;
   border-radius: 7px;
 
-  background: white;
+  padding: 0 18px;
 
   color: #334155;
-
-  font-size: 13px;
   font-weight: 600;
 
-  cursor: pointer;
+  font-size: 13px;
+
+  background: white;
 
   transition: 0.2s;
+
+  cursor: pointer;
 }
 
 .taskModalFooterButton:hover {
   background: #f8fafc;
+}
+.stageMoveWrapper {
+    position: relative;
+}
+
+.stageMoveMenu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+
+    padding: 6px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+
+    background: white;
+}
+
+.stageMoveItem {
+    width: 100%;
+
+    border: none;
+    border-radius: 5px;
+    padding: 10px 12px;
+    text-align: left;
+
+    background: white;
+
+    cursor: pointer;
+}
+
+.stageMoveItem:hover {
+    background: #f1f5f9;
 }
 
 .taskModalDeleteButton {
@@ -634,6 +718,68 @@
 .taskModalFooterButton svg,
 .taskModalDeleteButton svg {
   font-size: 18px;
+}
+
+.deleteConfirmOverlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.deleteConfirmModal {
+  width: 420px;
+  border-radius: 12px;
+  padding: 24px;
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+  background: white;
+}
+
+.deleteConfirmModal h2 {
+  margin: 0 0 12px;
+}
+
+.deleteConfirmModal p {
+  margin: 0 0 24px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.deleteConfirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.deleteConfirmCancel,
+.deleteConfirmDelete {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+.deleteConfirmCancel {
+  background: #eee;
+}
+
+.deleteConfirmDelete {
+  color: white;
+  background: #dc2626;
+}
+
+.deleteConfirmCancel:disabled,
+.deleteConfirmDelete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* =========================
@@ -654,8 +800,8 @@
   }
 
   .taskModalSidebar {
-    border-left: none;
     border-top: 1px solid #e5e7eb;
+    border-left: none;
   }
 
   .taskModalFooter {

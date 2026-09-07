@@ -5,11 +5,12 @@ interface projectProps {
   description: string;
   percentProject: string;
   countTask: string;
+  onClick?: () => void;
 }
 
-function ProjectDashboard({ title, description, percentProject, countTask }: projectProps) {
+function ProjectDashboard({ title, description, percentProject, countTask, onClick }: projectProps) {
   return (
-    <div className="project">
+    <div className="project" onClick={onClick}>
       <div className="projectTitleDiv">
         <h3 className="projectTitle">{title}</h3>
         <p className="projectDescr1">{description}</p>

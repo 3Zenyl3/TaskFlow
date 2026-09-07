@@ -206,6 +206,53 @@ namespace TaskFlow.Services
             return status;
         }
 
+        public async Task<ProjectStageDto> UpdateTaskStage(int taskId, UpdateTaskStageRequest request, int userId)
+        {
+            var task = await context.Tasks
+                .Where(t => t.Id == taskId)
+                .FirstOrDefaultAsync();
+
+            if (task == null)
+                throw new NotFoundException("Task not found");
+
+            var userInProject = await context.Projects
+                .AnyAsync(p => p.Id == task.ProjectId && (p.OwnerId == userId ||
+                    p.Members.Any(m => m.UserId == userId)
+                ));
+
+            if (!userInProject)
+                throw new ForbiddenException("User not in project");
+
+            var stage = await context.ProjectStages
+                .Where(s => s.Id == request.StageId)
+                .FirstOrDefaultAsync();
+            if (stage == null)
+                throw new NotFoundException("Stage not found");
+
+            if (stage.ProjectId != task.ProjectId)
+                throw new BadRequestException("Stage not found in project");
+
+            task.StageId = stage.Id;
+            await context.SaveChangesAsync();
+            return new ProjectStageDto
+            {
+                Id = stage.Id,
+                ProjectId = stage.ProjectId,
+                Name = stage.Name,
+                Description = stage.Description,
+                Icon = stage.Icon,
+                ColorStage = stage.ColorStage,
+                Position = stage.Position,
+                CompletedTasks = await context.Tasks
+                    .CountAsync(t => t.StageId == stage.Id &&
+                                     t.Status == StatusTask.Done),
+                TotalTasks = await context.Tasks
+                    .CountAsync(t => t.StageId == stage.Id),
+                StartDate = stage.StartDate,
+                EndDate = stage.EndDate
+            };
+        }
+
         public async System.Threading.Tasks.Task DeleteTask(int taskId, int userId)
         {
             var task = await context.Tasks.FindAsync(taskId);

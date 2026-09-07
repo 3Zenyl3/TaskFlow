@@ -9,7 +9,7 @@ type TaskFilter = "Today" | "Tomorrow" | "Week";
 function DashboardMyTask({ tasks, loading }: { tasks: ProjectTask[], loading: boolean }) {
   const [active, setActive] = useState<TaskFilter>("Today")
   const [selectedTask, setSelectedTask] =
-      useState<ProjectTask | null>(null);
+    useState<ProjectTask | null>(null);
 
   const filterTasks = tasks.filter(task => {
     const deadLine = new Date(task.deadline);
@@ -77,12 +77,14 @@ function DashboardMyTask({ tasks, loading }: { tasks: ProjectTask[], loading: bo
           />
         ))}
       </div>
-      <TaskModal
-              task={selectedTask}
-              stageId={selectedTask?.stageId}
-              projectId={selectedTask?.projectId}
-              onClose={() => setSelectedTask(null)}
-            />
+      {selectedTask && (
+        <TaskModal
+          task={selectedTask}
+          projectId={selectedTask.projectId}
+          stageId={selectedTask.stageId}
+          onClose={() => setSelectedTask(null)}
+        />
+      )}
     </div>
   );
 }

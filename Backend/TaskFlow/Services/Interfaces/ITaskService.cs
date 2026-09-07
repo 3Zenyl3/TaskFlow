@@ -11,6 +11,8 @@ namespace TaskFlow.Services.Interfaces
         Task<TaskDto?> GetTaskById(int taskId, int userId);
         Task<int> CreateTask(CreateTaskRequest request, int userId);
         Task<StatusTask> UpdateTaskStatus(int taskId, UpdateTaskStatusRequest request, int userId);
+
+        Task<ProjectStageDto> UpdateTaskStage(int taskId, UpdateTaskStageRequest request, int userId);
         System.Threading.Tasks.Task DeleteTask(int taskId, int userId);
     }
 }
