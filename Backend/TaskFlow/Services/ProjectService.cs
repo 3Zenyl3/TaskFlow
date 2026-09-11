@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TaskFlow.Data;
 using TaskFlow.Entities;
 using TaskFlow.Exceptions;
@@ -13,10 +14,11 @@ namespace TaskFlow.Services
     public class ProjectService : IProjectService
     {
         private ApplicationDbContext context;
-
-        public ProjectService(ApplicationDbContext context)
+        private IActivityService activityService;
+        public ProjectService(ApplicationDbContext context, IActivityService activityService)
         {
             this.context = context;
+            this.activityService = activityService;
         }
 
         public async Task<List<ProjectListDto>> GetAllProjectUser(int userId)
@@ -64,6 +66,8 @@ namespace TaskFlow.Services
                 .Include(p => p.Owner)
                 .Include(p => p.Members)
                     .ThenInclude(m => m.User)
+                .Include(p => p.Activities)
+                    .ThenInclude(a => a.User)
                 .Include(p => p.Tasks)
                     .ThenInclude(t => t.Executor)
                 .Include(p => p.Files)
@@ -296,6 +300,14 @@ namespace TaskFlow.Services
                 };
 
                 context.ProjectMembers.Add(member);
+
+                await activityService.CreateActivity(
+                    userId: user.Id,
+                    activityType: ActivityType.AddedMember,
+                    description: $"добавил(а) пользователя {memberUser.UserName} в проект {project.Name}",
+                    projectId: project.Id,
+                    taskId: null
+                );
             }
         }
 
@@ -343,6 +355,14 @@ namespace TaskFlow.Services
             project.Category = request.Category;
 
             await context.SaveChangesAsync();
+
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.UpdatedProject,
+                description: $"изменил(a) настройки проекта {project.Name}",
+                projectId: project.Id,
+                taskId: null
+            );
 
             return new UpdateProjectResponse
             {
@@ -446,6 +466,19 @@ namespace TaskFlow.Services
 
             await context.ProjectFiles.AddAsync(projectFile);
             await context.SaveChangesAsync();
+
+            var projectName = await context.Projects
+                .Where(p => p.Id == projectId)
+                .Select(p => p.Name)
+                .FirstAsync();
+
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.UploadedFile,
+                description: $"загрузил(а) файл {fileName} в проект {projectName}",
+                projectId: projectId,
+                taskId: null
+            );
 
             return new ProjectFileDTO
             {

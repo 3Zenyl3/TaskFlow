@@ -4,16 +4,19 @@ using TaskFlow.Entities;
 using TaskFlow.Exceptions;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Services
 {
     public class StagesService
     {
         private readonly ApplicationDbContext context;
+        private readonly IActivityService activityService;
 
-        public StagesService(ApplicationDbContext context)
+        public StagesService(ApplicationDbContext context, IActivityService activityService)
         {
             this.context = context;
+            this.activityService = activityService;
         }
 
         public async Task<List<ProjectStageDto>> GetStages(int projectId)
@@ -79,7 +82,10 @@ namespace TaskFlow.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ProjectStageDto> CreateStage(CreateProjectStageRequest request, int projectId)
+        public async Task<ProjectStageDto> CreateStage(
+            CreateProjectStageRequest request,
+            int projectId,
+            int userId)
         {
             var maxPosition = await context.ProjectStages
                 .Where(s => s.ProjectId == projectId)
@@ -101,6 +107,15 @@ namespace TaskFlow.Services
             await context.ProjectStages.AddAsync(stage);
             await context.SaveChangesAsync();
 
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.CreatedStage,
+                description: $"создал(а) этап {stage.Name}",
+                projectId: projectId,
+                taskId: null
+            );
+
+
             return new ProjectStageDto
             {
                 Id = stage.Id,
@@ -115,7 +130,11 @@ namespace TaskFlow.Services
             };
         }
 
-        public async Task<ProjectStageDto> UpdateStage(CreateProjectStageRequest request, int projectId, int stageId)
+        public async Task<ProjectStageDto> UpdateStage(
+            CreateProjectStageRequest request,
+            int projectId,
+            int stageId,
+            int userId)
         {
             var stage = await context.ProjectStages
                 .FirstOrDefaultAsync(s => s.Id == stageId && s.ProjectId == projectId);
@@ -129,6 +148,13 @@ namespace TaskFlow.Services
             stage.Description = request.Description;
 
             await context.SaveChangesAsync();
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.UpdatedStage,
+                description: $"изменил(а) этап {stage.Name}",
+                projectId: projectId,
+                taskId: null
+            );
 
             return new ProjectStageDto
             {
@@ -144,7 +170,7 @@ namespace TaskFlow.Services
             };
         }
 
-        public async System.Threading.Tasks.Task DeleteStage(int projectId, int stageId)
+        public async System.Threading.Tasks.Task DeleteStage(int projectId, int stageId, int userId)
         {
             var stage = await context.ProjectStages
                 .FirstOrDefaultAsync(s => s.Id == stageId && s.ProjectId == projectId);
@@ -153,10 +179,18 @@ namespace TaskFlow.Services
             {
                 throw new NotFoundException("Этап не найден");
             }
-
+            var stageName = stage.Name;
             context.ProjectStages.Remove(stage);
 
             await context.SaveChangesAsync();
+
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.DeletedStage,
+                description: $"удалил(а) этап {stageName}",
+                projectId: projectId,
+                taskId: null
+            );
         }
     }
 }

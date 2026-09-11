@@ -1,0 +1,321 @@
+.profile {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.profileContent {
+  flex: 1;
+  padding: 30px 40px 50px;
+  overflow-y: auto;
+}
+.profileHeaderTop{
+  display: flex;
+  gap: 10px;
+  padding-bottom: 20px;
+}
+
+.profileHeader {
+  position: relative;
+  border: 1px solid #e4ebf4;
+  border-radius: 12px;
+
+  padding: 24px 28px 25px;
+
+  box-shadow: 0 2px 8px rgba(30, 60, 90, 0.03);
+
+  background: #ffffff;
+}
+
+.profileMainInfo {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.profileAvatar {
+
+  display: flex;
+
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  width: 125px;
+  height: 125px;
+
+  border-radius: 50%;
+  color: #1b6fd1;
+  font-weight: 700;
+
+  font-size: 32px;
+
+  background: #dce8f6;
+}
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profileNameBlock h1 {
+  margin: 0 0 6px;
+  color: #0e1d35;
+
+  font-size: 28px;
+}
+.profileNameBlock input {
+  margin: 0 0 6px;
+
+  width: 400px;
+
+  padding: 2px 6px;
+
+  border: 1px solid #dce7f5;
+  border-radius: 6px;
+
+  background: #f8fafc;
+
+  font-size: 28px;
+  font-family: inherit;
+  font-weight: 600;
+  color: #0e1d35;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.profileNameBlock input:focus {
+  border-color: #2283ef;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(34, 131, 239, 0.08);
+}
+.profileNameBlock h2 {
+  margin: 0 0 8px;
+
+  color: #49698f;
+  font-weight: 600;
+
+  font-size: 17px;
+}
+
+.profileNameBlock p {
+  margin: 0;
+
+  color: #58729a;
+
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+
+.editProfileButton {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  border: 1px solid #dce7f5;
+  border-radius: 9px;
+
+  padding: 10px 15px;
+  color: #58729a;
+
+  font-size: 14px;
+
+  background: #ffffff;
+
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.editProfileButton svg {
+  width: 17px;
+  height: 17px;
+}
+
+.editProfileButton:hover {
+  border-color: #c8daf0;
+  color: #1976ed;
+  background: #f5f9ff;
+}
+
+
+.profileMeta {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+
+  margin-top: 25px;
+  margin-left: 155px;
+}
+
+.profileMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  color: #58729a;
+  font-size: 14px;
+}
+
+.profileMetaItem svg {
+  width: 19px;
+  height: 19px;
+
+  color: #1976ed;
+}
+
+.profileCard {
+  margin-top: 20px;
+  border: 1px solid #e4ebf4;
+  border-radius: 12px;
+
+  padding: 27px 28px;
+
+  box-shadow: 0 2px 8px rgba(30, 60, 90, 0.03);
+
+  background: #ffffff;
+}
+
+.profileCard h2 {
+  margin: 0 0 15px;
+  color: #0e1d35;
+
+  font-size: 19px;
+}
+
+.aboutText {
+  max-width: 850px;
+
+  margin: 0;
+
+  color: #58729a;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+.profileDivider {
+  height: 1px;
+
+  margin: 22px 0;
+
+  background: #e7edf5;
+}
+
+.profileDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 25px;
+  column-gap: 100px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.detailItem > svg {
+
+  flex-shrink: 0;
+  width: 21px;
+  height: 21px;
+
+  margin-top: 1px;
+
+  color: #5578a5;
+}
+
+.detailItem div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detailItem span {
+  color: #58729a;
+  font-size: 14px;
+}
+
+.detailItem strong {
+  color: #1d3557;
+  font-weight: 500;
+  font-size: 14px;
+}
+.contactsCard {
+  padding-bottom: 30px;
+}
+
+.contacts {
+  display: flex;
+  gap: 100px;
+}
+
+@media (max-width: 1000px) {
+  .profile {
+    flex-direction: column;
+  }
+
+  .profileContent {
+    padding: 25px;
+  }
+
+  .profileMeta {
+    flex-wrap: wrap;
+    margin-left: 0;
+  }
+
+  .profileDetails {
+    column-gap: 30px;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .profileContent {
+    padding: 20px 15px;
+  }
+
+  .profileMainInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profileAvatar {
+    width: 90px;
+    height: 90px;
+    font-size: 25px;
+  }
+
+  .profileNameBlock h1 {
+    font-size: 24px;
+  }
+
+  .editProfileButton {
+    position: static;
+    margin-top: 20px;
+  }
+
+  .profileMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .profileDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .contacts {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+}

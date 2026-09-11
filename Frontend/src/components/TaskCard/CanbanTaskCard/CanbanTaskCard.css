@@ -1,5 +1,6 @@
 .CanbanTaskCard{
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 10px;
   min-width: 0;
@@ -11,6 +12,9 @@
 }
 .tasktTitle{
   font-size: 12px;
+}
+.CanbanTaskCard.hasPriority .taskTags1 {
+  padding-left: 25px;
 }
 .taskTag{
   display: inline-flex;
@@ -25,6 +29,33 @@
 
   font-size: 11px;
   font-weight: 600;
+}
+.taskPriority {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  font-size: 18px;
+  top: 50%;
+  left: 10px;
+
+  transform: translateY(-50%);
+}
+.taskPriority svg {
+  margin: -4px 0;
+}
+
+.priority-low {
+  color: #12b76a;
+}
+
+.priority-high {
+  color: #f79009;
+}
+
+.priority-critical {
+  color: #f04438;
 }
 .taskInfo{
   display: flex;

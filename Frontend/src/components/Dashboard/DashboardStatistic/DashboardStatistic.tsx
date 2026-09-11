@@ -27,37 +27,72 @@ function DashboardStatistic({ tasks, loading }: { tasks: ProjectTask[], loading:
   const strFilter = currentFilter();
 
   const filterTasks = (): ProjectTask[] => {
+    const now = new Date();
+
+    const day = now.getDay();
+    const daysFromMonday = day === 0 ? 6 : day - 1;
+
+    const startOfCurrentWeek = new Date(now);
+    startOfCurrentWeek.setDate(now.getDate() - daysFromMonday);
+    startOfCurrentWeek.setHours(0, 0, 0, 0);
+
+    const endOfCurrentWeek = new Date(startOfCurrentWeek);
+    endOfCurrentWeek.setDate(startOfCurrentWeek.getDate() + 6);
+    endOfCurrentWeek.setHours(23, 59, 59, 999);
+
     switch (filter) {
+      case "CurrentWeek":
+        return tasks.filter(task => {
+          const taskDate = new Date(task.deadline);
+
+          return taskDate >= startOfCurrentWeek &&
+            taskDate <= endOfCurrentWeek;
+        });
+
       case "CurrentMonth":
         return tasks.filter(task => {
           const taskDate = new Date(task.deadline);
-          const now = new Date();
 
           return taskDate.getFullYear() === now.getFullYear() &&
             taskDate.getMonth() === now.getMonth();
         });
-      case "PrevWeek":
+
+      case "PrevWeek": {
+        const startOfPrevWeek = new Date(startOfCurrentWeek);
+        startOfPrevWeek.setDate(startOfCurrentWeek.getDate() - 7);
+
+        const endOfPrevWeek = new Date(startOfCurrentWeek);
+        endOfPrevWeek.setDate(startOfCurrentWeek.getDate() - 1);
+        endOfPrevWeek.setHours(23, 59, 59, 999);
+
         return tasks.filter(task => {
-          const taskDate = new Date(task.deadline);
-          const now = new Date();
-          const startOfWeek = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-          const endOfWeek = new Date(startOfWeek.setDate(startOfWeek.getDate() + 6));
-          return taskDate >= startOfWeek && taskDate <= endOfWeek;
-        });
-      case "PrevMonth":
-        return tasks.filter(task => {
-          const now = new Date();
           const taskDate = new Date(task.deadline);
 
-          const firstDayOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-          const lastDayOfLastMounth = new Date(now.getFullYear(), now.getMonth(), 0);
-          return taskDate >= firstDayOfLastMonth && taskDate <= lastDayOfLastMounth;
-        })
-      default:
-        return tasks.filter(task => {
-          const deadline = new Date(task.deadline);
-          return deadline < new Date();
+          return taskDate >= startOfPrevWeek &&
+            taskDate <= endOfPrevWeek;
         });
+      }
+
+      case "PrevMonth": {
+        const startOfPrevMonth = new Date(
+          now.getFullYear(),
+          now.getMonth() - 1,
+          1
+        );
+
+        const startOfCurrentMonth = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          1
+        );
+
+        return tasks.filter(task => {
+          const taskDate = new Date(task.deadline);
+
+          return taskDate >= startOfPrevMonth &&
+            taskDate < startOfCurrentMonth;
+        });
+      }
     }
   }
 
@@ -78,8 +113,8 @@ function DashboardStatistic({ tasks, loading }: { tasks: ProjectTask[], loading:
     return task.status !== "Done" && deadline < today;
   }).length.toString();
 
-  if(loading){
-    return(
+  if (loading) {
+    return (
       <div className="statistic">
         <p>Загрузка</p>
       </div>

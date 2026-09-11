@@ -24,6 +24,7 @@ function TaskCardInProjectPage({ title, priority, status,  onClick}: TaskCardInP
       case "Todo": return "status todo";
       case "Review": return "status review";
       case "Done": return "status done";
+      case "Postponed": return "status postponed";
     }
   }
 

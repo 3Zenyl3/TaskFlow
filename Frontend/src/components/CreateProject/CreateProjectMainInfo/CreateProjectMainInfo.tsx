@@ -255,6 +255,7 @@ export function CreateProjectMainInfo({
                   selectedMemberRole: value
                 })
               }
+              direction="up"
             />
           </div>
           <div className="addNewMemberButtonDiv">

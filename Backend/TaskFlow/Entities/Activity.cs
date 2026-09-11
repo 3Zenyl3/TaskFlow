@@ -30,5 +30,10 @@ public enum ActivityType
     AddedMember,
     DeletedTask,
     ChangedPriority,
-    UploadedFile
+    UploadedFile,
+    ChangedTaskStage,
+    CreatedStage,
+    UpdatedProject,
+    UpdatedStage,
+    DeletedStage
 }

@@ -3,6 +3,16 @@ import PeopleActivity from "../../PeopeleActivity/PeopeleActivity";
 import type { Activity } from "../../../api/teamActivity";
 
 function DashboardTeamActivity({ activities, loading }: { activities: Activity[], loading: boolean }) {
+  const formatTime = (createdAt: string) => {
+    return new Date(createdAt).toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <div className="teamActivity">
       <div className="titleTeamActivity">
@@ -13,10 +23,10 @@ function DashboardTeamActivity({ activities, loading }: { activities: Activity[]
         {loading && <p>Загрузка...</p>}
         {!loading && activities.map(activity => (
           <PeopleActivity
-            src={activity.avatarUrl || "default-avatar-url.jpg"}
+            src={activity.user.avatarUrl || "none"}
             name={activity.user.userName}
             description={activity.description}
-            time={activity.createdAt}
+            time={formatTime(activity.createdAt)}
           />
         ))}
       </div>

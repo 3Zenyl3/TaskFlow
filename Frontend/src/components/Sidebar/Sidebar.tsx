@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
-import { HiOutlineHome, HiOutlineFolder, HiOutlineClipboardList, HiOutlineCalendar } from "react-icons/hi";
+import { HiOutlineHome, HiOutlineFolder, HiOutlineUserCircle} from "react-icons/hi";
 
 type SidebarProps = {
   isOpen: boolean;
@@ -19,15 +19,14 @@ function Sidebar({ isOpen }: SidebarProps) {
         Проекты
       </NavLink>
 
-      <NavLink to="/dashboard/tasks">
-        <HiOutlineClipboardList className="menuIcon" />
-        Мои задачи
-      </NavLink>
+      <div className="sidebarBottom">
+        <NavLink to="/dashboard/profile">
+          <HiOutlineUserCircle className="menuIcon" />
+          Профиль
+        </NavLink>
+      </div>
 
-      <NavLink to="/dashboard/calendar">
-        <HiOutlineCalendar className="menuIcon" />
-        Календарь
-      </NavLink>
+
     </div>
   );
 }

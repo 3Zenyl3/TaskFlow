@@ -6,6 +6,7 @@ using TaskFlow.Exceptions;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
 using TaskFlow.Services;
+using TaskFlow.Services.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace TaskFlow.Test.TaskServiceTest
@@ -15,6 +16,7 @@ namespace TaskFlow.Test.TaskServiceTest
     {
         private ApplicationDbContext context;
         private TaskService taskService;
+        private IActivityService activityService;
 
 
         [SetUp]
@@ -25,7 +27,8 @@ namespace TaskFlow.Test.TaskServiceTest
                 .Options;
 
             context = new ApplicationDbContext(options);
-            taskService = new TaskService(context);
+            activityService = new ActivityService(context);
+            taskService = new TaskService(context, activityService);
         }
 
 

@@ -17,9 +17,7 @@ function DashboardLeftSide() {
             <HiOutlineMenu></HiOutlineMenu>
         </button>
       </div>
-      <div>
         <Sidebar isOpen={isOpen} />
-      </div>
     </div>
   );
 }

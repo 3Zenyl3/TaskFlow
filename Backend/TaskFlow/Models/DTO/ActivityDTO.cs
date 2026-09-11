@@ -6,8 +6,6 @@
 
         public UserDto User { get; set; }
 
-        public string? AvatarUrl { get; set; }
-
         public ActivityType Type { get; set; }
 
         public string Description { get; set; } = "";

@@ -1,7 +1,8 @@
 import "./CanbanTaskCard.css"
 import type { ProjectTask } from "../../../api/projects";
-import { HiOutlineCalendarDays } from "react-icons/hi2";
+import { HiOutlineCalendarDays, HiChevronUp, HiChevronDown } from "react-icons/hi2";
 import { useDraggable } from "@dnd-kit/core";
+
 
 type Props = {
   task: ProjectTask
@@ -24,7 +25,8 @@ export function CanbanTaskCard({ task, isDragging, onClick, }: Props) {
       {...listeners}
       {...attributes}
       onClick={onClick}
-      className={`CanbanTaskCard ${isDragging ? "dragging" : ""}`}
+      className={`CanbanTaskCard ${isDragging ? "dragging" : ""
+        } ${task.priority !== "Medium" ? "hasPriority" : ""}`}
     >
       <header>
         <h4 className="tasktTitle">{task.title}</h4>
@@ -35,6 +37,18 @@ export function CanbanTaskCard({ task, isDragging, onClick, }: Props) {
             {tag}
           </span>
         ))}
+      </div>
+      <div className={`taskPriority priority-${task.priority.toLowerCase()}`}>
+        {task.priority === "Low" && <HiChevronDown />}
+
+        {task.priority === "High" && <HiChevronUp />}
+
+        {task.priority === "Critical" && (
+          <>
+            <HiChevronUp />
+            <HiChevronUp />
+          </>
+        )}
       </div>
       <div className="taskInfo">
         <span className="taskDeadline">

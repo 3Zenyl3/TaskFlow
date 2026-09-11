@@ -17,8 +17,13 @@
   background-color: white;
   border: none;
   color: #4768fa;
+  
 }
 .projectActivityHeader{
   display: flex;
   justify-content: space-between;
+}
+.activityItems{
+  padding-right: 10px;
+  overflow-y: auto;
 }

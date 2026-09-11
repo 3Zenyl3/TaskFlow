@@ -11,7 +11,12 @@ function PeopleActivity({ src, name, description, time }: PeopleActivityProps) {
   return (
     <div className="peopleActivity">
       <div className="peopleInfo">
-        <img src={src} alt="" className="peopleAvatar" />
+        {src != "none" ? (
+          <img src={src} alt="" className="peopleAvatar" />
+        ) : (
+          <div className="peopleAvatar">{name.slice(0, 2).toUpperCase()}</div>
+        )}
+        
         <div className="peopleText">
           <h3 className="peopleActivityName">{name}</h3>
           <p className="peopleActivityDescr">{description}</p>

@@ -2,9 +2,6 @@ import "./TaskKanban.css"
 import Input from "../Input/Input";
 import { Dropdown } from "../Button/Dropdown";
 import { useState } from "react";
-import {
-  getStatusName,
-} from "../../../utils/taskUtils";
 import type { ProjectTask } from "../../api/projects";
 import { CanbanTaskCard } from "../TaskCard/CanbanTaskCard/CanbanTaskCard";
 import { HiOutlinePlus } from "react-icons/hi";
@@ -46,15 +43,6 @@ function KanbanColumn({
   );
 }
 
-const statuses = [
-  "Все",
-  "Нужно сделать",
-  "В работе",
-  "Ревью",
-  "Выполнена",
-  "Просрочена",
-];
-
 type Props = {
   tasks: ProjectTask[];
   project: Project;
@@ -79,7 +67,6 @@ export function TaskKanban({
 }: Props) {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
-  const [status, setStatus] = useState("Все");
   const [tag, setTag] = useState("Все");
   const [executor, setExecutor] = useState("Все");
   const [activeTask, setActiveTask] = useState<ProjectTask | null>(null);
@@ -129,10 +116,6 @@ export function TaskKanban({
         .toLowerCase()
         .includes(searchValue.trim().toLowerCase());
 
-    const matchesStatus =
-      status === "Все" ||
-      status === getStatusName(task.status);
-
     const matchesTag =
       tag === "Все" ||
       task.tags?.includes(tag);
@@ -143,7 +126,6 @@ export function TaskKanban({
 
     return (
       matchesSearch &&
-      matchesStatus &&
       matchesTag &&
       matchesExecutor
     );
@@ -199,13 +181,6 @@ export function TaskKanban({
               onChange={(e) => setSearchValue(e)}
             />
           </div>
-
-          <Dropdown
-            title="Статус"
-            value={status}
-            options={statuses}
-            onChange={setStatus}
-          />
 
           <Dropdown
             title="Метка"

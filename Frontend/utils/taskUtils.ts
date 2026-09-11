@@ -23,6 +23,8 @@ export function getStatusName(status: string) {
       return "Ревью";
     case "Done":
       return "Выполнена";
+    case "Postponed":
+      return "Отложена";
     default:
       return status;
   }

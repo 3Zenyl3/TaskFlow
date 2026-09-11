@@ -40,6 +40,7 @@ namespace TaskFlow.Controllers
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
+                Description = user.Description,
                 Role = user.UserRole,
                 CreatedAt = user.CreatedAt,
                 AvatarUrl = user.AvatarUrl
@@ -70,6 +71,10 @@ namespace TaskFlow.Controllers
             if (request.AvatarUrl != null)
             {
                 user.AvatarUrl = request.AvatarUrl;
+            }
+            if (request.Description != null)
+            {
+                user.Description = request.Description;
             }
             await context.SaveChangesAsync();
             return Ok(new { message = "Profile updated" });

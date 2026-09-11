@@ -78,7 +78,7 @@ namespace TaskFlow.Controllers
                 throw new ForbiddenException();
             }
 
-            return Ok(await stagesService.CreateStage(request, projectId));
+            return Ok(await stagesService.CreateStage(request, projectId, userId));
         }
 
         [HttpPut("{projectId}/{stageId}")]
@@ -98,7 +98,7 @@ namespace TaskFlow.Controllers
                 throw new ForbiddenException();
             }
 
-            return Ok(await stagesService.UpdateStage(request, projectId, stageId));
+            return Ok(await stagesService.UpdateStage(request, projectId, stageId, userId));
         }
 
         [HttpDelete("{projectId}/{stageId}")]
@@ -118,7 +118,7 @@ namespace TaskFlow.Controllers
                 throw new ForbiddenException();
             }
 
-            await stagesService.DeleteStage(projectId, stageId);
+            await stagesService.DeleteStage(projectId, stageId, userId);
 
             return Ok();
         }

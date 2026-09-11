@@ -8,10 +8,11 @@ interface DropdownProps {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  direction?: "up" | "down";
 }
 
 
-export function Dropdown({ title, options, value, onChange, error }: DropdownProps) {
+export function Dropdown({ title, options, value, onChange, error, direction }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -46,7 +47,7 @@ export function Dropdown({ title, options, value, onChange, error }: DropdownPro
         </div>
       </div>
       {isOpen && (
-        <ul className="statusDropdown">
+        <ul className={`statusDropdown ${direction === "up" ? "dropdownUp" : ""}`}>
           {options.map((option) => (
             <li
               key={option}

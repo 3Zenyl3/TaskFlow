@@ -26,13 +26,20 @@ function DashboardMyTask({ tasks, loading }: { tasks: ProjectTask[], loading: bo
     }
     else {
       const endOfWeek = new Date(today);
+      const startOfWeek = new Date(today);
 
       const day = today.getDay();
+
+      const daysFromMonday = day === 0 ? 6 : day - 1;
       const daysUntilSunday = day === 0 ? 0 : 7 - day;
-      endOfWeek.setDate(today.getDate() + daysUntilSunday)
+
+      startOfWeek.setDate(today.getDate() - daysFromMonday);
+      startOfWeek.setHours(0, 0, 0, 0);
+
+      endOfWeek.setDate(today.getDate() + daysUntilSunday);
       endOfWeek.setHours(23, 59, 59, 999);
 
-      return deadLine >= today && deadLine <= endOfWeek;
+      return deadLine >= startOfWeek && deadLine <= endOfWeek;
     }
   })
 

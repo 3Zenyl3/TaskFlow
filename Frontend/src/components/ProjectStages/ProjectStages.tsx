@@ -16,6 +16,7 @@ type ProjectStagesProps = {
   stages: ProjectStage[];
   onStageClick?: (stage: ProjectStage) => void;
   onStageMenuClick?: (stage: ProjectStage) => void;
+  onStageCreated: () => void;
   loading: boolean;
 };
 
@@ -24,6 +25,7 @@ export default function ProjectStages({
   stages,
   onStageClick,
   onStageMenuClick,
+  onStageCreated,
   loading
 }: ProjectStagesProps) {
   const [isCreateStageOpen, setIsCreateStageOpen] = useState(false);
@@ -197,6 +199,7 @@ export default function ProjectStages({
               data.description,
               data.endDate ?? undefined
             );
+            await onStageCreated();
 
             setIsCreateStageOpen(false);
           }}

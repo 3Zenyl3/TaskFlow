@@ -1,32 +1,32 @@
 import type { ProjectStage } from "../api/stages";
 import { GetProjectStages } from "../api/stages";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useProjectStages(projectId?: number) {
   const [stages, setStages] = useState<ProjectStage[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (projectId === undefined || Number.isNaN(projectId)) {
+  const loadStages = useCallback(async () => {
+    if (!projectId || Number.isNaN(projectId)) {
       return;
     }
-     const currentProjectId = projectId;
 
-    async function loadStages() {
-      try {
-        setLoading(true);
+    try {
+      setLoading(true);
 
-        const stages = await GetProjectStages(currentProjectId);
-        setStages(stages);
-      } catch (err) {
-        console.error("Не удалось загрузить этапы:", err);
-      } finally {
-        setLoading(false);
-      }
+      const data = await GetProjectStages(projectId);
+      setStages(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-
-    loadStages();
   }, [projectId]);
 
-  return { stages, loading };
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadStages();
+  }, [loadStages]);
+
+  return { stages, loading, refetchStages: loadStages, };
 }

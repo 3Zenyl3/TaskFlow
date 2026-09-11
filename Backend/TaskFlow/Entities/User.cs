@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public string Description { get; set; }
         public string PasswordHash { get; set; } = string.Empty;
         public UserRole UserRole { get; set; } = UserRole.User;
         public DateTime CreatedAt { get; set; }

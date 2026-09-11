@@ -1,43 +1,80 @@
-.peopleActivity{
+.peopleActivity {
   display: flex;
   width: 100%;
+  min-width: 0;
+
   align-items: center;
   justify-content: space-between;
+
+  gap: 12px;
 }
-.peopleAvatar{
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
+
 .peopleInfo {
   display: flex;
   align-items: center;
+
   gap: 10px;
 
   flex: 1;
   min-width: 0;
 }
-.peopleActivityName{
-  font-size: 14px;
+
+.peopleAvatar {
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+
 .peopleText {
   display: flex;
   flex-direction: column;
+
   flex: 1;
   min-width: 0;
 }
+
+.peopleActivityName {
+  margin: 0 0 3px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .peopleActivityDescr {
+  margin: 0;
+
   color: #989ea6;
   font-size: 12px;
-  word-break: break-word;
+  line-height: 1.4;
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 
   overflow: hidden;
+  word-break: break-word;
 }
-.peopleActivityTime{
+
+.peopleActivityTime {
+  flex-shrink: 0;
+
   color: #989ea6;
-  font-size: 12px;
+  font-size: 11px;
+
+  white-space: nowrap;
 }
+

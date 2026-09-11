@@ -82,7 +82,8 @@ export function ProjectStatistic({ project }: Props) {
         </div>
         <div className="projectLastTask">
           <h4 className="projectStatsCardTitle">Последние задачи</h4>
-          {project.tasks.map(task => (
+          <div className="tasksInProjectStat">
+            {project.tasks.map(task => (
             <TaskCardInProjectPage
               key={task.id}
               priority={task.priority}
@@ -91,6 +92,7 @@ export function ProjectStatistic({ project }: Props) {
               onClick={() => setSelectedTask(task)}
             />
           ))}
+          </div> 
         </div>
         <div className="projectStatTask">
           <h4 className="projectStatsCardTitle">Статистика задач</h4>

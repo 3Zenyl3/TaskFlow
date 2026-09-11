@@ -1,29 +1,87 @@
-.teamActivity{
+
+.teamActivity {
   width: 100%;
   min-width: 0;
-  height: 100%;
+  height: 40vh;
+  min-height: 300px;
+  max-height: 500px;
+
+  display: flex;
+  flex-direction: column;
+
   background-color: #fefefe;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  overflow: hidden;
 }
-.titleTeamActivity{
+
+.titleTeamActivity {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 20px;
+
+  flex-shrink: 0;
 }
-.titleTeamActivity h2{
+
+.titleTeamActivity h2 {
+  margin: 0;
   font-size: 18px;
 }
-.seeAllTeamActivity{
+
+.seeAllTeamActivity {
   text-decoration: none;
   color: #2e7dfb;
+  font-size: 13px;
+  white-space: nowrap;
 }
+
+.peopleActivitys {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  padding: 0 20px 20px;
+
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Красивый скроллбар */
+.peopleActivitys::-webkit-scrollbar {
+  width: 6px;
+}
+
+.peopleActivitys::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.peopleActivitys::-webkit-scrollbar-thumb {
+  background-color: #d5d9de;
+  border-radius: 10px;
+}
+
+.peopleActivitys::-webkit-scrollbar-thumb:hover {
+  background-color: #b8bec6;
+}
+
 @media (max-width: 768px) {
-    .teamActivity {
-        width: 100%;
-        max-width: none;
-        height: 40vh;
-        border-radius: 10px;
-    }
+  .teamActivity {
+    width: 100%;
+    max-width: none;
+    height: 40vh;
+    border-radius: 10px;
+  }
+
+  .titleTeamActivity {
+    padding: 16px;
+  }
+
+  .peopleActivitys {
+    padding: 0 16px 16px;
+    gap: 14px;
+  }
 }

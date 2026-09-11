@@ -6,6 +6,7 @@ using TaskFlow.Exceptions;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
 using TaskFlow.Services;
+using TaskFlow.Services.Interfaces;
 
 namespace TaskFlow.Test.StageServiceTest
 {
@@ -14,6 +15,7 @@ namespace TaskFlow.Test.StageServiceTest
     {
         private ApplicationDbContext context;
         private StagesService stagesService;
+        private IActivityService activityService;
 
         [SetUp]
         public void SetUp()
@@ -21,9 +23,11 @@ namespace TaskFlow.Test.StageServiceTest
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
+            
 
             context = new ApplicationDbContext(options);
-            stagesService = new StagesService(context);
+            activityService = new ActivityService(context);
+            stagesService = new StagesService(context, activityService);
         }
 
         [TearDown]
@@ -63,7 +67,8 @@ namespace TaskFlow.Test.StageServiceTest
                     Name = "Frontend",
                     Description = "Frontend development",
                     Position = 2,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 },
                 new ProjectStage
                 {
@@ -72,7 +77,8 @@ namespace TaskFlow.Test.StageServiceTest
                     Name = "Backend",
                     Description = "Backend development",
                     Position = 1,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 }
             );
 
@@ -113,10 +119,11 @@ namespace TaskFlow.Test.StageServiceTest
             var request = new CreateProjectStageRequest
             {
                 Name = "Backend",
-                Description = "Backend development"
+                Description = "Backend development",
+                Icon = "code"
             };
 
-            var result = await stagesService.CreateStage(request, 1);
+            var result = await stagesService.CreateStage(request, 1, 1);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Name, Is.EqualTo("Backend"));
@@ -143,14 +150,16 @@ namespace TaskFlow.Test.StageServiceTest
                     ProjectId = 1,
                     Name = "Backend",
                     Position = 1,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 },
                 new ProjectStage
                 {
                     ProjectId = 1,
                     Name = "Frontend",
                     Position = 2,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 }
             );
 
@@ -159,10 +168,11 @@ namespace TaskFlow.Test.StageServiceTest
             var request = new CreateProjectStageRequest
             {
                 Name = "Testing",
-                Description = "Testing stage"
+                Description = "Testing stage",
+                Icon = "code"
             };
 
-            var result = await stagesService.CreateStage(request, 1);
+            var result = await stagesService.CreateStage(request, 1, 1);
 
             Assert.That(result.Position, Is.EqualTo(3));
             Assert.That(result.Name, Is.EqualTo("Testing"));
@@ -183,28 +193,32 @@ namespace TaskFlow.Test.StageServiceTest
                     ProjectId = 1,
                     Name = "Backend",
                     Position = 1,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 },
                 new ProjectStage
                 {
                     ProjectId = 2,
                     Name = "Stage 1",
                     Position = 1,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 },
                 new ProjectStage
                 {
                     ProjectId = 2,
                     Name = "Stage 2",
                     Position = 2,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 },
                 new ProjectStage
                 {
                     ProjectId = 2,
                     Name = "Stage 3",
                     Position = 3,
-                    CreatedDate = DateTime.UtcNow
+                    StartDate = DateTime.UtcNow,
+                    Icon = "code"
                 }
             );
 
@@ -213,10 +227,11 @@ namespace TaskFlow.Test.StageServiceTest
             var request = new CreateProjectStageRequest
             {
                 Name = "Frontend",
-                Description = "Frontend development"
+                Description = "Frontend development",
+                Icon = "code"
             };
 
-            var result = await stagesService.CreateStage(request, 1);
+            var result = await stagesService.CreateStage(request, 1, 1);
 
             Assert.That(result.Position, Is.EqualTo(2));
         }
@@ -233,7 +248,8 @@ namespace TaskFlow.Test.StageServiceTest
                 Name = "Backend",
                 Description = "Old description",
                 Position = 1,
-                CreatedDate = DateTime.UtcNow
+                StartDate = DateTime.UtcNow,
+                Icon = "code"
             };
 
             context.Projects.Add(project);
@@ -247,7 +263,7 @@ namespace TaskFlow.Test.StageServiceTest
                 Description = "New description"
             };
 
-            var result = await stagesService.UpdateStage(request, 1, 1);
+            var result = await stagesService.UpdateStage(request, 1, 1, 1);
 
             Assert.That(result.Name, Is.EqualTo("New Backend"));
             Assert.That(result.Description, Is.EqualTo("New description"));
@@ -265,7 +281,7 @@ namespace TaskFlow.Test.StageServiceTest
             };
 
             Assert.ThrowsAsync<NotFoundException>(
-                async () => await stagesService.UpdateStage(request, 1, 999)
+                async () => await stagesService.UpdateStage(request, 1, 999, 1)
             );
         }
 
@@ -282,7 +298,8 @@ namespace TaskFlow.Test.StageServiceTest
                 ProjectId = 2,
                 Name = "Backend",
                 Position = 1,
-                CreatedDate = DateTime.UtcNow
+                StartDate = DateTime.UtcNow,
+                Icon = "code"
             };
 
             context.Projects.AddRange(project1, project2);
@@ -297,7 +314,7 @@ namespace TaskFlow.Test.StageServiceTest
             };
 
             Assert.ThrowsAsync<NotFoundException>(
-                async () => await stagesService.UpdateStage(request, 1, 1)
+                async () => await stagesService.UpdateStage(request, 1, 1, 1)
             );
 
             var savedStage = await context.ProjectStages.FindAsync(1);
@@ -317,7 +334,8 @@ namespace TaskFlow.Test.StageServiceTest
                 ProjectId = 1,
                 Name = "Backend",
                 Position = 1,
-                CreatedDate = DateTime.UtcNow
+                StartDate = DateTime.UtcNow,
+                Icon = "code"
             };
 
             context.Projects.Add(project);
@@ -325,7 +343,7 @@ namespace TaskFlow.Test.StageServiceTest
 
             await context.SaveChangesAsync();
 
-            await stagesService.DeleteStage(1, 1);
+            await stagesService.DeleteStage(1, 1, 1);
 
             var deletedStage = await context.ProjectStages.FindAsync(1);
 
@@ -336,7 +354,7 @@ namespace TaskFlow.Test.StageServiceTest
         public void DeleteStage_ThrowsNotFound_WhenStageDoesNotExist()
         {
             Assert.ThrowsAsync<NotFoundException>(
-                async () => await stagesService.DeleteStage(1, 999)
+                async () => await stagesService.DeleteStage(1, 999, 1)
             );
         }
 
@@ -353,7 +371,8 @@ namespace TaskFlow.Test.StageServiceTest
                 ProjectId = 2,
                 Name = "Backend",
                 Position = 1,
-                CreatedDate = DateTime.UtcNow
+                StartDate = DateTime.UtcNow,
+                Icon = "code"
             };
 
             context.Projects.AddRange(project1, project2);
@@ -362,7 +381,7 @@ namespace TaskFlow.Test.StageServiceTest
             await context.SaveChangesAsync();
 
             Assert.ThrowsAsync<NotFoundException>(
-                async () => await stagesService.DeleteStage(1, 1)
+                async () => await stagesService.DeleteStage(1, 1, 1)
             );
 
             var savedStage = await context.ProjectStages.FindAsync(1);

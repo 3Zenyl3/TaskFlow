@@ -11,6 +11,7 @@ using TaskFlow.Models;
 using TaskFlow.Models.DTO;
 using TaskFlow.Models.Request;
 using TaskFlow.Services;
+using TaskFlow.Services.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace TaskFlow.Test.ProjectServiceTest
@@ -20,6 +21,7 @@ namespace TaskFlow.Test.ProjectServiceTest
     {
         private ProjectService projectService;
         private ApplicationDbContext context;
+        private IActivityService activityService;
 
         [SetUp]
         public void Setup()
@@ -29,7 +31,8 @@ namespace TaskFlow.Test.ProjectServiceTest
                 .Options;
 
             context = new ApplicationDbContext(options);
-            projectService = new ProjectService(context);
+            activityService = new ActivityService(context);
+            projectService = new ProjectService(context, activityService);
         }
 
         [TearDown]

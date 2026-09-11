@@ -12,10 +12,12 @@ namespace TaskFlow.Services
     public class TaskService : ITaskService
     {
         private ApplicationDbContext context;
+        private IActivityService activityService;
 
-        public TaskService(ApplicationDbContext context)
+        public TaskService(ApplicationDbContext context, IActivityService activityService)
         {
             this.context = context;
+            this.activityService = activityService;
         }
 
         public async Task<List<TaskDto>> GetMyTasks(int userId)
@@ -167,9 +169,17 @@ namespace TaskFlow.Services
                 CreatedAt = DateTime.UtcNow,
                 IsRead = false
             };
+            
             context.Tasks.Add(task);
             context.Notifications.Add(notification);
             await context.SaveChangesAsync();
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.CreatedTask,
+                description: $"создал(а) задачу {task.Title}",
+                projectId: project.Id,
+                taskId: task.Id
+            );
             return task.Id;
         }
 
@@ -203,6 +213,20 @@ namespace TaskFlow.Services
                 throw new ForbiddenException();
             task.Status = status;
             await context.SaveChangesAsync();
+            var description = status == StatusTask.Done ?
+                $"завершил(а) задачу {task.Title}" :
+                $"изменил(а) статус задачи {task.Title} на {status}";
+
+            var activityType = status == StatusTask.Done ?
+                ActivityType.CompletedTask :
+                ActivityType.UpdatedTaskStatus;
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: activityType,
+                description: description,
+                projectId: project.Id,
+                taskId: task.Id
+            );
             return status;
         }
 
@@ -234,6 +258,15 @@ namespace TaskFlow.Services
 
             task.StageId = stage.Id;
             await context.SaveChangesAsync();
+
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.ChangedTaskStage,
+                description: $"переместил(а) задачу {task.Title} в этап {stage.Name}",
+                projectId: task.ProjectId,
+                taskId: task.Id
+            );
+
             return new ProjectStageDto
             {
                 Id = stage.Id,
@@ -285,6 +318,14 @@ namespace TaskFlow.Services
                 throw new ForbiddenException();
 
             context.Tasks.Remove(task);
+
+            await activityService.CreateActivity(
+                userId: userId,
+                activityType: ActivityType.DeletedTask,
+                description: $"удалил(а) задачу {task.Title}",
+                projectId: task.ProjectId,
+                taskId: task.Id
+            );
             await context.SaveChangesAsync();
         }
     }

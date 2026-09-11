@@ -79,7 +79,9 @@
     gap: 15px;
     min-width: 0;
 }
-
+.tasksInProjectStat{
+    overflow-y: auto;
+}
 .projectProgressInfoTitle {
     color: #b3b7c0;
     font-size: 13px;

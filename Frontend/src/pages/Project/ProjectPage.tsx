@@ -18,7 +18,7 @@ export function ProjectPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { project, loading: loadingProject } = useProjectInfo(Number(id));
-  const { stages, loading: loadingStages } = useProjectStages(Number(id));
+  const { stages, loading: loadingStages, refetchStages } = useProjectStages(Number(id));
   if (loadingProject) {
     return <div>Загрузка проекта...</div>;
   }
@@ -67,6 +67,7 @@ export function ProjectPage() {
               projectId={Number(id)}
               stages={stages}
               loading={loadingStages}
+              onStageCreated={refetchStages}
               onStageClick={(stage) => {
                 navigate(`/dashboard/project/${project.id}/stage/${stage.id}`);
               }}

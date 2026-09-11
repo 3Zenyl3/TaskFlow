@@ -43,7 +43,16 @@
   list-style: none;
   background: white;
 }
+.statusDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
 
+.dropdownUp {
+  top: auto;
+  bottom: 100%;
+}
 .statusDropdown li {
   padding: 8px 16px;
   cursor: pointer;
