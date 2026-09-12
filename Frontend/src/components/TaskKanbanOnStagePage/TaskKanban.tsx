@@ -12,7 +12,7 @@ import {
   useDroppable,
   type DragStartEvent,
   DragOverlay,
-  PointerSensor,
+  MouseSensor,
   useSensor,
   TouchSensor,
   useSensors,
@@ -77,20 +77,21 @@ export function TaskKanban({
   const currentUserId = profile?.id;
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 350,
-        tolerance: 10,
-      },
-    })
-  );
+  useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 5,
+    },
+  }),
+  useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 80,
+      tolerance: 10,
+    },
+  })
+);
 
   const handleDragStart = (event: DragStartEvent) => {
+    console.log("DRAG START", event.activatorEvent);
     const task = tasks.find(task => task.id === event.active.id);
 
     if (task) {
