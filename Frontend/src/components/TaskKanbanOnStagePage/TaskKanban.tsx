@@ -84,8 +84,8 @@ export function TaskKanban({
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 200,
-        tolerance: 8,
+        delay: 350,
+        tolerance: 10,
       },
     })
   );
@@ -207,11 +207,6 @@ export function TaskKanban({
         </form>
 
         <div className="taskKanbanOfStatus">
-          <DragOverlay>
-            {activeTask ? (
-              <CanbanTaskCard task={activeTask} />
-            ) : null}
-          </DragOverlay>
           <KanbanColumn id="Todo">
             <h3 className="TaskStatusTitle Todo">К выполнению</h3>
             <div className="TasksList">
@@ -345,6 +340,14 @@ export function TaskKanban({
           </KanbanColumn>
         </div>
       </div>
+      <DragOverlay>
+        {activeTask ? (
+          <CanbanTaskCard
+            task={activeTask}
+            isAssignedToCurrentUser={activeTask.executorId === currentUserId}
+          />
+        ) : null}
+      </DragOverlay>
       <TaskModal
         task={selectedTask}
         stage={stage}
