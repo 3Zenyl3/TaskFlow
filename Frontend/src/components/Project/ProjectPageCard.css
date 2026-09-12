@@ -164,8 +164,213 @@
   color: #ef4444;
 }
 
+@media (max-width: 1000px) {
+  .project {
+    padding: 16px;
+  }
+
+  .projectMainInfo {
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .projectIcon {
+    flex-shrink: 0;
+  }
+
+  .projectTitleDiv {
+    min-width: 0;
+  }
+
+  .projectDescr {
+    width: 20vw;
+  }
+
+  .projectProgressPage {
+    width: 180px;
+    flex-shrink: 0;
+  }
+
+  .peopleAndCntTask {
+    flex-shrink: 0;
+  }
+}
+
+
 @media (max-width: 768px) {
-    .peopleAndCntTask {
-        display: none;
-    }
+  .project {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .projectMainInfo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .projectTitle {
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .projectDescr {
+    width: 100%;
+    max-width: 250px;
+    font-size: 12px;
+  }
+
+  .peopleAndCntTask {
+    display: none;
+  }
+
+  .projectProgressPage {
+    width: 150px;
+    flex-shrink: 0;
+  }
+
+  .percentProject {
+    font-size: 16px;
+  }
+
+  .progressDescr {
+    font-size: 13px;
+  }
+
+  .projectMenuBtn {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .project {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .projectMainInfo {
+    gap: 12px;
+  }
+
+  .projectIcon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+  }
+
+  .projectIcon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .projectTitle {
+    font-size: 14px;
+  }
+
+  .projectTitleDiv {
+    gap: 6px;
+  }
+
+  .projectDescr {
+    max-width: 180px;
+    font-size: 11px;
+  }
+
+  .projectProgressPage {
+    width: 110px;
+    gap: 6px;
+  }
+
+  .percentProject {
+    font-size: 15px;
+  }
+
+  .progressBar {
+    height: 6px;
+  }
+
+  .progressDescr {
+    font-size: 11px;
+  }
+
+  .projectMenuBtn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .projectMenu {
+    width: 210px;
+    top: 40px;
+  }
+
+  .projectMenu button {
+    height: 42px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 450px) {
+  .project {
+    padding: 12px 10px;
+  }
+
+  .projectMainInfo {
+    gap: 10px;
+  }
+
+  .projectIcon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .projectIcon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .projectDescr {
+    max-width: 130px;
+  }
+
+  .projectProgressPage {
+    width: 85px;
+  }
+
+  .progressDescr {
+    font-size: 10px;
+  }
+
+  .projectMenu {
+    right: -5px;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .project {
+    gap: 6px;
+  }
+
+  .projectMainInfo {
+    gap: 8px;
+  }
+
+  .projectDescr {
+    max-width: 100px;
+  }
+
+  .projectProgressPage {
+    width: 70px;
+  }
+
+  .progressDescr {
+    display: none;
+  }
+
+  .projectMenu {
+    width: 190px;
+  }
 }

@@ -71,6 +71,7 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  max-height: 700px;
   overflow-y: auto;
   gap: 10px;
   scrollbar-width: none;

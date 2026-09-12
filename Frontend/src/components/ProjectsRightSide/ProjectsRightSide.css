@@ -56,3 +56,111 @@
 .listProjects::-webkit-scrollbar-track {
   background: transparent;
 }
+/* Планшеты и небольшие ноутбуки */
+@media (max-width: 1000px) {
+  .projectsRightSide {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .rightSideTitle h1 {
+    font-size: 28px;
+  }
+
+  .newProjectButt {
+    font-size: 16px;
+    padding: 9px 16px;
+  }
+
+  .listProjects {
+    min-width: 0;
+    width: 100%;
+    height: calc(100vh - 150px);
+  }
+}
+
+
+/* Планшеты */
+@media (max-width: 768px) {
+  .projectsRightSide {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .rightSideTitle {
+    align-items: center;
+  }
+
+  .rightSideTitle h1 {
+    font-size: 26px;
+  }
+
+  .newProjectButt {
+    font-size: 15px;
+    padding: 9px 14px;
+    gap: 6px;
+  }
+
+  .listProjects {
+    height: calc(100vh - 130px);
+    border-radius: 10px;
+  }
+}
+
+
+/* Телефоны */
+@media (max-width: 576px) {
+  .projectsRightSide {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .rightSideTitle h1 {
+    font-size: 23px;
+  }
+
+  .newProjectButt {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .plusIcon {
+    font-size: 18px;
+  }
+
+  .listProjects {
+    height: calc(100vh - 115px);
+    min-width: 0;
+    border-radius: 10px;
+  }
+}
+
+
+/* Очень маленькие телефоны */
+@media (max-width: 400px) {
+  .projectsRightSide {
+    padding: 12px;
+  }
+
+  .rightSideTitle {
+    gap: 10px;
+  }
+
+  .rightSideTitle h1 {
+    font-size: 21px;
+  }
+
+  .newProjectButt {
+    padding: 7px 10px;
+    font-size: 13px;
+    gap: 4px;
+  }
+
+  .plusIcon {
+    font-size: 16px;
+  }
+
+  .listProjects {
+    height: calc(100vh - 105px);
+  }
+}
