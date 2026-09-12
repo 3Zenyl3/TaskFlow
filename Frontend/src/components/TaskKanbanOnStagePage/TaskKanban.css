@@ -6,18 +6,19 @@
   min-height: 0;
   max-height: 860px;
   padding: 20px;
+  overflow-x: auto;
 }
 .TaskKanbanHeader{
   display: flex;
   gap: 15px;
 }
 .CanbanTaskCard {
-  touch-action: pan-y;
+  touch-action: manipulation;
 }
 .taskKanbanOfStatus{
   display: grid;
   flex: 1;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, 250px);
   gap: 15px;
   min-height: 0;
 }
@@ -50,7 +51,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  min-width: 0;
+  width: 250px;
+  min-width: 250px;
   min-height: 0;
   border-radius: 8px;
 }
