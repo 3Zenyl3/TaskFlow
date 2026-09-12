@@ -14,6 +14,7 @@ import {
   DragOverlay,
   PointerSensor,
   useSensor,
+  TouchSensor,
   useSensors,
 } from "@dnd-kit/core";
 import { updateTaskStatus, } from "../../api/tasks";
@@ -79,6 +80,12 @@ export function TaskKanban({
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 5,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
       },
     })
   );

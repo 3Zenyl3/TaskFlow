@@ -4,11 +4,15 @@
   gap: 10px;
   padding: 20px;
   height: 100%;
+  max-height: 860px;
   min-height: 0;
 }
 .TaskKanbanHeader{
   display: flex;
   gap: 15px;
+}
+.CanbanTaskCard {
+  touch-action: manipulation;
 }
 .taskKanbanOfStatus{
   display: grid;
@@ -100,4 +104,10 @@
 }
 .dragOver {
   background-color: #f5f7fa;
+}
+@media(max-width: 1424px) {
+  .TaskKanban{
+    height: 100%;
+    max-height: 700px;
+  }
 }
