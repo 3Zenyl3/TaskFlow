@@ -84,7 +84,7 @@ export function TaskKanban({
   }),
   useSensor(TouchSensor, {
     activationConstraint: {
-      delay: 80,
+      delay: 180,
       tolerance: 10,
     },
   })
