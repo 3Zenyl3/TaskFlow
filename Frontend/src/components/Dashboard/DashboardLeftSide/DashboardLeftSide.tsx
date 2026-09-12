@@ -11,10 +11,12 @@ function DashboardLeftSide() {
 
   return (
     <div className="dashboardLeftSide">
-      <div className="dashboardLogo" onClick={() => navigate("/login")}>
-        <img src={checkHeadLine} alt="Галочка" draggable="false" className="dashboardCheckHeadLine" />
-        <h1 className="firstHeadline">Task</h1>
-        <h1 className="secondHeadline">Flow</h1>
+      <div className="dashboardLogo" >
+        <div className="dashboardLogo" onClick={() => navigate("/login")}>
+          <img src={checkHeadLine} alt="Галочка" draggable="false" className="dashboardCheckHeadLine" />
+          <h1 className="firstHeadline">Task</h1>
+          <h1 className="secondHeadline">Flow</h1>
+        </div>
         <button onClick={() => setIsOpen(!isOpen)} className="openMenuDashboard">
             <HiOutlineMenu></HiOutlineMenu>
         </button>

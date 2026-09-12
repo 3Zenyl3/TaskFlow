@@ -64,8 +64,8 @@ namespace TaskFlow.Services
         public async Task<bool> HasPermission(int userId, int projectId, ProjectPermission permission)
         {
             var project = await context.Projects
-            .Include(p => p.Members)
-            .FirstOrDefaultAsync(p => p.Id == projectId);
+                .Include(p => p.Members)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
 
             if (project == null)
             {

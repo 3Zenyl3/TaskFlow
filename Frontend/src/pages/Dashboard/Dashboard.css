@@ -36,6 +36,20 @@
   padding: 20px;
   text-transform: capitalize;
 }
+@media(max-width: 1500px) {
+  .secondLineRightSide{
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media(max-width: 1200px) {
+
+  .firstLineRightSide,
+  .secondLineRightSide{
+    display: flex;
+    flex-direction: column;
+  }
+}
 @media(max-width: 768px) {
   .dashboard,
   .firstLineRightSide,
