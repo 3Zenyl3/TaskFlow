@@ -32,4 +32,20 @@ namespace TaskFlow.Entities
         Completed,
         Archived
     }
+
+    public enum ProjectPermission
+    {
+        ViewProject,
+        CreateTask,
+        EditTask,
+        DeleteTask,
+        ChangeTaskStatus,
+        CommentTask,
+        UploadTaskFile,
+        ManageMembers,
+        ManageMemberRoles,
+        ManageStages,
+        EditProject,
+        DeleteProject
+    }
 }

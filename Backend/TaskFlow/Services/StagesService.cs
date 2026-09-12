@@ -12,11 +12,15 @@ namespace TaskFlow.Services
     {
         private readonly ApplicationDbContext context;
         private readonly IActivityService activityService;
+        private readonly IProjectPermissionService permissionService;
 
-        public StagesService(ApplicationDbContext context, IActivityService activityService)
+        public StagesService(ApplicationDbContext context,
+            IActivityService activityService,
+            IProjectPermissionService permissionService)
         {
             this.context = context;
             this.activityService = activityService;
+            this.permissionService = permissionService;
         }
 
         public async Task<List<ProjectStageDto>> GetStages(int projectId)
@@ -87,6 +91,14 @@ namespace TaskFlow.Services
             int projectId,
             int userId)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                projectId,
+                ProjectPermission.ManageStages))
+            {
+                throw new ForbiddenException("Недостаточно прав для добавления этапа проекта");
+            }
+
             var maxPosition = await context.ProjectStages
                 .Where(s => s.ProjectId == projectId)
                 .Select(s => (int?)s.Position)
@@ -136,6 +148,13 @@ namespace TaskFlow.Services
             int stageId,
             int userId)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                projectId,
+                ProjectPermission.ManageStages))
+            {
+                throw new ForbiddenException("Недостаточно прав для изменения этапа проекта");
+            }
             var stage = await context.ProjectStages
                 .FirstOrDefaultAsync(s => s.Id == stageId && s.ProjectId == projectId);
 
@@ -172,6 +191,14 @@ namespace TaskFlow.Services
 
         public async System.Threading.Tasks.Task DeleteStage(int projectId, int stageId, int userId)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                projectId,
+                ProjectPermission.ManageStages))
+            {
+                throw new ForbiddenException("Недостаточно прав для удаления этапа проекта");
+            }
+
             var stage = await context.ProjectStages
                 .FirstOrDefaultAsync(s => s.Id == stageId && s.ProjectId == projectId);
 

@@ -26,7 +26,7 @@ namespace TaskFlow.Models.Request
         public DateTime? Deadline { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
 
-        public List<ProjectMemberRequest> Members { get; set; } = new List<ProjectMemberRequest>();
+        public List<ProjectMemberRequest> Members { get; set; } = new();
     }
 
     public class ProjectMemberRequest

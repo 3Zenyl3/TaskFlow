@@ -4,17 +4,18 @@ import TaskCard from "../../TaskCard/TaskCard";
 import type { ProjectTask } from "../../../api/projects";
 import { TaskModal } from "../../TaskModal/TaskModal";
 
-type TaskFilter = "Today" | "Tomorrow" | "Week";
+type TaskFilter = "All" | "Today" | "Tomorrow" | "Week";
 
 function DashboardMyTask({ tasks, loading }: { tasks: ProjectTask[], loading: boolean }) {
-  const [active, setActive] = useState<TaskFilter>("Today")
+  const [active, setActive] = useState<TaskFilter>("All")
   const [selectedTask, setSelectedTask] =
     useState<ProjectTask | null>(null);
 
   const filterTasks = tasks.filter(task => {
     const deadLine = new Date(task.deadline);
     const today = new Date();
-
+    if(active === "All")
+      return true;
     if (active === "Today") {
       return deadLine.toDateString() === today.toDateString();
     }
@@ -50,6 +51,12 @@ function DashboardMyTask({ tasks, loading }: { tasks: ProjectTask[], loading: bo
         <a href="" className="allTasks" >Смотреть все</a>
       </header>
       <nav className="navMyTasks">
+        <button
+          className={active === "All" ? "buttonMyTasks active" : "buttonMyTasks"}
+          onClick={() => setActive("All")}
+        >
+          Все
+        </button>
         <button
           className={active === "Today" ? "buttonMyTasks active" : "buttonMyTasks"}
           onClick={() => setActive("Today")}

@@ -9,15 +9,15 @@ import { ProjectActivity } from "../../components/Project/ProjectActivity/Projec
 import { ProjectFile } from "../../components/Project/ProjectFiles/ProjectFile";
 import { useParams } from "react-router-dom";
 import { useProjectInfo } from "../../hooks/useProjectInfo";
-import { useNavigate } from "react-router-dom";
 import { useCurrentProjectStages } from "../../hooks/useCurrentProjectStage";
 import { TaskKanban } from "../../components/TaskKanbanOnStagePage/TaskKanban";
 import { useState } from "react";
 import type { StatusTask } from "../../api/tasks";
 
+
 export function StagePage() {
-  const navigate = useNavigate();
   const { id, stageId } = useParams();
+  
   const { project, loading: loadingProject } = useProjectInfo(Number(id));
   const { stage, loading: loadingStage } = useCurrentProjectStages(Number(id), Number(stageId));
   const [taskStatuses, setTaskStatuses] = useState<
@@ -97,7 +97,7 @@ export function StagePage() {
               </div>
               <p className="projectPageDescr">{stage?.description}.</p>
             </div>
-            <button onClick={() => navigate(`/dashboard/project/${project.id}/edit`)} className="buttonProjectTitle"><HiOutlinePencil />Редактировать этап</button>
+            <button className="buttonProjectTitle"><HiOutlinePencil />Редактировать этап</button>
           </div>
 
           <TaskKanban

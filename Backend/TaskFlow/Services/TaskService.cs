@@ -13,11 +13,15 @@ namespace TaskFlow.Services
     {
         private ApplicationDbContext context;
         private IActivityService activityService;
+        private IProjectPermissionService permissionService;
 
-        public TaskService(ApplicationDbContext context, IActivityService activityService)
+        public TaskService(ApplicationDbContext context, 
+            IActivityService activityService,
+            IProjectPermissionService permissionService)
         {
             this.context = context;
             this.activityService = activityService;
+            this.permissionService = permissionService;
         }
 
         public async Task<List<TaskDto>> GetMyTasks(int userId)
@@ -102,6 +106,14 @@ namespace TaskFlow.Services
 
         public async Task<int> CreateTask(CreateTaskRequest request, int userId)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                request.ProjectId,
+                ProjectPermission.CreateTask))
+            {
+                throw new ForbiddenException("Недостаточно прав для создания задачи");
+            }
+
             var project = await context.Projects
                 .Include(p => p.Members)
                 .Include(p => p.Stages)
@@ -110,12 +122,6 @@ namespace TaskFlow.Services
             if (project == null)
                 throw new NotFoundException("Проект не найден");
 
-            var canCreateTask =
-                project.OwnerId == userId ||
-                project.Members.Any(m => m.UserId == userId);
-
-            if (!canCreateTask)
-                throw new ForbiddenException();
 
             var executorExists = await context.Users
                 .AnyAsync(u => u.Id == request.ExecutorId);
@@ -187,10 +193,19 @@ namespace TaskFlow.Services
         {
             var status = request.Status;
             var task = await context.Tasks.FindAsync(taskId);
+            
 
             if (task == null)
             {
                 throw new NotFoundException("Задача не найдена.");
+            }
+
+            if (!await permissionService.HasPermission(
+                userId,
+                task.ProjectId,
+                ProjectPermission.ChangeTaskStatus))
+            {
+                throw new ForbiddenException("Недостаточно прав для изменения статуса задачи");
             }
 
             var project = await context.Projects
@@ -205,12 +220,6 @@ namespace TaskFlow.Services
             {
                 throw new BadRequestException("Cannot complete task without comment");
             }
-
-            var canPatchTask =
-                project.OwnerId == userId ||
-                project.Members.Any(m => m.UserId == userId);
-            if (!canPatchTask)
-                throw new ForbiddenException();
             task.Status = status;
             await context.SaveChangesAsync();
             var description = status == StatusTask.Done ?
@@ -238,6 +247,14 @@ namespace TaskFlow.Services
 
             if (task == null)
                 throw new NotFoundException("Task not found");
+
+            if (!await permissionService.HasPermission(
+                userId,
+                task.ProjectId,
+                ProjectPermission.ChangeTaskStatus))
+            {
+                throw new ForbiddenException("Недостаточно прав для изменения этапа задачи");
+            }
 
             var userInProject = await context.Projects
                 .AnyAsync(p => p.Id == task.ProjectId && (p.OwnerId == userId ||
@@ -295,6 +312,14 @@ namespace TaskFlow.Services
                 throw new NotFoundException("Задача не найдена.");
             }
 
+            if (!await permissionService.HasPermission(
+                userId,
+                task.ProjectId,
+                ProjectPermission.DeleteTask))
+            {
+                throw new ForbiddenException("Недостаточно прав для удаления задачи");
+            }
+
             var project = await context.Projects
                 .Include(p => p.Members)
                 .FirstOrDefaultAsync(p => p.Id == task.ProjectId);
@@ -308,14 +333,6 @@ namespace TaskFlow.Services
                 throw new UnauthorizedException();
             }
 
-            var canDeleteTask =
-                user.UserRole == UserRole.Admin ||
-                project.OwnerId == userId ||
-                project.Members.Any(m =>
-                    m.UserId == userId &&
-                    m.ProjectRole == ProjectRole.Manager);
-            if (!canDeleteTask)
-                throw new ForbiddenException();
 
             context.Tasks.Remove(task);
 

@@ -201,7 +201,7 @@ namespace TaskFlow.Test.TaskServiceTest
             project.Members.Add(new ProjectMember
             {
                 UserId = 2,
-                ProjectRole = ProjectRole.Executor
+                ProjectRole = ProjectRole.Member
             });
 
 

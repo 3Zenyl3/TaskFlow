@@ -78,8 +78,8 @@ export function CreateProjectsContent({ mode }: CreateProjectsContentProps) {
             : null,
           tags: project.tags ?? [],
           members: project.members.map((member) => ({
-            email: member.userName,
-            role: "Участник",
+              email: member.email,
+              role: member.role,
           })),
           selectedMemberRole: "Участник",
           memberEmail: "",
@@ -90,8 +90,7 @@ export function CreateProjectsContent({ mode }: CreateProjectsContentProps) {
 
         if (axios.isAxiosError(error)) {
           setServerError(
-            error.response?.data?.message ??
-            "Не удалось загрузить проект"
+            error.response?.data?.message
           );
         } else {
           setServerError("Произошла неизвестная ошибка");

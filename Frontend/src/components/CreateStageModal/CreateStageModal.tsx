@@ -10,6 +10,7 @@ import {
   HiOutlineCodeBracket,
   HiOutlineRocketLaunch,
 } from "react-icons/hi2";
+import axios from "axios";
 
 type ProjectStageCreateData = {
   name: string;
@@ -22,14 +23,14 @@ type ProjectStageCreateData = {
 
 type CreateStageModalProps = {
   onClose: () => void;
-  onCreate: (data: ProjectStageCreateData) => void;
+  onCreate: (data: ProjectStageCreateData) => Promise<void>;
 };
 
 export default function CreateStageModal({
   onClose,
   onCreate,
 }: CreateStageModalProps) {
-
+  const [serverError, setServerError] = useState("");
   const colors: ProjectColor[] = [
     { name: "blue", value: "#3B82F6", background: "#EEF3FE" },
     { name: "green", value: "#22C55E", background: "#ECFDF3" },
@@ -73,18 +74,31 @@ export default function CreateStageModal({
       endDate: null,
     });
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!stageData.name.trim()) {
       return;
     }
 
-    onCreate({
-      ...stageData,
-      name: stageData.name.trim(),
-      description: stageData.description.trim(),
-    });
+    try {
+      setServerError("");
+
+      await onCreate({
+        ...stageData,
+        name: stageData.name.trim(),
+        description: stageData.description.trim(),
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setServerError(
+          error.response?.data?.message ??
+          "Не удалось создать этап"
+        );
+      } else {
+        setServerError("Произошла неизвестная ошибка");
+      }
+    }
   };
 
   return (
@@ -239,6 +253,12 @@ export default function CreateStageModal({
           </div>
 
         </div>
+
+        {serverError && (
+          <p className="inputErrorText Content">
+            {serverError}
+          </p>
+        )}
 
         <div className="createStageModal__actions">
           <button

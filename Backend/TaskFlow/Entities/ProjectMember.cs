@@ -16,7 +16,8 @@
     public enum ProjectRole
     {
         Owner,
-        Manager,
-        Executor
+        Admin,
+        Member,
+        Viewer
     }
 }

@@ -11,7 +11,6 @@ interface DropdownProps {
   direction?: "up" | "down";
 }
 
-
 export function Dropdown({ title, options, value, onChange, error, direction }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);

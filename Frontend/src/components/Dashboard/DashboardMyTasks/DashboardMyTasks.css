@@ -4,7 +4,8 @@
     width: 100%;
     max-width: 1000px;
     min-width: 0;
-    height: 100%;
+    min-height: 0;
+    max-height: 430px;
     border-radius: 12px;
     background-color: #fefefe;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -51,8 +52,10 @@
   height: 2px;
   background-color: #2e7dfb;
 }
-.tasksList{
-  overflow-y: auto;
+.tasksList {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
 }
 .tasksList::-webkit-scrollbar {
   width: 6px;
@@ -71,7 +74,6 @@
     .myTasks {
         width: 100%;
         max-width: none;
-        height: 60vh;
         border-radius: 10px;
     }
 }

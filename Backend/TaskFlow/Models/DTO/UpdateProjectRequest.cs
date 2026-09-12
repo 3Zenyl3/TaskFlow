@@ -1,4 +1,5 @@
 ﻿using TaskFlow.Entities;
+using TaskFlow.Models.Request;
 
 namespace TaskFlow.Models.DTO
 {
@@ -11,6 +12,8 @@ namespace TaskFlow.Models.DTO
         public string Key { get; set; } = string.Empty;
 
         public string Category { get; set; } = string.Empty;
+
+        public List<ProjectMemberRequest> Members { get; set; } = new();
 
         public ProjectColor Color { get; set; } = new();
 

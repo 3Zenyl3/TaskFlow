@@ -1,11 +1,11 @@
 import "./ProjectCommand.css"
-import type { UserDto } from "../../api/projects";
+import type { ProjectMemberDto, UserDto } from "../../api/projects";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 type Props = {
   owner: UserDto;
-  members: UserDto[];
+  members: ProjectMemberDto[];
 };
 export function ProjectCommand({ owner, members }: Props) {
   const navigate = useNavigate();
@@ -26,9 +26,9 @@ export function ProjectCommand({ owner, members }: Props) {
         />
         {members.map(member => (
           <img
-            key={member.userId}
-            src={member.avatarUrl}
-            alt={member.userName}
+            key={member.userDto.userId}
+            src={member.userDto.avatarUrl}
+            alt={member.userDto.userName}
             className="peopleAvatarInProjectCom"
           />
         ))}

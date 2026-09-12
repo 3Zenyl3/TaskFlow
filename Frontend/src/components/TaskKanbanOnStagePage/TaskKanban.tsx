@@ -2,7 +2,7 @@ import "./TaskKanban.css"
 import Input from "../Input/Input";
 import { Dropdown } from "../Button/Dropdown";
 import { useState } from "react";
-import type { ProjectTask } from "../../api/projects";
+import type { ProjectDetails, ProjectTask } from "../../api/projects";
 import { CanbanTaskCard } from "../TaskCard/CanbanTaskCard/CanbanTaskCard";
 import { HiOutlinePlus } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
@@ -19,8 +19,8 @@ import {
 import { updateTaskStatus, } from "../../api/tasks";
 import type { StatusTask } from "../../api/tasks";
 import { TaskModal } from "../TaskModal/TaskModal";
-import type { Project } from "../../api/projects";
 import type { ProjectStage } from "../../api/stages";
+import { useProfile } from "../../hooks/useProfile";
 
 function KanbanColumn({
   id,
@@ -45,7 +45,7 @@ function KanbanColumn({
 
 type Props = {
   tasks: ProjectTask[];
-  project: Project;
+  project: ProjectDetails;
   stage: ProjectStage;
   projectId: number;
   stageId: number;
@@ -72,6 +72,8 @@ export function TaskKanban({
   const [activeTask, setActiveTask] = useState<ProjectTask | null>(null);
   const [selectedTask, setSelectedTask] =
     useState<ProjectTask | null>(null);
+  const { profile } = useProfile();
+  const currentUserId = profile?.id;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -212,6 +214,7 @@ export function TaskKanban({
                   <CanbanTaskCard
                     key={task.id}
                     task={task}
+                    isAssignedToCurrentUser={task.executorId === currentUserId}
                     isDragging={activeTask?.id === task.id}
                     onClick={() => setSelectedTask(task)}
                   />
@@ -237,6 +240,7 @@ export function TaskKanban({
                   <CanbanTaskCard
                     key={task.id}
                     task={task}
+                    isAssignedToCurrentUser={task.executorId === currentUserId}
                     isDragging={activeTask?.id === task.id}
                     onClick={() => setSelectedTask(task)}
                   />
@@ -263,6 +267,7 @@ export function TaskKanban({
                   <CanbanTaskCard
                     key={task.id}
                     task={task}
+                    isAssignedToCurrentUser={task.executorId === currentUserId}
                     isDragging={activeTask?.id === task.id}
                     onClick={() => setSelectedTask(task)}
                   />
@@ -289,6 +294,7 @@ export function TaskKanban({
                   <CanbanTaskCard
                     key={task.id}
                     task={task}
+                    isAssignedToCurrentUser={task.executorId === currentUserId}
                     isDragging={activeTask?.id === task.id}
                     onClick={() => setSelectedTask(task)}
                   />
@@ -315,6 +321,7 @@ export function TaskKanban({
                   <CanbanTaskCard
                     key={task.id}
                     task={task}
+                    isAssignedToCurrentUser={task.executorId === currentUserId}
                     isDragging={activeTask?.id === task.id}
                     onClick={() => setSelectedTask(task)}
                   />

@@ -40,8 +40,13 @@ export function CreateProjectMainInfo({
   const roles = [
     "Участник",
     "Администратор",
-    "Наблюдатель",
-    "Владелец"
+    "Наблюдатель"
+  ];
+
+  const roleValues = [
+    "Member",
+    "Admin",
+    "Viewer"
   ];
   const colors = [
     { name: "blue", value: "#3B82F6", background: "#EEF3FE" },
@@ -52,6 +57,17 @@ export function CreateProjectMainInfo({
     { name: "cyan", value: "#06B6D4", background: "#ECFBFE" },
     { name: "gray", value: "#6B7280", background: "#F3F4F6" }
   ];
+
+  const translateRole = (role: string) => {
+    switch (role) {
+      case "Member":
+        return "Участник";
+      case "Admin":
+        return "Администратор";
+      case "Viewer":
+        return "Наблюдатель"
+    }
+  }
 
   const [newTag, setNewTag] = useState("");
   const [isAddingTag, setIsAddingTag] = useState(false);
@@ -249,13 +265,16 @@ export function CreateProjectMainInfo({
               title="Роль"
               value={projectData.selectedMemberRole}
               options={roles}
-              onChange={(value) =>
+              onChange={(value) => {
+                const index = roles.indexOf(value);
+
                 setProjectData({
                   ...projectData,
-                  selectedMemberRole: value
-                })
+                  selectedMemberRole: roleValues[index]
+                });
               }
-              direction="up"
+              }
+            direction="up"
             />
           </div>
           <div className="addNewMemberButtonDiv">
@@ -266,7 +285,7 @@ export function CreateProjectMainInfo({
           {projectData.members.map((member, index) => (
             <div key={index} className="memberItem">
               <span>{member.email}</span>
-              <span>{member.role}</span>
+              <span>{translateRole(member.role)}</span>
 
               <button
                 onClick={() => {

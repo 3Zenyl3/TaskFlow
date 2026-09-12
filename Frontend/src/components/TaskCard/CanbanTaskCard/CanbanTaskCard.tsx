@@ -7,10 +7,11 @@ import { useDraggable } from "@dnd-kit/core";
 type Props = {
   task: ProjectTask
   isDragging?: boolean;
+  isAssignedToCurrentUser?: boolean;
   onClick?: () => void;
 }
 
-export function CanbanTaskCard({ task, isDragging, onClick, }: Props) {
+export function CanbanTaskCard({ task, isDragging, isAssignedToCurrentUser, onClick, }: Props) {
   const {
     attributes,
     listeners,
@@ -18,15 +19,17 @@ export function CanbanTaskCard({ task, isDragging, onClick, }: Props) {
   } = useDraggable({
     id: task.id,
   });
-
   return (
     <div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
       onClick={onClick}
-      className={`CanbanTaskCard ${isDragging ? "dragging" : ""
-        } ${task.priority !== "Medium" ? "hasPriority" : ""}`}
+      className={`CanbanTaskCard 
+        ${isDragging ? "dragging" : ""}
+        ${isAssignedToCurrentUser ? "assignedToMe" : ""}
+        ${task.priority !== "Medium" ? "hasPriority" : ""}
+`}
     >
       <header>
         <h4 className="tasktTitle">{task.title}</h4>

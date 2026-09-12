@@ -15,10 +15,14 @@ namespace TaskFlow.Services
     {
         private ApplicationDbContext context;
         private IActivityService activityService;
-        public ProjectService(ApplicationDbContext context, IActivityService activityService)
+        private IProjectPermissionService permissionService;
+        public ProjectService(ApplicationDbContext context,
+            IActivityService activityService,
+            IProjectPermissionService permissionService)
         {
             this.context = context;
             this.activityService = activityService;
+            this.permissionService = permissionService;
         }
 
         public async Task<List<ProjectListDto>> GetAllProjectUser(int userId)
@@ -154,6 +158,7 @@ namespace TaskFlow.Services
                         ExecutorName = t.Executor != null
                             ? t.Executor.UserName
                             : null,
+                        ExecutorId = t.Executor.Id,
                         StageId = t.StageId,
                         Tags = t.Tags,
                         Comments = t.Comments
@@ -257,7 +262,7 @@ namespace TaskFlow.Services
                 context.Projects.Add(project);
                 await context.SaveChangesAsync();
 
-                await AddNewMemberToProject(request, project, user);
+                await SyncProjectMembers(request.Members, project, user);
 
                 context.ProjectMembers.Add(new ProjectMember
                 {
@@ -279,44 +284,29 @@ namespace TaskFlow.Services
             return null;
         }
 
-        private async System.Threading.Tasks.Task AddNewMemberToProject(
-            CreateProjectRequest request,
-            Project project,
-            User user)
-        {
-            foreach (var memberRequest in request.Members)
-            {
-                var memberUser = await context.Users
-                    .FirstOrDefaultAsync(u => u.Email == memberRequest.Email);
-
-                if (memberUser == null || memberUser.Id == user.Id)
-                    continue;
-
-                var member = new ProjectMember
-                {
-                    ProjectId = project.Id,
-                    UserId = memberUser.Id,
-                    ProjectRole = memberRequest.Role
-                };
-
-                context.ProjectMembers.Add(member);
-
-                await activityService.CreateActivity(
-                    userId: user.Id,
-                    activityType: ActivityType.AddedMember,
-                    description: $"добавил(а) пользователя {memberUser.UserName} в проект {project.Name}",
-                    projectId: project.Id,
-                    taskId: null
-                );
-            }
-        }
+        
 
         public async Task<UpdateProjectResponse> UpdateProject(
             UpdateProjectRequest request,
             int userId,
             int projectId)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                projectId,
+                ProjectPermission.EditProject))
+            {
+                throw new ForbiddenException("Недостаточно прав для редактирования проекта");
+            }
+            var user = await context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                throw new NotFoundException("Пользователь не найден");
+            }
+
             var project = await context.Projects
+                .Include(p => p.Members)
                 .FirstOrDefaultAsync(p => p.Id == projectId);
 
             if (project == null)
@@ -344,6 +334,13 @@ namespace TaskFlow.Services
                 };
             }
 
+            if (request.Members != null)
+            {
+                await SyncProjectMembers(request.Members, project, user);
+            }
+
+            
+
             project.Name = request.Name;
             project.Description = request.Description;
             project.Icon = request.Icon;
@@ -364,15 +361,97 @@ namespace TaskFlow.Services
                 taskId: null
             );
 
+            var projectDTO = new ProjectCreateDto
+            {
+                Id = projectId,
+                Description = project.Description,
+                Name = project.Name,
+                Status = project.Status
+            };
+
             return new UpdateProjectResponse
             {
                 UpdateProjectResult = ProjectOperationResult.Success,
-                Project = project
+                Project = projectDTO
             };
+        }
+
+        private async System.Threading.Tasks.Task SyncProjectMembers(
+            List<ProjectMemberRequest> members,
+            Project project,
+            User user)
+        {
+            var projectMembers = context.ProjectMembers
+                .Where(m => m.ProjectId == project.Id)
+                .Select(m => m.UserId)
+                .ToHashSet();
+            var requestedUserIds = new HashSet<int>();
+            foreach (var memberRequest in members)
+            {
+                if (memberRequest.Role == ProjectRole.Owner)
+                {
+                    throw new BadRequestException(
+                        "Владельца проекта нельзя добавить в список участников");
+                }
+                var memberUser = await context.Users
+                    .FirstOrDefaultAsync(u => u.Email == memberRequest.Email);
+
+                if (memberUser == null)
+                    throw new ForbiddenException($"Пользователь с емайлом {memberRequest.Email} не найден");
+                requestedUserIds.Add(memberUser.Id);
+                if (projectMembers.Contains(memberUser.Id))
+                {
+                    var existingMember = project.Members
+                        .FirstOrDefault(m => m.UserId == memberUser.Id);
+
+                    if (existingMember != null)
+                    {
+                        if (existingMember.ProjectRole != memberRequest.Role)
+                        {
+                            existingMember.ProjectRole = memberRequest.Role;
+                        }
+                        continue;
+                    }
+                }
+                    
+
+                var member = new ProjectMember
+                {
+                    ProjectId = project.Id,
+                    UserId = memberUser.Id,
+                    ProjectRole = memberRequest.Role
+                };
+                projectMembers.Add(member.UserId);
+                context.ProjectMembers.Add(member);
+
+                await activityService.CreateActivity(
+                    userId: user.Id,
+                    activityType: ActivityType.AddedMember,
+                    description: $"добавил(а) пользователя {memberUser.UserName} в проект {project.Name}",
+                    projectId: project.Id,
+                    taskId: null
+                );
+            }
+            var membersToRemove = await context.ProjectMembers
+                    .Where(m =>
+                        m.ProjectId == project.Id &&
+                        m.UserId != project.OwnerId &&
+                        !requestedUserIds.Contains(m.UserId))
+                    .ToListAsync();
+
+            context.ProjectMembers.RemoveRange(membersToRemove);
         }
 
         public async Task<ProjectOperationResult> DeleteProject(int userId, int projectId)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                projectId,
+                ProjectPermission.DeleteProject))
+            {
+                throw new ForbiddenException("Недостаточно прав для удаления проекта");
+            }
+
             var project = await context.Projects.FindAsync(projectId);
 
             if (project == null)
@@ -387,6 +466,14 @@ namespace TaskFlow.Services
 
         public async Task<ProjectFileDTO> UploadProjectFile(int userId, int projectId, IFormFile file)
         {
+            if (!await permissionService.HasPermission(
+                userId,
+                projectId,
+                ProjectPermission.UploadTaskFile))
+            {
+                throw new ForbiddenException("Недостаточно прав для загрузки файлов");
+            }
+
             var allowedExtensions = new HashSet<string>(
                 StringComparer.OrdinalIgnoreCase)
             {

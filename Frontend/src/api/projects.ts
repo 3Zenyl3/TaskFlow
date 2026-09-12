@@ -29,6 +29,7 @@ export interface ProjectTask {
   startDate: Date;
   projectName: string;
   executorName: string;
+  executorId: number;
   stageId: number;
   tags: string[];
   comments:Comment[];
@@ -46,7 +47,7 @@ export interface ProjectDetails {
   description: string;
   status: StatusProject;
   owner: UserDto;
-  members: UserDto[];
+  members: ProjectMemberDto[];
   taskCount: number;
   taskInProgressCount: number;
   progressPercent: number;
@@ -72,6 +73,12 @@ export interface UserDto {
   userName: string;
   avatarUrl: string;
 }
+export interface ProjectMemberDto{
+  userDto: UserDto;
+  email: string;
+  role: ProjectRole;
+}
+type ProjectRole = "Member" | "Admin" | "Viewer";
 export interface ProjectFileDTO {
     id: number;
     fileName: string;

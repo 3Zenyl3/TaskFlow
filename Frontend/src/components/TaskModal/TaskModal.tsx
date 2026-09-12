@@ -15,7 +15,7 @@ import {
 
 import { NavLink } from "react-router-dom";
 
-import type { Project, ProjectTask } from "../../api/projects";
+import type { ProjectDetails, ProjectTask } from "../../api/projects";
 
 import { useProjectInfo } from "../../hooks/useProjectInfo";
 import { useCurrentProjectStages } from "../../hooks/useCurrentProjectStage";
@@ -42,7 +42,7 @@ type TaskModalProps = {
   onTaskDelete?: (taskId: number) => void;
 } & (
     | {
-      project: Project;
+      project: ProjectDetails;
       projectId?: never;
     }
     | {
