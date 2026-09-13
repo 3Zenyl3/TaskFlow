@@ -74,7 +74,8 @@ builder.Services.AddCors(options =>
                 .WithOrigins(
                     "http://localhost:5173",
                     "http://localhost:3000",
-                    "https://3zenyl3.github.io"
+                    "https://3zenyl3.github.io",
+                    "http://135.106.210.189:3000"
                 );
         });
 });
