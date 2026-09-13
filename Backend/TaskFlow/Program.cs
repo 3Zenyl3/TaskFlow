@@ -1,14 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
+using System.Text.Json.Serialization;
 using TaskFlow.Data;
 using TaskFlow.Entities;
 using TaskFlow.Middleware;
 using TaskFlow.Services;
 using TaskFlow.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +80,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseMiddleware<ExceptionMiddleware>();
 if (!app.Environment.IsDevelopment())
 {
