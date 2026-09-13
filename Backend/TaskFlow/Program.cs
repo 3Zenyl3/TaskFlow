@@ -72,6 +72,7 @@ builder.Services.AddCors(options =>
                 .AllowCredentials()
                 .WithOrigins(
                     "http://localhost:5173",
+                    "http://localhost:3000",
                     "https://3zenyl3.github.io"
                 );
         });

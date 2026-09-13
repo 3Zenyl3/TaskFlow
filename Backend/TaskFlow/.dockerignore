@@ -1,0 +1,52 @@
+# .NET
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+
+# Visual Studio / IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.csproj.user
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Локальные настройки и секреты
+.env
+.env.*
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.secret
+
+# Сертификаты / ключи
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+
+# Локальные БД
+*.db
+*.sqlite
+*.sqlite3
+
+# Логи / временные файлы
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Локальные загрузки
+uploads/
+app_data/
+
+# Docker
+docker-compose.override.yml

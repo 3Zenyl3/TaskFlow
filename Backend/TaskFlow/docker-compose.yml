@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: taskflow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: taskFlow
+      POSTGRES_USER: new_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - taskflow-postgres-data:/var/lib/postgresql/data
+    networks:
+      - taskflow-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: taskflow-backend
+    container_name: taskflow-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=taskFlow;Username=new_user;Password=${POSTGRES_PASSWORD}"
+    depends_on:
+      - postgres
+    networks:
+      - taskflow-network
+
+  frontend:
+    build:
+      context: ../../Frontend
+      dockerfile: Dockerfile
+    image: taskflow-frontend
+    container_name: taskflow-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - taskflow-network
+
+volumes:
+  taskflow-postgres-data:
+    external: true
+
+networks:
+  taskflow-network:

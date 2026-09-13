@@ -5,7 +5,8 @@
     max-width: 1000px;
     min-width: 0;
     min-height: 0;
-    max-height: 430px;
+    height: 400px;
+    max-height: 400px;
     border-radius: 12px;
     background-color: #fefefe;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);

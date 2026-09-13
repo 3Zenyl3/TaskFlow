@@ -21,6 +21,7 @@ namespace TaskFlow.Test.ProjectServiceTest
     {
         private ProjectService projectService;
         private ApplicationDbContext context;
+        private IProjectPermissionService permissionService;
         private IActivityService activityService;
 
         [SetUp]
@@ -32,7 +33,8 @@ namespace TaskFlow.Test.ProjectServiceTest
 
             context = new ApplicationDbContext(options);
             activityService = new ActivityService(context);
-            projectService = new ProjectService(context, activityService);
+            permissionService = new ProjectPermissionService(context);
+            projectService = new ProjectService(context, activityService, permissionService);
         }
 
         [TearDown]

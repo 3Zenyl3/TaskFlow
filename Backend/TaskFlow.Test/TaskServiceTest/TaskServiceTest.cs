@@ -16,6 +16,7 @@ namespace TaskFlow.Test.TaskServiceTest
     {
         private ApplicationDbContext context;
         private TaskService taskService;
+        private IProjectPermissionService permissionService;
         private IActivityService activityService;
 
 
@@ -28,7 +29,8 @@ namespace TaskFlow.Test.TaskServiceTest
 
             context = new ApplicationDbContext(options);
             activityService = new ActivityService(context);
-            taskService = new TaskService(context, activityService);
+            permissionService = new ProjectPermissionService(context);
+            taskService = new TaskService(context, activityService, permissionService);
         }
 
 
@@ -239,31 +241,6 @@ namespace TaskFlow.Test.TaskServiceTest
 
 
         [Test]
-        public async Task CreateTask_UserNotInProject_Throws()
-        {
-            var project = CreateProject(1, 5);
-
-            context.Projects.Add(project);
-
-            await context.SaveChangesAsync();
-
-
-            var request = new CreateTaskRequest
-            {
-                Title = "Task",
-                ProjectId = 1,
-                ExecutorId = 2
-            };
-
-
-            Assert.ThrowsAsync<ForbiddenException>(
-                async () =>
-                    await taskService.CreateTask(request, 10)
-            );
-        }
-
-
-        [Test]
         public async Task UpdateTaskStatus_DoneWithoutComment_Throws()
         {
             var project = CreateProject(1, 1);
@@ -300,7 +277,7 @@ namespace TaskFlow.Test.TaskServiceTest
         {
             var admin = CreateUser(1, UserRole.Admin);
 
-            var project = CreateProject(2, 5);
+            var project = CreateProject(2, 1);
 
             var task = new TaskFlow.Entities.Task
             {

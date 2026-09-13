@@ -15,6 +15,7 @@ namespace TaskFlow.Test.StageServiceTest
     {
         private ApplicationDbContext context;
         private StagesService stagesService;
+        private IProjectPermissionService permissionService;
         private IActivityService activityService;
 
         [SetUp]
@@ -27,7 +28,8 @@ namespace TaskFlow.Test.StageServiceTest
 
             context = new ApplicationDbContext(options);
             activityService = new ActivityService(context);
-            stagesService = new StagesService(context, activityService);
+            permissionService = new ProjectPermissionService(context);
+            stagesService = new StagesService(context, activityService, permissionService);
         }
 
         [TearDown]
